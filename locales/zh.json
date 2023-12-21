@@ -1,0 +1,17 @@
+{
+  "lang": "简体中文",
+  "login": {
+    "student": {
+      "project": "学生DP管理系统",
+      "project_sub": "Student DP Management System",
+      "example": "例: ",
+      "password": "输入密码",
+      "login_button": "登录",
+      "switch": "老师 / 管理员登录"
+    },
+    "teacher": {
+      "project": "老师 / 管理员登录",
+      "switch": "学生登录"
+    }
+  }
+}

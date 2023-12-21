@@ -1,18 +1,25 @@
 <template>
   <client-only>
     <div id="app">
-      <NuxtPage />
+      <NuxtPage/>
     </div>
   </client-only>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {useUserStore} from "~/composables/userStore";
+import {Chart} from "chart.js";
+
+const {setLocale} = useI18n()
 
 const store = useUserStore()
 onMounted(() => {
-  if (store.theme == 'dark') {
+  setLocale(store.language)
+  if (store.theme == 'light') {
+    document.body.style.backgroundColor = "#F2F3F5"
+  } else {
     document.documentElement.classList.add("dark")
+    Chart.defaults.color = "#E5EAF3"
   }
 
   if (store.font == "minecraft" || store.font == "mc") {

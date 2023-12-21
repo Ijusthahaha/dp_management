@@ -1,10 +1,13 @@
-<script setup lang="ts">
-import {Setting, MessageBox, Menu, User, HomeFilled, Message} from "@element-plus/icons-vue";
+<script lang="ts" setup>
+import {HomeFilled, Menu, MessageBox, Setting, User} from "@element-plus/icons-vue";
 import {Student} from "~/types/User";
 import Overview from "~/components/Student/Overview.vue";
 import Log from "~/components/Student/Log.vue";
 import Settings from "~/components/Student/Settings.vue";
 import {storeToRefs} from "pinia";
+import {useDPDataStore} from "~/composables/DPDataStore";
+import {DPLog} from "~/types/DPType";
+import {getCompareLogs, getLogs} from "~/utils/fetch";
 
 let isCollapse = ref(true)
 
@@ -14,17 +17,38 @@ const dpStore = useDPDataStore()
 const name = (store.user as Student).name
 const clazz = (store.user as Student).clazz
 const {currentItem} = storeToRefs(store)
+const {shouldBeUpdate} = storeToRefs(dpStore)
 
 const onMenuOpen = function (index: string) {
   currentItem.value = +index
+  shouldBeUpdate.value++
 }
+
+watch(shouldBeUpdate, () => {
+  getLogs(store.jwt).then(d => {
+    let res: DPLog[] = []
+    for (let i = 0; i < d.data.data.length; i++) {
+      let t = d.data.data[i]
+      res.push(createDP(t.logType, t.logLocation, t.dp, t.date, t.remark))
+    }
+    dpStore.$patch(state => {
+      state.rawUserDP = res
+    })
+  })
+
+  getCompareLogs(store.jwt).then(d => {
+    dpStore.$patch(state => {
+      state.averageDP = d.data.data
+    })
+  })
+}, {immediate: true})
 </script>
 
 <template>
   <div id="student">
     <el-container>
       <el-header>
-        <el-popover trigger="hover" title="Total DP" :content="'Current DP: ' + dpStore.getTotalDP.toString()">
+        <el-popover :content="'Current DP: ' + dpStore.getTotalDP.toString()" title="Total DP" trigger="hover">
           <template #reference>
             <el-page-header icon="null">
               <template #title>

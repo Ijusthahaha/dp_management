@@ -1,14 +1,12 @@
-<script setup lang="ts">
-import {HomeFilled, Plus, User} from "@element-plus/icons-vue";
-import {Student, Teacher, TeacherType} from "~/types/User"
-import {Action, FormRules, TabPaneName, TabsPaneContext} from "element-plus";
+<script lang="ts" setup>
+import {HomeFilled, User} from "@element-plus/icons-vue";
+import {Teacher, TeacherType} from "~/types/User"
+import {Action, FormRules, TabPaneName} from "element-plus";
 import {useStudentStore} from "~/composables/studentStore";
 import {$fetch} from "ofetch";
-import {DPLog} from "~/types/DPType";
 import SchoolOverview from "~/components/Teacher/SchoolOverview.vue";
 import MessageBox from "~/components/Teacher/MessageBox.vue";
 import ClassOverview from "~/components/Teacher/ClassOverview.vue";
-import {Ref} from "@vue/reactivity";
 
 const store = useUserStore()
 const studentStore = useStudentStore()
@@ -222,22 +220,22 @@ const dateFormatter = function (row: any): string {
       <el-container>
         <el-main>
           <el-tabs
+              v-if="giveDPTabs.length > 0 || (store.user as Teacher).level !== TeacherType.Default"
               v-model="editableTabsValue"
+              editable
               type="card"
               @edit="handleTabsEdit"
-              editable
-              v-if="giveDPTabs.length > 0 || (store.user as Teacher).level !== TeacherType.Default"
           >
-            <el-tab-pane key="overview" :closable="false" label="DP Overview"
-                         v-if="teacherLevel() == TeacherType.Director" name="-1">
+            <el-tab-pane v-if="teacherLevel() == TeacherType.Director" key="overview" :closable="false"
+                         label="DP Overview" name="-1">
               <SchoolOverview></SchoolOverview>
             </el-tab-pane>
-            <el-tab-pane key="messagebox" :closable="false" label="MessageBox"
-                         v-if="teacherLevel() == TeacherType.Director" name="0">
+            <el-tab-pane v-if="teacherLevel() == TeacherType.Director" key="messagebox" :closable="false"
+                         label="MessageBox" name="0">
               <MessageBox></MessageBox>
             </el-tab-pane>
-            <el-tab-pane key="class" :closable="false" label="Class DP Overview"
-                         v-if="teacherLevel() == TeacherType.CT" name="0">
+            <el-tab-pane v-if="teacherLevel() == TeacherType.CT" key="class" :closable="false"
+                         label="Class DP Overview" name="0">
               <ClassOverview></ClassOverview>
             </el-tab-pane>
             <el-tab-pane
@@ -247,24 +245,24 @@ const dateFormatter = function (row: any): string {
                 :name="item.id"
                 closable
             >
-              <el-card>
+              <el-card shadow="always">
                 <el-form v-model="forms" status-icon>
                   <el-form-item label="Input student's name" required>
                     <el-autocomplete
                         v-model="forms[+item.id - 1].currentStudent"
                         :fetch-suggestions="querySearchStudent"
+                        :trigger-on-focus="false"
                         clearable
                         placeholder="Example: MRD Leo"
-                        :trigger-on-focus="false"
                     />
                   </el-form-item>
                   <el-form-item label="Dispatch date" required>
                     <el-col :span="11">
                       <el-date-picker
                           v-model="forms[+item.id - 1].date"
-                          type="date"
                           placeholder="Pick a date"
                           style="width: 100%"
+                          type="date"
                       />
                     </el-col>
                     <el-col :span="1" style="text-align: center">
@@ -286,21 +284,21 @@ const dateFormatter = function (row: any): string {
                   </el-form-item>
                   <el-form-item label="Reason" required>
                     <el-input v-model="forms[+item.id - 1].reason"
-                              type="textarea"
                               :autosize="{minRows: 3}"
                               maxlength="100"
-                              show-word-limit
                               placeholder="Please provide reasonable reason."
+                              show-word-limit
+                              type="textarea"
                     />
                   </el-form-item>
                   <el-form-item label="DP: " required>
                     <el-col :span="4">
-                      <el-input type="number" placeholder="Dispatch DP count" v-model="forms[+item.id - 1].dp"
-                                :max="12" :min="1"></el-input>
+                      <el-input v-model="forms[+item.id - 1].dp" :max="12" :min="1"
+                                placeholder="Dispatch DP count" type="number"></el-input>
                     </el-col>
                     <el-col :span="1"></el-col>
                     <el-col :span="18">
-                      <el-button type="primary" @click="checkForm" plain>Dispatch!</el-button>
+                      <el-button plain type="primary" @click="checkForm">Dispatch!</el-button>
                     </el-col>
                   </el-form-item>
                 </el-form>
@@ -313,22 +311,22 @@ const dateFormatter = function (row: any): string {
       </el-container>
     </el-container>
   </div>
-  <el-dialog v-model="confirmDialogVisible" title="Confirm" width="50%" center>
+  <el-dialog v-if="confirmDialogVisible" v-model="confirmDialogVisible" center title="Confirm" width="50%">
     <el-table :data="[forms[+editableTabsValue - 1]]" style="width: 100%">
-      <el-table-column prop="currentStudent" label="Name"></el-table-column>
-      <el-table-column prop="date" label="Date" :formatter="dateFormatter"></el-table-column>
-      <el-table-column prop="location" label="Location"></el-table-column>
-      <el-table-column prop="reason" label="Reason"></el-table-column>
-      <el-table-column prop="dp" label="DP"></el-table-column>
+      <el-table-column label="Name" prop="currentStudent"></el-table-column>
+      <el-table-column :formatter="dateFormatter" label="Date" prop="date"></el-table-column>
+      <el-table-column label="Location" prop="location"></el-table-column>
+      <el-table-column label="Reason" prop="reason"></el-table-column>
+      <el-table-column label="DP" prop="dp"></el-table-column>
     </el-table>
-    <el-alert :title="currentQuote" type="info"
-              show-icon style="margin-top: 8px; margin-bottom: 8px;" :closable="false"/>
-    <el-alert title="You are not able to cancel the DP." type="warning"
-              show-icon style="margin-top: 8px; margin-bottom: 8px;" :closable="false"/>
+    <el-alert :closable="false" :title="currentQuote"
+              show-icon style="margin-top: 8px; margin-bottom: 8px;" type="info"/>
+    <el-alert :closable="false" show-icon
+              style="margin-top: 8px; margin-bottom: 8px;" title="You are not able to cancel the DP." type="warning"/>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="confirmDialogVisible = false">Cancel</el-button>
-        <el-button type="danger" plain @click="submitForm">
+        <el-button plain type="danger" @click="submitForm">
           Confirm
         </el-button>
       </span>
@@ -375,6 +373,7 @@ i {
   height: 80vh; /* idk why (height: 100%) not working... */
   /* overflow-y: auto; */
 }
+
 .el-tab-pane {
   height: 80vh;
   overflow-x: auto;

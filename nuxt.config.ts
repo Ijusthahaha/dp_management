@@ -8,15 +8,25 @@ export default defineNuxtConfig({
         ],
     },
     css: ['element-plus/theme-chalk/dark/css-vars.css', '@/assets/base.css', '@/assets/monocraft.css'],
-    ssr: false,
     app: {
         head: {
             title: 'Student DP Management System',
             charset: 'utf-8',
             meta: [
-                { name: 'description', content: 'Student DP Management System' }
+                {name: 'description', content: 'Student DP Management System'}
             ],
-            link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' }]
+            link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.svg'}]
         },
+    },
+    i18n: {
+        vueI18n: '@/config/i18n.config.ts'
+    },
+    nitro: {
+        devProxy: {
+            "/api": {
+                target: "//localhost:8080/",
+                changeOrigin: true
+            }
+        }
     }
 })

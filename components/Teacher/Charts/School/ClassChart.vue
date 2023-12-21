@@ -1,6 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {Bar} from 'vue-chartjs'
-import {Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale} from 'chart.js'
+import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js'
 import {useSchoolDPDataStore} from "~/composables/schoolDPDataStore";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
@@ -56,8 +56,8 @@ const chartOptions = {
 
 <template>
   <Bar
-      :options="chartOptions"
-      :data="data">
+      :data="data"
+      :options="chartOptions">
   </Bar>
 </template>
 

@@ -1,12 +1,11 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import AverageChart from "~/components/Teacher/Charts/Class/AverageChart.vue";
 import StudentChart from "~/components/Teacher/Charts/Class/StudentChart.vue";
 import TypeChart from "~/components/Teacher/Charts/Class/TypeChart.vue";
-import CompareChart from "~/components/Teacher/Charts/Class/CompareChart.vue";
 </script>
 
 <template>
-  <el-carousel trigger="click" :autoplay="false">
+  <el-carousel :autoplay="false" trigger="click">
     <el-carousel-item>
       <el-card shadow="hover">
         <template #header>
@@ -43,18 +42,18 @@ import CompareChart from "~/components/Teacher/Charts/Class/CompareChart.vue";
         </div>
       </el-card>
     </el-carousel-item>
-<!--    <el-carousel-item>-->
-<!--      <el-card shadow="hover">-->
-<!--        <template #header>-->
-<!--          <div>-->
-<!--            <span>Compare with other classes</span>-->
-<!--          </div>-->
-<!--        </template>-->
-<!--        <div class="mainCard">-->
-<!--          <CompareChart></CompareChart>-->
-<!--        </div>-->
-<!--      </el-card>-->
-<!--    </el-carousel-item>-->
+    <!--    <el-carousel-item>-->
+    <!--      <el-card shadow="hover">-->
+    <!--        <template #header>-->
+    <!--          <div>-->
+    <!--            <span>Compare with other classes</span>-->
+    <!--          </div>-->
+    <!--        </template>-->
+    <!--        <div class="mainCard">-->
+    <!--          <CompareChart></CompareChart>-->
+    <!--        </div>-->
+    <!--      </el-card>-->
+    <!--    </el-carousel-item>-->
   </el-carousel>
 </template>
 

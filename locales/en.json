@@ -1,0 +1,17 @@
+{
+  "lang": "English",
+  "login": {
+    "student": {
+      "project": "Student DP Management System",
+      "project_sub": "",
+      "example": "Example: ",
+      "password": "Your password",
+      "login_button": "Login",
+      "switch": "Teacher / Admin login"
+    },
+    "teacher": {
+      "project": "Teacher / Admin Login Page",
+      "switch": "Student Login"
+    }
+  }
+}

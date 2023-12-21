@@ -1,40 +1,26 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {Pie} from 'vue-chartjs'
-import {Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement} from 'chart.js'
+import {ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js'
 import {useDPDataStore} from "~/composables/DPDataStore";
 import {DPType} from "~/types/DPType";
+import {storeToRefs} from "pinia";
+import {Ref} from "@vue/reactivity";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement)
 
-const {computedUserDP} = useDPDataStore()
-let DPTypeSet: DPType[] = []
-const DPTypeArray: string[] = []
+const {isUpdatedDP, computedUserDP} = storeToRefs(useDPDataStore())
 
-for (let i=0; i<computedUserDP.length; i++) {
-  DPTypeSet.push(computedUserDP[i].type)
-}
+const DPTypeSet: Ref<DPType[]> = ref([])
+const DPTypeArray: Ref<string[]> = ref([])
+const DPTypeData: Ref<number[]> = ref([])
+const update = ref(false)
 
-DPTypeSet = DPTypeSet.filter((item, index) => {
-  return DPTypeSet.indexOf(item) === index
-})
-
-const DPTypeData: number[] = new Array(DPTypeSet.length).fill(0)
-
-for (let i=0; i<DPTypeSet.length; i++) {
-  DPTypeArray.push(Object.keys(DPType)[Object.values(DPType).indexOf(DPTypeSet[i])])
-}
-
-// contributor: jim
-for (let i=0; i<computedUserDP.length; i++) {
-  DPTypeData[DPTypeSet.indexOf(computedUserDP[i].type)] += computedUserDP[i].dp
-}
-
-const data = {
+const data = reactive({
   labels: DPTypeArray,
   datasets: [
     {
       label: "Entire semester's DP",
-      data: DPTypeData,
+      data: DPTypeData.value,
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(255, 159, 64, 0.2)',
@@ -57,18 +43,49 @@ const data = {
       hoverOffset: 4
     }
   ]
-}
+})
 
 const chartOptions = {
   responsive: true,
   aspectRatio: 2
 }
+
+watch(isUpdatedDP, () => {
+  DPTypeSet.value.length = 0
+  DPTypeArray.value.length = 0
+  DPTypeData.value.length = 0
+
+  for (let i = 0; i < computedUserDP.value.length; i++) {
+    DPTypeSet.value.push(computedUserDP.value[i].type)
+  }
+
+  DPTypeSet.value = DPTypeSet.value.filter((item, index) => {
+    return DPTypeSet.value.indexOf(item) === index
+  })
+
+  DPTypeData.value = new Array(DPTypeSet.value.length).fill(0)
+  for (let i = 0; i < DPTypeSet.value.length; i++) {
+    DPTypeArray.value.push(Object.keys(DPType)[Object.values(DPType).indexOf(DPTypeSet.value[i])])
+  }
+
+  // contributor: jim
+  for (let i = 0; i < computedUserDP.value.length; i++) {
+    DPTypeData.value[DPTypeSet.value.indexOf(computedUserDP.value[i].type)] += computedUserDP.value[i].dp
+  }
+
+  data.datasets[0].data = DPTypeData.value
+  data.labels = DPTypeArray.value
+
+  update.value = true
+})
+
 </script>
 
 <template>
   <Pie
-      :options="chartOptions"
-      :data="data">
+      v-if="update"
+      :data="data"
+      :options="chartOptions">
   </Pie>
 </template>
 

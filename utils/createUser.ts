@@ -1,20 +1,22 @@
-import {Student, Teacher, Admin, TeacherType} from "~/types/User";
+import {Admin, Student, StudentLevel, Teacher, TeacherType} from "~/types/User";
 
-export function createStudent(id: string, name: string, clazz: string): Student {
+export function createStudent(id: string, name: string, clazz: string, level: StudentLevel): Student {
     return {
         id,
         name,
         type: "student",
-        clazz
+        clazz,
+        level: level
     }
 }
 
-export function createTeacher(id: string, name: string, level: TeacherType): Teacher {
+export function createTeacher(id: string, name: string, clazz: string, level: TeacherType): Teacher {
     return {
         id,
         name,
         type: "teacher",
-        level
+        level,
+        clazz
     }
 }
 

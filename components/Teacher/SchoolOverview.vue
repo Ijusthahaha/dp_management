@@ -1,16 +1,11 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import ClassChart from "~/components/Teacher/Charts/School/ClassChart.vue";
 import TypeChart from "~/components/Teacher/Charts/School/TypeChart.vue";
+import StudentLevelChart from "~/components/Teacher/Charts/School/StudentLevelChart.vue";
 </script>
 
 <template>
-<!-- TODO: distinguish dorm dp & academic dp -->
-<!--
-charts:
-1. each classes' dp
-2. entire school's dp type
--->
-  <el-carousel trigger="click" :autoplay="false">
+  <el-carousel :autoplay="false" trigger="click">
     <el-carousel-item>
       <el-card shadow="hover">
         <template #header>
@@ -32,6 +27,18 @@ charts:
         </template>
         <div class="mainCard">
           <TypeChart></TypeChart>
+        </div>
+      </el-card>
+    </el-carousel-item>
+    <el-carousel-item>
+      <el-card shadow="hover">
+        <template #header>
+          <div>
+            <span>Divisions</span>
+          </div>
+        </template>
+        <div class="mainCard">
+          <StudentLevelChart></StudentLevelChart>
         </div>
       </el-card>
     </el-carousel-item>

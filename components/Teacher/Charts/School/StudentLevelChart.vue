@@ -1,23 +1,19 @@
 <script lang="ts" setup>
-// show each student's dp.
-
 import {Bar} from 'vue-chartjs'
 import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js'
-import {useClassDPDataStore} from "~/composables/classDPDataStore";
+import {useSchoolDPDataStore} from "~/composables/schoolDPDataStore";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
-const store = useClassDPDataStore()
+const store = useSchoolDPDataStore()
 
 const studentMap: Map<string, number> = new Map()
-for (let i = 0; i < store.classDP.length; i++) {
-  let studentName = store.classDP[i].name
-  let studentDP = store.classDP[i].dp
-
-  if (!studentMap.has(studentName)) {
-    studentMap.set(studentName, studentDP)
-  } else {
-    studentMap.set(studentName, studentMap.get(studentName) as number + studentDP)
+for (let i = 0; i < store.schoolDP.length; i++) {
+  let level = store.schoolDP[i].level
+  studentMap.set(level, 0)
+  for (let j = 0; j < store.schoolDP[i].dpLog.length; j++) {
+    let levelDP = store.schoolDP[i].dpLog[j].dp
+    studentMap.set(level, studentMap.get(level) as number + levelDP)
   }
 }
 
@@ -25,7 +21,7 @@ const data = {
   labels: Array.from(studentMap.keys()),
   datasets: [
     {
-      label: "Student's DP",
+      label: "Divisions' DP",
       data: Array.from(studentMap.values()),
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',

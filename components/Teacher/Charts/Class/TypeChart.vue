@@ -1,6 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {Pie} from "vue-chartjs";
-import {Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement} from 'chart.js'
+import {ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js'
 import {useClassDPDataStore} from "~/composables/classDPDataStore";
 import {DPType} from "~/types/DPType";
 
@@ -14,7 +14,7 @@ const typeMap: Map<string, number> = new Map()
 let DPTypeSet: DPType[] = []
 const DPTypeArray: string[] = []
 
-for (let i=0; i<store.classDP.length; i++) {
+for (let i = 0; i < store.classDP.length; i++) {
   DPTypeSet.push(store.classDP[i].type)
 }
 
@@ -22,11 +22,11 @@ DPTypeSet = DPTypeSet.filter((item, index) => {
   return DPTypeSet.indexOf(item) === index
 })
 
-for (let i=0; i<DPTypeSet.length; i++) {
+for (let i = 0; i < DPTypeSet.length; i++) {
   DPTypeArray.push(Object.keys(DPType)[Object.values(DPType).indexOf(DPTypeSet[i])])
 }
 
-for (let i=0; i<store.classDP.length; i++) {
+for (let i = 0; i < store.classDP.length; i++) {
   let dpType = Object.keys(DPType)[Object.values(DPType).indexOf(store.classDP[i].type)]
   let studentDP = store.classDP[i].dp
 
@@ -75,8 +75,8 @@ const chartOptions = {
 
 <template>
   <Pie
-      :options="chartOptions"
-      :data="data">
+      :data="data"
+      :options="chartOptions">
   </Pie>
 </template>
 

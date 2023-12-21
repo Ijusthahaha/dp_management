@@ -1,15 +1,27 @@
 import {useUserStore} from "~/composables/userStore";
-import {validateJWT} from "~/utils/validateJWT";
+import {validateStudentJwt} from "~/utils/studentApiUtils";
+import {validateTeacherJwt} from "~/utils/teacherApiUtils";
 
-export default defineNuxtRouteMiddleware(async (to, from)=> {
+export default defineNuxtRouteMiddleware(async (to, from) => {
     if (process.server) return
 
     const store = useUserStore()
+    let result;
 
-    const result = validateJWT(store.jwt)
-    if (result.status == 200) {
+    if (from.path.includes("student")) {
+        result = await validateStudentJwt(store.jwt)
+    } else if (from.path.includes("teacher")) {
+        result = await validateTeacherJwt(store.jwt)
+    } else {
+        let u = await validateStudentJwt(store.jwt)
+        let v = await validateTeacherJwt(store.jwt)
+        if (u) result = u
+        if (v) result = v
+    }
+
+    if (result && result.status === 200) {
         navigateTo('/')
-    }else {
+    } else {
         return navigateTo('/login/student')
     }
 })

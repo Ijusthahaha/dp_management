@@ -1,6 +1,5 @@
 import {Appeal, AppealStatus} from "~/types/DPType";
 
-
 export function createRawAppeal(): Appeal {
     return {
         status: AppealStatus.NOT_APPEAL,

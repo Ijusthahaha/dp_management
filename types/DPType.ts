@@ -1,4 +1,4 @@
-import {Student} from "~/types/User";
+import {Student, StudentLevel} from "~/types/User";
 
 export enum DPType {
     'punctuality',
@@ -27,29 +27,38 @@ export enum DPType {
     'others'
 }
 
+export enum Location {
+    academic = "academic",
+    dorm = "dorm"
+}
+
 export enum AppealStatus {
     NOT_APPEAL = 'Not appeal',
     PENDING = 'Pending',
     REJECTED = 'Rejected',
     FULFILLED = 'Fulfilled'
 }
+
 export interface Appeal {
     status: AppealStatus,
     reason: string
 }
+
 export interface DPLog {
     type: DPType,
+    location: Location
     dp: number,
     date: string,
-    appeal: Appeal,
+    appeal: Appeal | undefined,
     remark?: string
 }
 
 export interface SchoolDPLog {
     clazz: string,
+    level: StudentLevel
     dpLog: ClassDPLog[]
 }
 
 // we don't need student's class because student's class is based on teacher's class.
-export type ClassDPLog = Omit<DPLog, 'appeal' | 'message' | 'remark'> & Omit<Student, 'type' | 'id' | 'clazz'>
+export type ClassDPLog = Omit<DPLog, 'appeal' | 'message' | 'remark'> & Omit<Student, 'type' | 'id' | 'clazz' | 'level'>
 export type MessageLog = DPLog & Omit<Student, 'type' | 'id'>

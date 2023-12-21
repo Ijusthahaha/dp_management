@@ -1,34 +1,17 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {Bar} from 'vue-chartjs'
-import {Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale} from 'chart.js'
+import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js'
 import {useDPDataStore} from "~/composables/DPDataStore";
+import {Ref} from "@vue/reactivity";
+import {storeToRefs} from "pinia";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
-const {computedUserDP} = useDPDataStore()
+const {isUpdatedDP, computedUserDP} = storeToRefs(useDPDataStore())
 
-const dpData: number[] = []
-for (let i = 0; i < 12; i++) {
-  let array: number[] = []
+let dpData: Ref<number[]> = ref([])
 
-  for (let j = 0; j < computedUserDP.length; j++) {
-    let date = new Date(+computedUserDP[j].date)
-
-    if (date && date.getMonth() == i) {
-      array.push(computedUserDP[j].dp)
-    }
-  }
-  if (array.length === 0) array.push(0)
-
-  let sum = 0
-  for (let j = 0; j < array.length; j++) {
-    sum = sum + array[j]
-  }
-
-  dpData.push(sum)
-}
-
-const data = {
+let data = reactive({
   labels: [
     'January',
     'February',
@@ -46,7 +29,7 @@ const data = {
   datasets: [
     {
       label: 'Monthly DP',
-      data: dpData,
+      data: dpData.value,
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(255, 159, 64, 0.2)',
@@ -68,16 +51,44 @@ const data = {
       borderWidth: 1
     }
   ]
-}
+})
 const chartOptions = {
   responsive: true
 }
+
+const update = ref(false)
+watch(isUpdatedDP, () => {
+  let d = []
+  for (let i = 0; i < 12; i++) {
+    let array: number[] = []
+
+    for (let j = 0; j < computedUserDP.value.length; j++) {
+      let date = new Date(computedUserDP.value[j].date)
+
+      if (date && date.getMonth() == i) {
+        array.push(computedUserDP.value[j].dp)
+      }
+    }
+    if (array.length === 0) array.push(0)
+
+    let sum = 0
+    for (let j = 0; j < array.length; j++) {
+      sum = sum + array[j]
+    }
+
+    d.push(sum)
+  }
+  dpData.value = d
+  data.datasets[0].data = d
+  update.value = true
+})
+
 </script>
 
 <template>
-  <Bar
-      :options="chartOptions"
-      :data="data">
+  <Bar v-if="update"
+       :data="data"
+       :options="chartOptions">
   </Bar>
 </template>
 

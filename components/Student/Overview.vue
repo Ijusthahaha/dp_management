@@ -1,12 +1,11 @@
-<script setup lang="ts">
-
+<script lang="ts" setup>
 import MonthlyChart from "~/components/Student/Charts/MonthlyChart.vue";
 import AverageChart from "~/components/Student/Charts/AverageChart.vue";
 import SemesterChart from "~/components/Student/Charts/SemesterChart.vue";
 </script>
 
 <template>
-  <el-carousel trigger="click" :autoplay="false">
+  <el-carousel :autoplay="false" trigger="click">
     <el-carousel-item>
       <el-card shadow="hover">
         <template #header>

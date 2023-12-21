@@ -9,20 +9,22 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
-  "devDependencies": {
-    "@element-plus/nuxt": "^1.0.6",
-    "@nuxt/devtools": "latest",
-    "nuxt": "^3.7.3",
-    "@nuxtjs/i18n": "^8.0.0-rc.1"
-  },
+  "devDependencies": {},
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "@element-plus/nuxt": "^1.0.6",
+    "@nuxt/devtools": "latest",
+    "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/composition-api": "^0.33.1",
+    "@nuxtjs/i18n": "^8.0.0-rc.1",
+    "@nuxtjs/proxy": "^2.1.0",
     "@pinia/nuxt": "^0.4.11",
     "@vueuse/core": "^10.4.1",
     "@vueuse/nuxt": "^10.4.1",
+    "axios": "^1.6.2",
     "chart.js": "^4.4.0",
     "element-plus": "^2.3.14",
+    "nuxt": "^3.7.3",
     "pinia": "^2.1.6",
     "vue-chartjs": "^5.2.0"
   }

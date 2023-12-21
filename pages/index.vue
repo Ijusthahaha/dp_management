@@ -1,5 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {useUserStore} from "~/composables/userStore";
+
 const store = useUserStore()
 const type = store.user?.type as string
 

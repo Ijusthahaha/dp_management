@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {Line} from 'vue-chartjs'
 import {Chart as ChartJS, registerables} from 'chart.js'
 import {useClassDPDataStore} from "~/composables/classDPDataStore";
@@ -22,11 +22,11 @@ const MONTHS = [
 ]
 
 const dpMap: Map<string, number> = new Map()
-for (let i=0; i<MONTHS.length; i++) {
+for (let i = 0; i < MONTHS.length; i++) {
   dpMap.set(MONTHS[i], 0)
 }
 
-for (let i=0; i<store.classDP.length; i++) {
+for (let i = 0; i < store.classDP.length; i++) {
   let date = new Date(+store.classDP[i].date)
   let dp = store.classDP[i].dp
 
@@ -55,8 +55,8 @@ const chartOptions = {
 </script>
 
 <template>
-  <Line :options="chartOptions"
-        :data="data"></Line>
+  <Line :data="data"
+        :options="chartOptions"></Line>
 </template>
 
 <style scoped>

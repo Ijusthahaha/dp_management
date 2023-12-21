@@ -1,7 +1,6 @@
-<script setup lang="ts">
-import {AppealStatus, DPLog, DPType} from "~/types/DPType";
+<script lang="ts" setup>
+import {DPLog, DPType} from "~/types/DPType";
 import {useMessageStore} from "~/composables/messageStore";
-import {createPendingAppeal, fulfillAppeal} from "~/utils/createAppeal";
 import {storeToRefs} from "pinia";
 
 const store = useMessageStore()
@@ -47,8 +46,7 @@ const submitOperation = function (type: string) {
     if (appealReason.value) {
       store.deleteMessage(currentIndex.value)
       rejectDialog.value = false
-    }
-    else {
+    } else {
       ElMessage({
         type: 'error',
         message: 'Reasons are required.'
@@ -70,22 +68,22 @@ const tableRowClassName = function ({row, rowIndex}: { row: DPLog, rowIndex: num
 
 <template>
 
-  <el-empty description="You don't have any appeal to process." v-if="messages.length === 0"/>
+  <el-empty v-if="messages.length === 0" description="You don't have any appeal to process."/>
   <el-table v-else :data="messages" :default-sort="{ prop: 'date', order: 'descending' }"
             :row-class-name="tableRowClassName">
-    <el-table-column prop="date" label="Date" sortable :formatter="dateFormatter"></el-table-column>
-    <el-table-column prop="name" label="Name"></el-table-column>
-    <el-table-column prop="clazz" label="Class"></el-table-column>
-    <el-table-column prop="type" label="Type" :formatter="typeFormatter"></el-table-column>
-    <el-table-column prop="dp" label="DP" sortable></el-table-column>
-    <el-table-column prop="remark" label="Remark"></el-table-column>
-    <el-table-column prop="appeal.reason" label="Appeal Reason"></el-table-column>
+    <el-table-column :formatter="dateFormatter" label="Date" prop="date" sortable></el-table-column>
+    <el-table-column label="Name" prop="name"></el-table-column>
+    <el-table-column label="Class" prop="clazz"></el-table-column>
+    <el-table-column :formatter="typeFormatter" label="Type" prop="type"></el-table-column>
+    <el-table-column label="DP" prop="dp" sortable></el-table-column>
+    <el-table-column label="Remark" prop="remark"></el-table-column>
+    <el-table-column label="Appeal Reason" prop="appeal.reason"></el-table-column>
 
     <el-table-column label="Operation">
       <template #default="scope">
         <div class="dialogTrigger">
-          <el-button plain type="primary" size="small" @click="appealFulfillOperation(scope)">Fulfill</el-button>
-          <el-button plain type="danger" size="small" @click="appealRejectOperation(scope)">Reject</el-button>
+          <el-button plain size="small" type="primary" @click="appealFulfillOperation(scope)">Fulfill</el-button>
+          <el-button plain size="small" type="danger" @click="appealRejectOperation(scope)">Reject</el-button>
         </div>
       </template>
     </el-table-column>
@@ -93,16 +91,16 @@ const tableRowClassName = function ({row, rowIndex}: { row: DPLog, rowIndex: num
 
   <el-dialog
       v-model="fulfillDialog"
+      align-center
       title="Fulfill appeal"
       width="70%"
-      align-center
   >
     <el-table :data="[appealItem]" style="width: 100%">
-      <el-table-column prop="date" label="Date" :formatter="dateFormatter"></el-table-column>
-      <el-table-column prop="type" label="Type" :formatter="typeFormatter"></el-table-column>
-      <el-table-column prop="dp" label="DP"></el-table-column>
-      <el-table-column prop="remark" label="Remark"></el-table-column>
-      <el-table-column prop="appeal.reason" label="Appeal Reason"></el-table-column>
+      <el-table-column :formatter="dateFormatter" label="Date" prop="date"></el-table-column>
+      <el-table-column :formatter="typeFormatter" label="Type" prop="type"></el-table-column>
+      <el-table-column label="DP" prop="dp"></el-table-column>
+      <el-table-column label="Remark" prop="remark"></el-table-column>
+      <el-table-column label="Appeal Reason" prop="appeal.reason"></el-table-column>
     </el-table>
 
     <!--    we don't need a reason for fulfill the appeal.-->
@@ -126,23 +124,23 @@ const tableRowClassName = function ({row, rowIndex}: { row: DPLog, rowIndex: num
 
   <el-dialog
       v-model="rejectDialog"
+      align-center
       title="Reject appeal"
       width="70%"
-      align-center
   >
     <el-table :data="[appealItem]" style="width: 100%">
-      <el-table-column prop="date" label="Date" :formatter="dateFormatter"></el-table-column>
-      <el-table-column prop="type" label="Type" :formatter="typeFormatter"></el-table-column>
-      <el-table-column prop="dp" label="DP"></el-table-column>
-      <el-table-column prop="remark" label="Remark"></el-table-column>
-      <el-table-column prop="appeal.reason" label="Appeal Reason"></el-table-column>
+      <el-table-column :formatter="dateFormatter" label="Date" prop="date"></el-table-column>
+      <el-table-column :formatter="typeFormatter" label="Type" prop="type"></el-table-column>
+      <el-table-column label="DP" prop="dp"></el-table-column>
+      <el-table-column label="Remark" prop="remark"></el-table-column>
+      <el-table-column label="Appeal Reason" prop="appeal.reason"></el-table-column>
     </el-table>
 
     <el-input
         v-model="appealReason"
         :autosize="{ minRows: 2, maxRows: 4 }"
-        type="textarea"
         placeholder="Please input the reason."
+        type="textarea"
     />
 
     <el-text type="danger">You are not able to cancel this appeal after submitted.</el-text>
