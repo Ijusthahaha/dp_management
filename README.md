@@ -2,4 +2,4 @@
 
 A system to manage student's demerit point.
 
-> Waiting for the further back-end dev.
+> Backend services: https://github.com/Ijusthahaha/dp_backend
