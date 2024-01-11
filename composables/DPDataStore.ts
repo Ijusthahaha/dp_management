@@ -8,14 +8,6 @@ export const useDPDataStore = defineStore('dpDataStore', () => {
     // single student's dp.
     const rawUserDP: Ref<DPLog[]> = ref([])
     // {type: DPType["abuse of e-gadgets"], dp:3, location: Location.academic, date: Date.now().toString(), appeal: createPendingAppeal(createRawAppeal(), '...')},
-    // {type: DPType.bullying, dp:3, location: Location.dorm, date: '1694265129000', appeal: createRawAppeal()},
-    // {type: DPType.gambling, dp:2, location: Location.academic, date: '1691586729000', appeal: createRawAppeal()},
-    // {type: DPType.others, dp:1, location: Location.dorm, date: '1688908329000', appeal: fulfillAppeal(createPendingAppeal(createRawAppeal(), '...'), 'idk')},
-    // {type: DPType.others, dp:1, location: Location.academic, date: '1686316329000', appeal: fulfillAppeal(createPendingAppeal(createRawAppeal(), '...'), 'idk')},
-    // {type: DPType.others, dp:1, location: Location.dorm, date: '1683637929000', appeal: createRawAppeal()},
-    // {type: DPType.smoking, dp:6, location: Location.academic, date: '1682946729000', appeal: createRawAppeal()},
-    // {type: DPType.pornography, dp:12, location: Location.dorm, date: '1682946729000', appeal: rejectAppeal(createPendingAppeal(createRawAppeal(), '...'), 'lol')},
-
 
     const averageDP: Ref<ComparedLog[]> = ref([])
 

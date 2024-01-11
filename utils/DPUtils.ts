@@ -1,5 +1,6 @@
 import {Appeal, DPLog, DPType, Location} from "~/types/DPType";
 import {createPendingAppeal, createRawAppeal, fulfillAppeal, rejectAppeal} from "~/utils/createAppeal";
+import {StudentLevel} from "~/types/User";
 
 export function createDP(type: string, location: string, dp: number, date: string, remark: string): DPLog {
     return {
@@ -32,4 +33,37 @@ export function AppealConverter(appeal: number, reason: string): Appeal {
     if (appeal == 3) return rejectAppeal(createRawAppeal(), reason)
 
     return createRawAppeal()
+}
+
+export function ClassLevelConverter(level: number): StudentLevel {
+    if (level == 0) return <StudentLevel>"MD"
+    if (level == 1) return <StudentLevel>"JH"
+    if (level == 2) return <StudentLevel>"SH"
+    else return <StudentLevel>"MD"
+}
+
+export function formatGetAllLogs(array: getAllLogFetchedResult[]): Map<string, DPLog[]> {
+    const classes = new Map<string, DPLog[]>()
+    for (let i = 0; i < array.length; i++) {
+        if (!classes.get(array[i].class_name)) {
+            // im lazy idc remark lol
+            let c = createDP(array[i].log_type, array[i].log_location, array[i].dp, array[i].date, "")
+            classes.set(array[i].class_name, [c])
+        } else {
+            let a = classes.get(array[i].class_name) as DPLog[]
+            a.push(createDP(array[i].log_type, array[i].log_location, array[i].dp, array[i].date, ""))
+            classes.set(array[i].class_name, a)
+        }
+    }
+    return classes
+}
+
+export interface getAllLogFetchedResult {
+    class_level: number,
+    class_name: string,
+    date: string
+    dp: number,
+    log_location: string,
+    log_type: string,
+    student_name: string
 }

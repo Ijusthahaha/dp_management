@@ -2,30 +2,56 @@
 import {Bar} from 'vue-chartjs'
 import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js'
 import {useSchoolDPDataStore} from "~/composables/schoolDPDataStore";
+import {storeToRefs} from "pinia";
+import {Ref} from "@vue/reactivity";
+import {getAllLogs} from "~/utils/fetch";
+import {formatGetAllLogs} from "~/utils/DPUtils";
+import {DPLog} from "~/types/DPType";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 const store = useSchoolDPDataStore()
+const {schoolDP, isUpdatedDP} = storeToRefs(useSchoolDPDataStore())
 
-const classMap: Map<string, number> = new Map()
+const classMap = reactive<Map<string, number>>(new Map())
+const update = ref(false)
+const classes: Ref<string[]> = ref([])
+let d = reactive<Map<string, DPLog[]>>(new Map())
+const classMapKey = ref()
+const classMapValue = ref()
 
-const classes = store.getClasses()
-for (let i = 0; i < classes.length; i++) {
-  classMap.set(classes[i], 0)
-}
+// will bugs occur if fetched data in here? hmm.
+getAllLogs().then(data => {
+  d = formatGetAllLogs(data.data.data)
+  schoolDP.value = data.data.data
+  isUpdatedDP.value = true
+})
 
-for (let i = 0; i < store.schoolDP.length; i++) {
-  for (let j = 0; j < store.schoolDP[i].dpLog.length; j++) {
-    classMap.set(store.schoolDP[i].clazz, (classMap.get(store.schoolDP[i].clazz) as number) + store.schoolDP[i].dpLog[j].dp)
+watch(isUpdatedDP, () => {
+  classes.value = Object.keys(d)
+  for (let i = 0; i < classes.value.length; i++) {
+    classMap.set(classes.value[i], 0)
   }
-}
 
-const data = {
-  labels: classes,
+  d.forEach((value, key) => {
+    let dp = 0
+    for (let i = 0; i < value.length; i++) {
+      dp += value[i].dp
+    }
+    classMap.set(key, dp)
+  })
+  update.value = true
+
+  classMapKey.value = Array.from(classMap.keys())
+  classMapValue.value = Array.from(classMap.values())
+})
+
+const data = reactive({
+  labels: classMapKey,
   datasets: [
     {
       label: "Class's DP",
-      data: Array.from(classMap.values()),
+      data: classMapValue,
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(255, 159, 64, 0.2)',
@@ -47,15 +73,18 @@ const data = {
       borderWidth: 1
     }
   ]
-}
+})
+
 const chartOptions = {
   responsive: true,
   aspectRatio: 3
 }
+
 </script>
 
 <template>
   <Bar
+      v-if="update"
       :data="data"
       :options="chartOptions">
   </Bar>

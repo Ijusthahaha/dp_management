@@ -3,7 +3,7 @@ export interface Student {
     name: string,
     type: 'student',
     clazz: string // student class (e.g. MRD),
-    level: StudentLevel
+    level: StudentLevel | undefined
 }
 
 export interface Teacher {

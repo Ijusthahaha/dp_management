@@ -15,7 +15,7 @@ export async function validateTeacherJwt(jwt: string): Promise<Status> {
         }
         store.$patch(state => {
             state.jwt = jwt
-            state.user = createTeacher(result.data.data.teacherUuid, result.data.data.teacherName, result.data.data.teacherClass, teacherLevelConverter(result.data.data.teacherLevel))
+            state.user = createTeacher(result.data.data.teacherUuid, result.data.data.teacherName, result.data.data.teacherClass, teacherLevelConverter(Number(result.data.data.teacherLevel)))
         });
         console.log("Jwt successfully verified.")
         return createStatus(200, "OK");

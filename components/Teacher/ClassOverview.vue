@@ -42,18 +42,6 @@ import TypeChart from "~/components/Teacher/Charts/Class/TypeChart.vue";
         </div>
       </el-card>
     </el-carousel-item>
-    <!--    <el-carousel-item>-->
-    <!--      <el-card shadow="hover">-->
-    <!--        <template #header>-->
-    <!--          <div>-->
-    <!--            <span>Compare with other classes</span>-->
-    <!--          </div>-->
-    <!--        </template>-->
-    <!--        <div class="mainCard">-->
-    <!--          <CompareChart></CompareChart>-->
-    <!--        </div>-->
-    <!--      </el-card>-->
-    <!--    </el-carousel-item>-->
   </el-carousel>
 </template>
 

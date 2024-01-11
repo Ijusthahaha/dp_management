@@ -139,4 +139,8 @@ i {
 .el-menu, .el-main {
   height: 100%;
 }
+
+.el-main {
+  overflow-y: hidden;
+}
 </style>

@@ -1,12 +1,12 @@
 import {Admin, Student, StudentLevel, Teacher, TeacherType} from "~/types/User";
 
-export function createStudent(id: string, name: string, clazz: string, level: StudentLevel): Student {
+export function createStudent(id: string, name: string, clazz: string, level: StudentLevel | undefined): Student {
     return {
         id,
         name,
         type: "student",
         clazz,
-        level: level
+        level: level ? level : undefined
     }
 }
 

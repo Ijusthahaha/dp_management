@@ -32,7 +32,7 @@ getAppeals(store.jwt).then(data => {
         // @ts-ignore
         if (userDPAppeal.value[i].appeal_id == d.value[j].appealId) {
           // @ts-ignore
-          d.value[i].appeal = AppealConverter(userDPAppeal.value[i].appeal_status, userDPAppeal.value[i].appeal_reason)
+          d.value[j].appeal = AppealConverter(userDPAppeal.value[i].appeal_status, userDPAppeal.value[i].appeal_reason)
         }
       }
     }
@@ -128,11 +128,24 @@ const tableRowClassName = function ({row, rowIndex}: { row: DPLog, rowIndex: num
   }
   return ""
 }
+
+let currentPage = ref(1)
+let pageSize = ref(7)
+
+const handleSizeChange = (val: number) => {
+  currentPage.value = 1;
+  pageSize.value = val;
+}
+
+const handleCurrentChange = (val: number) => {
+  currentPage.value = val;
+}
 </script>
 
 <template>
   <el-empty v-if="userDP.length === 0 && isLoading === false" description="Wow! You currently have 0 dp!"/>
-  <el-table v-else v-loading="isLoading" :data="userDP"
+
+  <el-table v-else v-loading="isLoading" :data="userDP.slice((currentPage-1)*pageSize,currentPage*pageSize)"
             :default-sort="{ prop: 'date', order: 'descending' }" :row-class-name="tableRowClassName">
     <el-table-column :formatter="dateFormatter" label="Date" prop="date" sortable></el-table-column>
     <el-table-column label="Type" prop="logType"></el-table-column>
@@ -165,6 +178,14 @@ const tableRowClassName = function ({row, rowIndex}: { row: DPLog, rowIndex: num
       </template>
     </el-table-column>
   </el-table>
+  <el-pagination background
+                 layout="prev, pager, next"
+                 :current-page="currentPage"
+                 @size-change="handleSizeChange"
+                 @current-change="handleCurrentChange"
+                 hide-on-single-page
+                 :teleported="false"
+                 :total="userDP.length"/>
 
   <el-dialog
       v-model="appealDialogVisible"
@@ -202,6 +223,11 @@ const tableRowClassName = function ({row, rowIndex}: { row: DPLog, rowIndex: num
 .el-table {
   height: 100%;
   width: 100%;
+}
+
+.el-pagination {
+  justify-content: center;
+  transform: translateY(-50px);
 }
 
 .warning-row, .el-table .warning-row {

@@ -56,7 +56,7 @@ const logout = function () {
   <el-descriptions size="large" title="Preference" border>
     <el-descriptions-item label="Theme">{{ store.theme }}</el-descriptions-item>
     <el-descriptions-item label="Language">{{ store.language }}</el-descriptions-item>
-    <el-descriptions-item label="Font">{{ store.font?store.font:"default" }}</el-descriptions-item>
+    <el-descriptions-item label="Font">{{ store.font ? store.font : "default" }}</el-descriptions-item>
   </el-descriptions>
 
   <el-divider/>
@@ -75,23 +75,23 @@ const logout = function () {
 
   <el-divider/>
 
-<!--  <div>-->
-<!--    <span class="titleText">Report bugs & suggestions</span>-->
-<!--    <el-link href="mailto:ijusthahaha@outlook.com?subject=Report%20bugs%20%26%20suggestions" type="primary">Click here-->
-<!--    </el-link>-->
-<!--    <span class="titleText" style="margin-left: 8px">OR</span>-->
-<!--    <el-text>Send email to</el-text>-->
-<!--    <el-text type="primary">ijusthahaha@outlook.com</el-text>-->
-<!--  </div>-->
+  <!--  <div>-->
+  <!--    <span class="titleText">Report bugs & suggestions</span>-->
+  <!--    <el-link href="mailto:ijusthahaha@outlook.com?subject=Report%20bugs%20%26%20suggestions" type="primary">Click here-->
+  <!--    </el-link>-->
+  <!--    <span class="titleText" style="margin-left: 8px">OR</span>-->
+  <!--    <el-text>Send email to</el-text>-->
+  <!--    <el-text type="primary">ijusthahaha@outlook.com</el-text>-->
+  <!--  </div>-->
 
-<!--  <el-divider/>-->
+  <!--  <el-divider/>-->
 
-<!--  <div>-->
-<!--    <span class="titleText">Logout</span>-->
-<!--    <el-button plain type="danger" @click="logout">Click here</el-button>-->
-<!--  </div>-->
+  <!--  <div>-->
+  <!--    <span class="titleText">Logout</span>-->
+  <!--    <el-button plain type="danger" @click="logout">Click here</el-button>-->
+  <!--  </div>-->
 
-<!--  <el-divider/>-->
+  <!--  <el-divider/>-->
 
   <el-dialog
       v-model="changePasswordDialog"
@@ -131,10 +131,12 @@ a {
 .modifiers {
   width: 100%;
 }
+
 .modifiers1 {
   display: inline-block;
   width: 33%;
 }
+
 .modifiers2 {
   display: inline-block;
 }

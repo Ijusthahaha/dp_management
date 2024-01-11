@@ -1,32 +1,50 @@
 <script lang="ts" setup>
 // show each student's dp.
-
 import {Bar} from 'vue-chartjs'
 import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js'
 import {useClassDPDataStore} from "~/composables/classDPDataStore";
+import {storeToRefs} from "pinia";
+import {getAllLogsByClass} from "~/utils/fetch";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 const store = useClassDPDataStore()
+const {classDP, isUpdatedDP} = storeToRefs(useClassDPDataStore())
 
 const studentMap: Map<string, number> = new Map()
-for (let i = 0; i < store.classDP.length; i++) {
-  let studentName = store.classDP[i].name
-  let studentDP = store.classDP[i].dp
+let update = ref(false)
+const classMapKey = ref()
+const classMapValue = ref()
 
-  if (!studentMap.has(studentName)) {
-    studentMap.set(studentName, studentDP)
-  } else {
-    studentMap.set(studentName, studentMap.get(studentName) as number + studentDP)
+getAllLogsByClass(useUserStore().jwt).then(data => {
+  classDP.value = data.data.data
+  isUpdatedDP.value = true
+})
+
+watch(isUpdatedDP, () => {
+  for (let i = 0; i < classDP.value.length; i++) {
+    // @ts-ignore
+    let studentName = classDP.value[i].student_name
+    let studentDP = classDP.value[i].dp
+
+    if (!studentMap.has(studentName)) {
+      studentMap.set(studentName, studentDP)
+    } else {
+      studentMap.set(studentName, studentMap.get(studentName) as number + studentDP)
+    }
   }
-}
 
-const data = {
-  labels: Array.from(studentMap.keys()),
+  classMapKey.value =  Array.from(studentMap.keys())
+  classMapValue.value = Array.from(studentMap.values())
+  update.value = true
+})
+
+const data = reactive({
+  labels: classMapKey,
   datasets: [
     {
       label: "Student's DP",
-      data: Array.from(studentMap.values()),
+      data: classMapValue,
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(255, 159, 64, 0.2)',
@@ -48,7 +66,8 @@ const data = {
       borderWidth: 1
     }
   ]
-}
+})
+
 const chartOptions = {
   responsive: true,
   aspectRatio: 3
@@ -57,6 +76,7 @@ const chartOptions = {
 
 <template>
   <Bar
+      v-if="update"
       :data="data"
       :options="chartOptions">
   </Bar>

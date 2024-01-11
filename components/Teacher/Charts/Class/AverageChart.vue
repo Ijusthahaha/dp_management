@@ -2,10 +2,12 @@
 import {Line} from 'vue-chartjs'
 import {Chart as ChartJS, registerables} from 'chart.js'
 import {useClassDPDataStore} from "~/composables/classDPDataStore";
+import {storeToRefs} from "pinia";
 
 ChartJS.register(...registerables)
 
 const store = useClassDPDataStore()
+const {classDP, isUpdatedDP} = storeToRefs(useClassDPDataStore())
 const MONTHS = [
   'January',
   'February',
@@ -22,23 +24,30 @@ const MONTHS = [
 ]
 
 const dpMap: Map<string, number> = new Map()
-for (let i = 0; i < MONTHS.length; i++) {
-  dpMap.set(MONTHS[i], 0)
-}
+let update = ref(false)
+const classMapValue = ref()
 
-for (let i = 0; i < store.classDP.length; i++) {
-  let date = new Date(+store.classDP[i].date)
-  let dp = store.classDP[i].dp
+watch(isUpdatedDP, () => {
+  for (let i = 0; i < MONTHS.length; i++) {
+    dpMap.set(MONTHS[i], 0)
+  }
 
-  dpMap.set(MONTHS[date.getMonth()], dpMap.get(MONTHS[date.getMonth()]) as number + dp)
-}
+  for (let i = 0; i < classDP.value.length; i++) {
+    let date = new Date(classDP.value[i].date)
+    let dp = classDP.value[i].dp
 
-const data = {
+    dpMap.set(MONTHS[date.getMonth()], dpMap.get(MONTHS[date.getMonth()]) as number + dp)
+  }
+  classMapValue.value = Array.from(dpMap.values())
+  update.value = true
+})
+
+const data = reactive({
   labels: MONTHS,
   datasets: [
     {
       label: "Average DP",
-      data: Array.from(dpMap.values()),
+      data: classMapValue,
       borderColor: 'rgb(255, 99, 132)',
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
       borderWidth: 1,
@@ -47,7 +56,8 @@ const data = {
       pointHoverRadius: 15
     }
   ]
-}
+})
+
 const chartOptions = {
   responsive: true,
   aspectRatio: 3
@@ -55,8 +65,11 @@ const chartOptions = {
 </script>
 
 <template>
-  <Line :data="data"
-        :options="chartOptions"></Line>
+  <Line
+      v-if="update"
+      :data="data"
+      :options="chartOptions">
+  </Line>
 </template>
 
 <style scoped>

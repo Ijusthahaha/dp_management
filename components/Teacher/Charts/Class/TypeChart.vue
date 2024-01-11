@@ -3,46 +3,41 @@ import {Pie} from "vue-chartjs";
 import {ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js'
 import {useClassDPDataStore} from "~/composables/classDPDataStore";
 import {DPType} from "~/types/DPType";
+import {storeToRefs} from "pinia";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement)
 
 const store = useClassDPDataStore()
+const {classDP, isUpdatedDP} = storeToRefs(useClassDPDataStore())
 
 const typeMap: Map<string, number> = new Map()
+let update = ref(false)
+const classMapKey = ref()
+const classMapValue = ref()
 
+watch(isUpdatedDP, () => {
+  for (let i = 0; i < classDP.value.length; i++) {
+    let dpType = Object.keys(DPType).filter(v => isNaN(Number(v)))[Object.values(DPType).indexOf(classDP.value[i].log_type)]
+    let studentDP = classDP.value[i].dp
 
-let DPTypeSet: DPType[] = []
-const DPTypeArray: string[] = []
+    if (!typeMap.has(dpType)) {
+      typeMap.set(dpType, studentDP)
+    } else {
+      typeMap.set(dpType, typeMap.get(dpType) as number + studentDP)
+    }
+  }
 
-for (let i = 0; i < store.classDP.length; i++) {
-  DPTypeSet.push(store.classDP[i].type)
-}
-
-DPTypeSet = DPTypeSet.filter((item, index) => {
-  return DPTypeSet.indexOf(item) === index
+  classMapKey.value = Array.from(typeMap.keys())
+  classMapValue.value = Array.from(typeMap.values())
+  update.value = true
 })
 
-for (let i = 0; i < DPTypeSet.length; i++) {
-  DPTypeArray.push(Object.keys(DPType)[Object.values(DPType).indexOf(DPTypeSet[i])])
-}
-
-for (let i = 0; i < store.classDP.length; i++) {
-  let dpType = Object.keys(DPType)[Object.values(DPType).indexOf(store.classDP[i].type)]
-  let studentDP = store.classDP[i].dp
-
-  if (!typeMap.has(dpType)) {
-    typeMap.set(dpType, studentDP)
-  } else {
-    typeMap.set(dpType, typeMap.get(dpType) as number + studentDP)
-  }
-}
-
-const data = {
-  labels: Array.from(typeMap.keys()),
+const data = reactive({
+  labels: classMapKey,
   datasets: [
     {
       label: "DP",
-      data: Array.from(typeMap.values()),
+      data: classMapValue,
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(255, 159, 64, 0.2)',
@@ -65,7 +60,7 @@ const data = {
       hoverOffset: 4
     }
   ]
-}
+})
 
 const chartOptions = {
   responsive: true,
@@ -75,6 +70,7 @@ const chartOptions = {
 
 <template>
   <Pie
+      v-if="update"
       :data="data"
       :options="chartOptions">
   </Pie>

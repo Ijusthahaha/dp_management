@@ -1,20 +1,29 @@
 <script lang="ts" setup>
 import {HomeFilled, User} from "@element-plus/icons-vue";
-import {Teacher, TeacherType} from "~/types/User"
+import {Student, Teacher, TeacherType} from "~/types/User"
 import {Action, FormRules, TabPaneName} from "element-plus";
 import {useStudentStore} from "~/composables/studentStore";
 import {$fetch} from "ofetch";
 import SchoolOverview from "~/components/Teacher/SchoolOverview.vue";
 import MessageBox from "~/components/Teacher/MessageBox.vue";
 import ClassOverview from "~/components/Teacher/ClassOverview.vue";
+import {DPType} from "~/types/DPType";
+import {getStudents, postLogs} from "~/utils/fetch";
+import {createStudent} from "~/utils/createUser";
+import {Ref} from "@vue/reactivity";
+import {storeToRefs} from "pinia";
+import {Form} from "~/types/Status";
 
 const store = useUserStore()
 const studentStore = useStudentStore()
-const computedStudent = studentStore.students.map(terminal => {
-  return {
-    value: `${terminal.clazz} ${terminal.name}`,
-    id: terminal.id
-  }
+const {students} = storeToRefs(useStudentStore())
+const computedStudent = computed(() => {
+  return students.value.map(terminal => {
+    return {
+      value: `${terminal.clazz} ${terminal.name}`,
+      id: terminal.id
+    }
+  })
 })
 const teacherLevel = () => {
   return (store.user as Teacher).level
@@ -28,10 +37,14 @@ const initTabs = function () {
   tabIndex = 1
   editableTabsValue.value = '1'
   forms.value.push({
-    currentStudent: '',
-    date: '',
-    detailDate: '',
+    currentStudent: {
+      name: "",
+      id: undefined
+    },
+    date: 0,
+    detailDate: 0,
     location: '',
+    type: undefined,
     reason: '',
     dp: 1
   })
@@ -58,10 +71,14 @@ const handleTabsEdit = (
       title: 'DP Dispatcher ' + newTabName,
     })
     forms.value.push({
-      currentStudent: '',
-      date: '',
-      detailDate: '',
+      currentStudent: {
+        name: "",
+        id: undefined
+      },
+      date: 0,
+      detailDate: 0,
       location: '',
+      type: undefined,
       reason: '',
       dp: 1
     })
@@ -95,11 +112,15 @@ const handleTabsEdit = (
   }
 }
 
-const forms = ref([{
-  currentStudent: '',
-  date: '',
-  detailDate: '',
+const forms: Ref<Form[]> = ref([{
+  currentStudent: {
+    name: '',
+    id: undefined
+  },
+  date: 0,
+  detailDate: 0,
   location: '',
+  type: undefined,
   reason: '',
   dp: 1
 }])
@@ -125,24 +146,31 @@ const rules = reactive<FormRules>({
   ]
 })
 const createFilter = (queryString: string) => {
-  return (student: typeof computedStudent[number]) => {
+  return (student: any) => {
     return (
         student.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
     )
   }
 }
 const querySearchStudent = function (queryString: string, callback: Function) {
-  const results = queryString
-      ? computedStudent.filter(createFilter(queryString))
-      : computedStudent
-  callback(results)
+  getStudents(queryString).then(d => {
+    let b: Student[] = []
+    for (let i = 0; i < d.data.data.length; i++) {
+      let c = d.data.data[i]
+      b.push(createStudent(c.studentId, c.studentName, c.studentClass, undefined))
+    }
+    studentStore.$patch(state => {
+      state.students = b
+    })
+    callback(computedStudent.value)
+  })
 }
 
 const confirmDialogVisible = ref(false)
 const checkForm = function () {
   let f = forms.value.at(+editableTabsValue.value - 1)
   if (f) {
-    if (f.currentStudent &&
+    if (f.currentStudent.name &&
         f.date &&
         f.detailDate &&
         f.location &&
@@ -160,22 +188,24 @@ const checkForm = function () {
 }
 
 const submitForm = function () {
-  ElMessageBox.alert('DP Dispatched!', 'Message', {
+  ElMessageBox.alert('Dispatching!', 'Message', {
     confirmButtonText: 'Close',
     callback: (action: Action) => {
-      // send ajax
+      // close the tab
+      let f = forms.value.at(+editableTabsValue.value - 1)
+      postLogs(store.jwt, f!).then(() => {
+        f!.currentStudent.name = ''
+        f!.currentStudent.id = undefined
+        f!.date = 0
+        f!.detailDate = 0
+        f!.location = ''
+        f!.type = undefined
+        f!.reason = ''
+        f!.dp = 1
+      })
     }
   })
   confirmDialogVisible.value = false
-
-  // close the tab
-  let f = forms.value.at(+editableTabsValue.value - 1)
-  f!.currentStudent = ''
-  f!.date = ''
-  f!.detailDate = ''
-  f!.location = ''
-  f!.reason = ''
-  f!.dp = 1
 }
 
 let quote: string[];
@@ -195,6 +225,14 @@ const dateFormatter = function (row: any): string {
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const day = date.getDate().toString().padStart(2, '0');
   return `${year}-${month}-${day}`
+}
+
+const DPTypes = (Object.keys(DPType) as Array<keyof DPType>).filter(v => isNaN(Number(v)))
+
+const handleSelectAutocomplete = (item: { value: string, id: number }) => {
+  let f = forms.value.at(+editableTabsValue.value - 1)!.currentStudent
+  f.name = item.value
+  f.id = item.id
 }
 </script>
 
@@ -245,15 +283,17 @@ const dateFormatter = function (row: any): string {
                 :name="item.id"
                 closable
             >
+              <!--TODO: THIS WILL CAUSE PAGE LAG-->
               <el-card shadow="always">
                 <el-form v-model="forms" status-icon>
                   <el-form-item label="Input student's name" required>
                     <el-autocomplete
-                        v-model="forms[+item.id - 1].currentStudent"
-                        :fetch-suggestions="querySearchStudent"
+                        v-model="forms[+item.id - 1].currentStudent.name"
                         :trigger-on-focus="false"
+                        :fetch-suggestions="querySearchStudent"
                         clearable
                         placeholder="Example: MRD Leo"
+                        @select="handleSelectAutocomplete"
                     />
                   </el-form-item>
                   <el-form-item label="Dispatch date" required>
@@ -263,6 +303,7 @@ const dateFormatter = function (row: any): string {
                           placeholder="Pick a date"
                           style="width: 100%"
                           type="date"
+                          value-format="x"
                       />
                     </el-col>
                     <el-col :span="1" style="text-align: center">
@@ -273,6 +314,7 @@ const dateFormatter = function (row: any): string {
                           v-model="forms[+item.id - 1].detailDate"
                           placeholder="Pick a time"
                           style="width: 100%"
+                          value-format="hh:mm:ss"
                       />
                     </el-col>
                   </el-form-item>
@@ -281,6 +323,16 @@ const dateFormatter = function (row: any): string {
                       <el-radio label="Academic"/>
                       <el-radio label="Dorm"/>
                     </el-radio-group>
+                  </el-form-item>
+                  <el-form-item label="DP Type" required>
+                    <el-select v-model="forms[+item.id- 1].type" placeholder="Select">
+                      <el-option
+                          v-for="(item, index) in DPTypes"
+                          :key="index"
+                          :label="item"
+                          :value="item"
+                      />
+                    </el-select>
                   </el-form-item>
                   <el-form-item label="Reason" required>
                     <el-input v-model="forms[+item.id - 1].reason"
@@ -313,7 +365,7 @@ const dateFormatter = function (row: any): string {
   </div>
   <el-dialog v-if="confirmDialogVisible" v-model="confirmDialogVisible" center title="Confirm" width="50%">
     <el-table :data="[forms[+editableTabsValue - 1]]" style="width: 100%">
-      <el-table-column label="Name" prop="currentStudent"></el-table-column>
+      <el-table-column label="Name" prop="currentStudent.name"></el-table-column>
       <el-table-column :formatter="dateFormatter" label="Date" prop="date"></el-table-column>
       <el-table-column label="Location" prop="location"></el-table-column>
       <el-table-column label="Reason" prop="reason"></el-table-column>

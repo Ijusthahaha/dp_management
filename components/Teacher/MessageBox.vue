@@ -1,10 +1,14 @@
 <script lang="ts" setup>
-import {DPLog, DPType} from "~/types/DPType";
+import {DPLog, DPType, MessageLog} from "~/types/DPType";
 import {useMessageStore} from "~/composables/messageStore";
 import {storeToRefs} from "pinia";
+import {fulfillAppeals, getPendingAppeals, rejectAppeals} from "~/utils/fetch";
 
 const store = useMessageStore()
 const {messages} = storeToRefs(store)
+const userStore = useUserStore()
+
+const isLoading = ref(true)
 
 let appealItem: DPLog | undefined;
 const currentIndex = ref(0)
@@ -13,7 +17,7 @@ const fulfillDialog = ref(false)
 const rejectDialog = ref(false)
 const appealReason = ref("")
 const dateFormatter = function (row: DPLog): string {
-  const date = new Date(+row.date)
+  const date = new Date(row.date)
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const day = date.getDate().toString().padStart(2, '0');
@@ -38,14 +42,18 @@ const appealRejectOperation = function (scope: any) {
 
 const submitOperation = function (type: string) {
   if (type == "fulfill") {
-    // do ajax (change the status)
-    store.deleteMessage(currentIndex.value)
-    fulfillDialog.value = false
-  } else if (type == "reject") {
-    // do ajax (change the status)
-    if (appealReason.value) {
+    // @ts-ignore
+    fulfillAppeals(userStore.jwt, appealItem!.id).then(() => {
       store.deleteMessage(currentIndex.value)
-      rejectDialog.value = false
+      fulfillDialog.value = false
+    })
+  } else if (type == "reject") {
+    if (appealReason.value) {
+      // @ts-ignore
+      rejectAppeals(userStore.jwt, appealItem!.id, appealReason.value).then(() => {
+        store.deleteMessage(currentIndex.value)
+        rejectDialog.value = false
+      })
     } else {
       ElMessage({
         type: 'error',
@@ -64,20 +72,31 @@ const tableRowClassName = function ({row, rowIndex}: { row: DPLog, rowIndex: num
   }
   return ""
 }
+
+getPendingAppeals(userStore.jwt).then((data) => {
+  store.$patch(state => {
+    let d: MessageLog[] = data.data.data
+    for (let i = 0; i < d.length; i++) {
+      d[i].date = new Date(d[i].date).toString()
+    }
+    state.messages = d
+  })
+  isLoading.value = false
+})
 </script>
 
 <template>
 
-  <el-empty v-if="messages.length === 0" description="You don't have any appeal to process."/>
-  <el-table v-else :data="messages" :default-sort="{ prop: 'date', order: 'descending' }"
+  <el-empty v-if="messages.length === 0 && isLoading === false" description="You don't have any appeal to process."/>
+  <el-table v-else v-loading="isLoading" :data="messages" :default-sort="{ prop: 'date', order: 'descending' }"
             :row-class-name="tableRowClassName">
     <el-table-column :formatter="dateFormatter" label="Date" prop="date" sortable></el-table-column>
-    <el-table-column label="Name" prop="name"></el-table-column>
-    <el-table-column label="Class" prop="clazz"></el-table-column>
-    <el-table-column :formatter="typeFormatter" label="Type" prop="type"></el-table-column>
+    <el-table-column label="Name" prop="studentName"></el-table-column>
+    <el-table-column label="Class" prop="studentClass"></el-table-column>
+    <el-table-column label="Type" prop="type"></el-table-column>
     <el-table-column label="DP" prop="dp" sortable></el-table-column>
-    <el-table-column label="Remark" prop="remark"></el-table-column>
-    <el-table-column label="Appeal Reason" prop="appeal.reason"></el-table-column>
+    <!--    <el-table-column label="Remark" prop="remark"></el-table-column>-->
+    <el-table-column label="Appeal Reason" prop="reason"></el-table-column>
 
     <el-table-column label="Operation">
       <template #default="scope">
@@ -100,7 +119,7 @@ const tableRowClassName = function ({row, rowIndex}: { row: DPLog, rowIndex: num
       <el-table-column :formatter="typeFormatter" label="Type" prop="type"></el-table-column>
       <el-table-column label="DP" prop="dp"></el-table-column>
       <el-table-column label="Remark" prop="remark"></el-table-column>
-      <el-table-column label="Appeal Reason" prop="appeal.reason"></el-table-column>
+      <el-table-column label="Appeal Reason" prop="reason"></el-table-column>
     </el-table>
 
     <!--    we don't need a reason for fulfill the appeal.-->
@@ -133,7 +152,7 @@ const tableRowClassName = function ({row, rowIndex}: { row: DPLog, rowIndex: num
       <el-table-column :formatter="typeFormatter" label="Type" prop="type"></el-table-column>
       <el-table-column label="DP" prop="dp"></el-table-column>
       <el-table-column label="Remark" prop="remark"></el-table-column>
-      <el-table-column label="Appeal Reason" prop="appeal.reason"></el-table-column>
+      <el-table-column label="Appeal Reason" prop="reason"></el-table-column>
     </el-table>
 
     <el-input
