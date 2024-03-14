@@ -3,10 +3,10 @@ import {Bar} from 'vue-chartjs'
 import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js'
 import {useSchoolDPDataStore} from "~/composables/schoolDPDataStore";
 import {storeToRefs} from "pinia";
-import {Ref} from "@vue/reactivity";
+import type {Ref} from "@vue/reactivity";
 import {getAllLogs} from "~/utils/fetch";
 import {formatGetAllLogs} from "~/utils/DPUtils";
-import {DPLog} from "~/types/DPType";
+import type {DPLog} from "~/types/DPType";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 

@@ -1,6 +1,6 @@
-import {DPLog} from "~/types/DPType";
-import {Ref} from "@vue/reactivity";
-import {ComparedLog} from "~/types/Status";
+import type {DPLog} from "~/types/DPType";
+import type {Ref} from "@vue/reactivity";
+import type {ComparedLog} from "~/types/Status";
 
 export const useDPDataStore = defineStore('dpDataStore', () => {
     const currentYear = new Date().getFullYear()

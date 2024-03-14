@@ -1,17 +1,19 @@
-import {StudentLogin, TeacherLogin} from "~/types/User";
+import type {StudentLogin, TeacherLogin} from "~/types/User";
 import http from "~/utils/axios";
-import {Form} from "~/types/Status";
+import type {Form} from "~/types/Status";
+import type {modifyStudentType, tinyStudentDataDisplay} from "~/types/dataDisplay";
+import type {MultiPartData} from "h3";
 
 export function studentLogin(student: StudentLogin) {
-    return http.post("//localhost:8080/student/login", student);
+    return http.post("/student/login", student);
 }
 
 export function teacherLogin(teacher: TeacherLogin) {
-    return http.post("//localhost:8080/teacher/login", teacher);
+    return http.post("/teacher/login", teacher);
 }
 
 export function getLogs(token: string) {
-    return http.get("//localhost:8080/log/getLogs", {
+    return http.get("/log/getLogs", {
         headers: {
             token: token
         }
@@ -19,7 +21,7 @@ export function getLogs(token: string) {
 }
 
 export function getCompareLogs(token: string) {
-    return http.get("//localhost:8080/log/getCompareLogs", {
+    return http.get("/log/getCompareLogs", {
         headers: {
             token: token
         }
@@ -27,7 +29,7 @@ export function getCompareLogs(token: string) {
 }
 
 export function createAppeals(logId: number, appealId: number, appealReason: string, token: string) {
-    return http.post("//localhost:8080/appeal/createAppeals", {
+    return http.post("/appeal/createAppeals", {
         logId,
         appealId,
         appealReason
@@ -39,7 +41,7 @@ export function createAppeals(logId: number, appealId: number, appealReason: str
 }
 
 export function getAppeals(token: string) {
-    return http.get("//localhost:8080/appeal/getAppeals", {
+    return http.get("/appeal/getAppeals", {
         headers: {
             token
         }
@@ -47,7 +49,7 @@ export function getAppeals(token: string) {
 }
 
 export function getRawLogs(token: string) {
-    return http.get("//localhost:8080/log/getRawLogs", {
+    return http.get("/log/getRawLogs", {
         headers: {
             token
         }
@@ -55,7 +57,7 @@ export function getRawLogs(token: string) {
 }
 
 export async function checkStudentLogin(token: string) {
-    return await http.get("//localhost:8080/student/checkLogin", {
+    return await http.get("/student/checkLogin", {
         headers: {
             token
         }
@@ -63,7 +65,7 @@ export async function checkStudentLogin(token: string) {
 }
 
 export async function checkTeacherLogin(token: string) {
-    return await http.get("//localhost:8080/teacher/checkLogin", {
+    return await http.get("/teacher/checkLogin", {
         headers: {
             token
         }
@@ -71,7 +73,7 @@ export async function checkTeacherLogin(token: string) {
 }
 
 export function changeStudentPassword(token: string, password: string) {
-    return http.put("//localhost:8080/student/changePassword", {
+    return http.put("/student/changePassword", {
         password
     }, {
         headers: {
@@ -80,8 +82,18 @@ export function changeStudentPassword(token: string, password: string) {
     })
 }
 
+// you can get this data without auth.
 export function getStudents(keyword: string) {
-    return http.get("//localhost:8080/student/getStudents?keyword=" + keyword)
+    return http.get("/student/getStudents?keyword=" + keyword)
+}
+
+// you can get this data without auth.
+export function getAllStudents() {
+    return http.get("/student/getAllStudents")
+}
+
+export function getAllClassStudents(keyword: string) {
+    return http.get("/student/getAllClassStudents?className=" + keyword)
 }
 
 export function postLogs(token: string, form: Form) {
@@ -92,7 +104,7 @@ export function postLogs(token: string, form: Form) {
     date.setSeconds(Number(d[2]))
     form.date = Date.parse(date.toString())
 
-    return http.post("//localhost:8080/log/postLogs", {
+    return http.post("/log/postLogs", {
         id: form.currentStudent.id,
         studentName: form.currentStudent.name,
         date: form.date,
@@ -108,7 +120,7 @@ export function postLogs(token: string, form: Form) {
 }
 
 export function getPendingAppeals(token: string) {
-    return http.get("//localhost:8080/appeal/getPendingAppeals", {
+    return http.get("/appeal/getPendingAppeals", {
         headers: {
             token
         }
@@ -116,7 +128,7 @@ export function getPendingAppeals(token: string) {
 }
 
 export function rejectAppeals(token: string, appealId: number, appealReason: string) {
-    return http.put("//localhost:8080/appeal/rejectAppeals", {
+    return http.put("/appeal/rejectAppeals", {
         appealId,
         appealReason
     }, {
@@ -127,7 +139,7 @@ export function rejectAppeals(token: string, appealId: number, appealReason: str
 }
 
 export function fulfillAppeals(token: string, appealId: number) {
-    return http.put("//localhost:8080/appeal/fulfillAppeals", {
+    return http.put("/appeal/fulfillAppeals", {
         appealId
     }, {
         headers: {
@@ -137,11 +149,65 @@ export function fulfillAppeals(token: string, appealId: number) {
 }
 
 export function getAllLogs() {
-    return http.get("//localhost:8080/log/getAllLogs")
+    return http.get("/log/getAllLogs")
 }
 
 export function getAllLogsByClass(token: string) {
-    return http.get("//localhost:8080/log/getAllLogsByClass", {
+    return http.get("/log/getAllLogsByClass", {
+        headers: {
+            token
+        }
+    })
+}
+
+export function getAllClasses() {
+    return http.get("/student/getAllClasses")
+}
+
+export function insertStudent(token: string, studentDataDisplay: tinyStudentDataDisplay) {
+    return http.put("/student/insertStudent", studentDataDisplay, {
+        headers: {
+            token
+        }
+    })
+}
+
+const adminFirstLoadFetch: string[] = [
+    "/student/getTotalStudent",
+    "/teacher/getTotalTeacher",
+    "/class/getTotalClass",
+    "/log/getTotalDp",
+    "/log/getYesterdayDp"
+]
+
+export function getAdminDashboardData() {
+    return Promise.all(adminFirstLoadFetch.map(f => http.get(f))).then(value => {
+        return value
+    })
+}
+
+export function importStudentTable(token: string, form: MultiPartData[]) {
+    const formData = new FormData()
+    formData.append(<string>form[0].name, new Blob([form[0].data], {type: form[0].type}))
+
+    return http.post("/student/uploadStudentExcel", formData, {
+        headers: {
+            token
+        }
+    })
+}
+
+export function exportStudentTable(token: string) {
+    return http.get("/student/getStudentExcel", {
+        headers: {
+            token
+        },
+        responseType: 'blob'
+    })
+}
+
+export function modifyStudent(token: string, student: modifyStudentType) {
+    return http.put("/student/modifyStudent", student, {
         headers: {
             token
         }

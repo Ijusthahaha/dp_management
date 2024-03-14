@@ -1,13 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    devtools: {enabled: true},
-    modules: ['@element-plus/nuxt', '@pinia/nuxt', '@vueuse/nuxt', '@nuxtjs/i18n',],
+    devtools: {enabled: false},
+    modules: ['@element-plus/nuxt', '@pinia/nuxt', '@vueuse/nuxt', '@nuxtjs/i18n', 'nuxt-particles'],
     pinia: {
         autoImports: [
             'defineStore',
         ],
     },
-    css: ['element-plus/theme-chalk/dark/css-vars.css', '@/assets/base.css', '@/assets/monocraft.css'],
+    css: ['element-plus/theme-chalk/dark/css-vars.css', '@/assets/base.css', '@/assets/monocraft.css', "nprogress/nprogress.css"],
     app: {
         head: {
             title: 'Student DP Management System',
@@ -21,12 +21,8 @@ export default defineNuxtConfig({
     i18n: {
         vueI18n: '@/config/i18n.config.ts'
     },
-    nitro: {
-        devProxy: {
-            "/api": {
-                target: "//localhost:8080/",
-                changeOrigin: true
-            }
-        }
+    experimental: {
+        treeshakeClientOnly: false,
+        writeEarlyHints: false,
     }
 })

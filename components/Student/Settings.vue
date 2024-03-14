@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useUserStore} from "~/composables/userStore";
-import {Student} from "~/types/User";
+import type {Student} from "~/types/User";
 import {storeToRefs} from "pinia";
 import {changeStudentPassword} from "~/utils/fetch";
 

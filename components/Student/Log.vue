@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import {AppealStatus, DPLog, DPType} from "~/types/DPType";
+import {type AppealStatus, type DPLog, DPType} from "~/types/DPType";
 import {createPendingAppeal, createRawAppeal} from "~/utils/createAppeal";
-import {Ref} from "@vue/reactivity";
+import {type Ref} from "@vue/reactivity";
 import {AppealConverter} from "~/utils/DPUtils";
 import {createAppeals, getAppeals, getRawLogs} from "~/utils/fetch";
 
@@ -185,7 +185,9 @@ const handleCurrentChange = (val: number) => {
                  @current-change="handleCurrentChange"
                  hide-on-single-page
                  :teleported="false"
-                 :total="userDP.length"/>
+                 :total="userDP.length"
+                 class="page"
+  />
 
   <el-dialog
       v-model="appealDialogVisible"
@@ -225,7 +227,7 @@ const handleCurrentChange = (val: number) => {
   width: 100%;
 }
 
-.el-pagination {
+.page {
   justify-content: center;
   transform: translateY(-50px);
 }

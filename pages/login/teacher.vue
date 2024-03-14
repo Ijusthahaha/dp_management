@@ -59,7 +59,9 @@ onMounted(() => {
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">{{ $t('login.student.login_button') }}</el-button>
-          <el-link href="/login/student" type="primary">{{ $t('login.teacher.switch') }}</el-link>
+          <NuxtLink to="/login/student">
+            <el-link type="primary">{{ $t('login.teacher.switch') }}</el-link>
+          </NuxtLink>
         </el-form-item>
       </el-form>
     </el-card>

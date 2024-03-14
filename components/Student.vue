@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import {HomeFilled, Menu, MessageBox, Setting, User} from "@element-plus/icons-vue";
-import {Student} from "~/types/User";
+import type {Student} from "~/types/User";
 import Overview from "~/components/Student/Overview.vue";
 import Log from "~/components/Student/Log.vue";
 import Settings from "~/components/Student/Settings.vue";
 import {storeToRefs} from "pinia";
 import {useDPDataStore} from "~/composables/DPDataStore";
-import {DPLog} from "~/types/DPType";
+import type {DPLog} from "~/types/DPType";
 import {getCompareLogs, getLogs} from "~/utils/fetch";
 
 let isCollapse = ref(true)

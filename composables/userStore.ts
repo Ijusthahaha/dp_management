@@ -1,6 +1,6 @@
 import {defineStore, skipHydrate} from "pinia";
-import {Ref} from "@vue/reactivity";
-import {Admin, Student, Teacher} from "~/types/User";
+import type {Ref} from "@vue/reactivity";
+import {type Admin, type Student, type Teacher} from "~/types/User";
 
 export const useUserStore = defineStore('userStore', () => {
     const JWT = useLocalStorage('JWT', '')

@@ -1,5 +1,5 @@
-import {ClassDPLog} from "~/types/DPType";
-import {Ref} from "@vue/reactivity";
+import type {ClassDPLog} from "~/types/DPType";
+import type {Ref} from "@vue/reactivity";
 
 export const useClassDPDataStore = defineStore('classDPDataStore', () => {
     // only init in teacher client

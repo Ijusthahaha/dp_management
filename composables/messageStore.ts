@@ -1,5 +1,5 @@
-import {MessageLog} from "~/types/DPType";
-import {Ref} from "@vue/reactivity";
+import type {MessageLog} from "~/types/DPType";
+import type {Ref} from "@vue/reactivity";
 
 export const useMessageStore = defineStore('messageStore', () => {
 

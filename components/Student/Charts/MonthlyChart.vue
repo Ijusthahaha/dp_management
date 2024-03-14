@@ -2,7 +2,7 @@
 import {Bar} from 'vue-chartjs'
 import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js'
 import {useDPDataStore} from "~/composables/DPDataStore";
-import {Ref} from "@vue/reactivity";
+import {type Ref} from "@vue/reactivity";
 import {storeToRefs} from "pinia";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)

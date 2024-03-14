@@ -1,5 +1,5 @@
-import {getAllLogFetchedResult} from "~/utils/DPUtils";
-import {Ref} from "@vue/reactivity";
+import type {getAllLogFetchedResult} from "~/utils/DPUtils";
+import type {Ref} from "@vue/reactivity";
 
 export const useSchoolDPDataStore = defineStore('schoolDPDataStore', () => {
     const currentYear = new Date().getFullYear()

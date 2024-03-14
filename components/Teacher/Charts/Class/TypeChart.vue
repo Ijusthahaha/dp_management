@@ -17,6 +17,8 @@ const classMapValue = ref()
 
 watch(isUpdatedDP, () => {
   for (let i = 0; i < classDP.value.length; i++) {
+
+    // @ts-ignore
     let dpType = Object.keys(DPType).filter(v => isNaN(Number(v)))[Object.values(DPType).indexOf(classDP.value[i].log_type)]
     let studentDP = classDP.value[i].dp
 

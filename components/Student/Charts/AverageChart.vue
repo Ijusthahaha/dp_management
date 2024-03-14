@@ -16,7 +16,7 @@ import {
 } from 'chart.js'
 import {useDPDataStore} from "~/composables/DPDataStore";
 import {DPType} from "~/types/DPType";
-import {Ref} from "@vue/reactivity";
+import {type Ref} from "@vue/reactivity";
 import {storeToRefs} from "pinia";
 
 ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, PolarAreaController, RadialLinearScale, PointElement, LineElement, ArcElement, Filler)
@@ -27,7 +27,9 @@ const DPTypeSet: Ref<DPType[]> = ref([])
 const DPTypeArray: Ref<string[]> = ref([])
 const DPTypeData: Ref<number[]> = ref([])
 const fetchedAverageDP: Ref<number[]> = ref([])
-const update = ref(0)
+
+const updateTheDP = ref(false)
+const updateAverageDP = ref(false)
 
 const data = reactive({
   labels: DPTypeArray,
@@ -89,7 +91,7 @@ watch(isUpdatedDP, () => {
   data.datasets[0].data = DPTypeData.value
   data.labels = DPTypeArray.value
 
-  update.value++
+  updateTheDP.value = true
 })
 
 watch(averageDP, () => {
@@ -108,13 +110,14 @@ watch(averageDP, () => {
   fetchedAverageDP.value = d
   data.datasets[1].data = d
 
-  update.value++
-}, {immediate: true})
+  updateAverageDP.value = true
+})
+
 </script>
 
 <template>
   <Radar
-      v-if="update >= 3"
+      v-if="updateTheDP && updateAverageDP"
       :data="data"
       :options="chartOptions">
   </Radar>

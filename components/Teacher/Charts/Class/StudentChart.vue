@@ -34,7 +34,7 @@ watch(isUpdatedDP, () => {
     }
   }
 
-  classMapKey.value =  Array.from(studentMap.keys())
+  classMapKey.value = Array.from(studentMap.keys())
   classMapValue.value = Array.from(studentMap.values())
   update.value = true
 })

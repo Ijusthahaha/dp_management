@@ -4,7 +4,7 @@ import {ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearS
 import {useDPDataStore} from "~/composables/DPDataStore";
 import {DPType} from "~/types/DPType";
 import {storeToRefs} from "pinia";
-import {Ref} from "@vue/reactivity";
+import {type Ref} from "@vue/reactivity";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement)
 

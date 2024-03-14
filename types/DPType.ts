@@ -1,4 +1,4 @@
-import {Student, StudentLevel} from "~/types/User";
+import type {Student, StudentLevel} from "~/types/User";
 
 export enum DPType {
     'punctuality',

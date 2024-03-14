@@ -1,6 +1,7 @@
-import {Appeal, DPLog, DPType, Location} from "~/types/DPType";
+import {type Appeal, type DPLog, DPType, Location} from "~/types/DPType";
 import {createPendingAppeal, createRawAppeal, fulfillAppeal, rejectAppeal} from "~/utils/createAppeal";
-import {StudentLevel} from "~/types/User";
+import {type StudentLevel} from "~/types/User";
+import type {studentDataDisplay, unConvertedStudentData} from "~/types/dataDisplay";
 
 export function createDP(type: string, location: string, dp: number, date: string, remark: string): DPLog {
     return {
@@ -39,7 +40,18 @@ export function ClassLevelConverter(level: number): StudentLevel {
     if (level == 0) return <StudentLevel>"MD"
     if (level == 1) return <StudentLevel>"JH"
     if (level == 2) return <StudentLevel>"SH"
-    else return <StudentLevel>"MD"
+    else return <StudentLevel>"UNDEFINED"
+}
+
+export function ClassLevelConverterForEntire(obj: unConvertedStudentData[]): studentDataDisplay[] {
+    const o: studentDataDisplay[] = []
+    for (let i = 0; i < obj.length; i++) {
+        o.push({
+            ...obj[i],
+            studentClassLevel: ClassLevelConverter(obj[i].studentClassLevel)
+        })
+    }
+    return o
 }
 
 export function formatGetAllLogs(array: getAllLogFetchedResult[]): Map<string, DPLog[]> {

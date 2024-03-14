@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {DPLog, DPType, MessageLog} from "~/types/DPType";
+import {type DPLog, DPType, type MessageLog} from "~/types/DPType";
 import {useMessageStore} from "~/composables/messageStore";
 import {storeToRefs} from "pinia";
 import {fulfillAppeals, getPendingAppeals, rejectAppeals} from "~/utils/fetch";

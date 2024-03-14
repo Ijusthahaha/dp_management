@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {HomeFilled, User} from "@element-plus/icons-vue";
-import {Student, Teacher, TeacherType} from "~/types/User"
-import {Action, FormRules, TabPaneName} from "element-plus";
+import type {Student, Teacher, TeacherType} from "~/types/User"
+import type {Action, FormRules, TabPaneName} from "element-plus";
 import {useStudentStore} from "~/composables/studentStore";
 import {$fetch} from "ofetch";
 import SchoolOverview from "~/components/Teacher/SchoolOverview.vue";
@@ -10,9 +10,15 @@ import ClassOverview from "~/components/Teacher/ClassOverview.vue";
 import {DPType} from "~/types/DPType";
 import {getStudents, postLogs} from "~/utils/fetch";
 import {createStudent} from "~/utils/createUser";
-import {Ref} from "@vue/reactivity";
+import type {Ref} from "@vue/reactivity";
 import {storeToRefs} from "pinia";
-import {Form} from "~/types/Status";
+import type {Form} from "~/types/Status";
+
+let quote: string[];
+onMounted(async () => {
+  const data = await $fetch("/teacher_quote.txt")
+  quote = data.toString().split("\r\n")
+})
 
 const store = useUserStore()
 const studentStore = useStudentStore()
@@ -208,12 +214,6 @@ const submitForm = function () {
   confirmDialogVisible.value = false
 }
 
-let quote: string[];
-onMounted(async () => {
-  const data = await $fetch("/teacher_quote.txt")
-  quote = data.toString().split("\r\n")
-})
-
 const currentQuote = ref("")
 const newQuote = function () {
   return quote[Math.floor(Math.random() * quote.length)]
@@ -283,7 +283,6 @@ const handleSelectAutocomplete = (item: { value: string, id: number }) => {
                 :name="item.id"
                 closable
             >
-              <!--TODO: THIS WILL CAUSE PAGE LAG-->
               <el-card shadow="always">
                 <el-form v-model="forms" status-icon>
                   <el-form-item label="Input student's name" required>

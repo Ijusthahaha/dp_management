@@ -1,4 +1,4 @@
-import {Status} from "~/types/Status";
+import type {Status} from "~/types/Status";
 import {createStatus} from "~/utils/createStatus"
 import {createStudent} from "~/utils/createUser";
 import {checkStudentLogin} from "~/utils/fetch";

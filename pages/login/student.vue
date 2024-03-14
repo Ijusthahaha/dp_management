@@ -22,6 +22,11 @@ const onSubmit = () => {
             message: 'Login successful.'
           })
           navigateTo('/')
+        } else if (data.data.code === 301) {
+          ElMessage({
+            type: 'error',
+            message: 'Account expired.'
+          })
         } else {
           ElMessage({
             type: 'error',
@@ -60,7 +65,9 @@ onMounted(() => {
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">{{ $t('login.student.login_button') }}</el-button>
-          <el-link href="/login/teacher" type="primary">{{ $t('login.student.switch') }}</el-link>
+          <NuxtLink to="/login/teacher">
+            <el-link type="primary">{{ $t('login.student.switch') }}</el-link>
+          </NuxtLink>
         </el-form-item>
       </el-form>
     </el-card>

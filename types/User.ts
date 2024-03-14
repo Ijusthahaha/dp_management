@@ -23,13 +23,15 @@ export interface Admin {
 export enum StudentLevel {
     "MD" = "MD",
     "JH" = "JH",
-    "SH" = "SH"
+    "SH" = "SH",
+    "UNDEFINED" = "UNDEFINED"
 }
 
 export enum TeacherType {
     "Default" = "Default",
     "CT" = "CT",
-    "Director" = 'Director'
+    "Director" = "Director",
+    "Admin" = "Admin"
 }
 
 export interface StudentLogin {

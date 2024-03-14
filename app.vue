@@ -16,7 +16,11 @@ const store = useUserStore()
 onMounted(() => {
   setLocale(store.language)
   if (store.theme == 'light') {
-    document.body.style.backgroundColor = "#F2F3F5"
+    // document.body.style.backgroundColor = "#F2F3F5"
+
+    // i dont fucking care about light mode. light = dark idc
+    document.documentElement.classList.add("dark")
+    Chart.defaults.color = "#E5EAF3"
   } else {
     document.documentElement.classList.add("dark")
     Chart.defaults.color = "#E5EAF3"

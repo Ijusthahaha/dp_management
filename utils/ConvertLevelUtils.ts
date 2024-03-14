@@ -8,7 +8,7 @@ export function teacherLevelConverter(i: number): TeacherType {
     } else if (i === 2) {
         return TeacherType.Director
     } else if (i === 3) {
-        // TODO: admin!
+        return TeacherType.Admin
     }
     return TeacherType.Default
 }

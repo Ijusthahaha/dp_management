@@ -1,4 +1,4 @@
-import {Appeal, AppealStatus} from "~/types/DPType";
+import {type Appeal, AppealStatus} from "~/types/DPType";
 
 export function createRawAppeal(): Appeal {
     return {
