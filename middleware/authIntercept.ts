@@ -2,7 +2,7 @@ import {useUserStore} from "~/composables/userStore";
 import {validateStudentJwt} from "~/utils/studentApiUtils";
 import {validateTeacherJwt} from "~/utils/teacherApiUtils";
 
-// TODO: optimise this shit
+// TODO: optimise this
 export default defineNuxtRouteMiddleware(async (to, from) => {
     if (process.server) return
 

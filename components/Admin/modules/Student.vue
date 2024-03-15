@@ -185,6 +185,7 @@ const submitModifyStudent = () => {
   modifyStudent(store.jwt, submitForm).then(d => {
     modifyStudentDialogVisible.value = false
     ElMessage.success('Done.')
+    handlePaginationChange(currentPage.value)
   }).catch(e => {
     ElMessage.error('Unexpected error occurred.')
   })
@@ -463,7 +464,6 @@ watch(currentRow, v => {
       </template>
     </el-dialog>
   </div>
-
 </template>
 
 <style scoped>

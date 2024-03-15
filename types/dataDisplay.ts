@@ -1,3 +1,5 @@
+import type {TeacherType} from "~/types/User";
+
 export interface studentDataDisplay {
     studentUuid: number,
     studentId: number,
@@ -12,9 +14,15 @@ export interface studentDataDisplay {
 }
 
 export interface teacherDataDisplay {
+    teacherUuid: number,
+    teacherId: number,
+    teacherName: string,
+    teacherClass: number,
+    teacherLevel: TeacherType
 }
 
 export type unConvertedStudentData = Omit<studentDataDisplay, "studentClassLevel"> & { studentClassLevel: number }
+export type unConvertedTeacherData = Omit<teacherDataDisplay, "teacherLevel"> & { teacherLevel: number }
 export type tinyStudentDataDisplay = Omit<studentDataDisplay, "studentUuid" | "studentId" | "appealedCount" | "isExpired" | "dp">
 
 export interface modifyStudentType {
@@ -26,24 +34,4 @@ export interface modifyStudentType {
 
     modifyStudentId: boolean,
     modifyStudentPassword: boolean
-}
-
-export function studentDataConverter(data: unConvertedStudentData[]): studentDataDisplay[] {
-    const tiny: studentDataDisplay[] = []
-    for (let i = 0; i < data.length; i++) {
-        const j = data[i]
-        tiny.push({
-            studentUuid: j.studentUuid,
-            studentId: j.studentId,
-            studentName: j.studentName,
-            studentSex: j.studentSex,
-            studentAge: j.studentAge,
-            studentClass: j.studentClass,
-            appealedCount: j.appealedCount,
-            dp: j.dp,
-            isExpired: j.isExpired,
-            studentClassLevel: ClassLevelConverter(j.studentClassLevel)
-        })
-    }
-    return tiny
 }

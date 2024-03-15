@@ -87,11 +87,6 @@ export function getStudents(keyword: string) {
     return http.get("/student/getStudents?keyword=" + keyword)
 }
 
-// you can get this data without auth.
-export function getAllStudents() {
-    return http.get("/student/getAllStudents")
-}
-
 export function getAllClassStudents(keyword: string) {
     return http.get("/student/getAllClassStudents?className=" + keyword)
 }
@@ -208,6 +203,14 @@ export function exportStudentTable(token: string) {
 
 export function modifyStudent(token: string, student: modifyStudentType) {
     return http.put("/student/modifyStudent", student, {
+        headers: {
+            token
+        }
+    })
+}
+
+export function getAllTeachers(token: string) {
+    return http.get("/teacher/getAllTeachers", {
         headers: {
             token
         }
