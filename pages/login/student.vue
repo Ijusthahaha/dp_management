@@ -2,8 +2,15 @@
 import {useUserStore} from "~/composables/userStore";
 import {validateStudentJwt} from "~/utils/studentApiUtils";
 import {studentLogin} from "~/utils/fetch";
+import {jwtDecode} from "jwt-decode";
 
 const store = useUserStore()
+try {
+  if (jwtDecode((store.jwt)).aud[0] === "teacher") {
+    navigateTo('/login/teacher')
+  }
+} catch(e) {}
+
 const form = reactive({
   name: '',
   password: ''

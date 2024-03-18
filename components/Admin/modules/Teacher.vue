@@ -40,25 +40,44 @@ const {allClasses} = storeToRefs(studentStore)
 
 let currentPage = ref(1)
 let isTableDataLoading = ref(true)
-let classStudentData: Ref<teacherDataDisplay[]> = ref([])
 const addStudentDialogVisible = ref(false)
 const modifyStudentDialogVisible = ref(false)
+const tableColumns = ref([{key: "id", dataKey: "teacherName", title: "Teacher Name"}])
 
 onMounted(() => {
-  getAllTeachers(store.jwt)
+  if (studentStore.allTeachers.length === 0) {
+    getAllTeachers(store.jwt).then(d => {
+      const data = d.data.data
+      studentStore.$patch(state => {
+        state.allTeachers = data
+      })
+
+      currentPage.value = 1
+      isTableDataLoading.value = false
+    })
+  } else {
+    isTableDataLoading.value = false
+  }
 })
 
+const handlePaginationChange = (val: number) => {
+
+}
+
+const handleCurrentChange = (val: teacherDataDisplay) => {
+  currentRow.value = val
+}
+
 const selectedAutocompleteItem = ref('')
+
 const filterTableData = computed(() => {
-      if (!selectedAutocompleteItem.value || selectedAutocompleteItem.value == '') {
-        return classStudentData.value
-      } else {
-        return classStudentData.value.filter(
-            (data) => data.studentName.toLowerCase().includes(selectedAutocompleteItem.value.toLowerCase())
-        )
-      }
-    }
-)
+  console.log(studentStore.allTeachers)
+  return studentStore.allTeachers?.filter(data => {
+
+    // TODO
+    return true
+  })
+})
 
 let addStudentForm = reactive<tinyStudentDataDisplay>({
   studentName: '',
@@ -175,15 +194,7 @@ const submitModifyStudent = () => {
 }
 
 watch(currentRow, v => {
-  if (v) {
-    let {studentUuid, studentName, studentClass, studentSex, studentAge, isExpired} = v as studentDataDisplay
-    modifyStudents.studentUuid = studentUuid
-    modifyStudents.studentName = studentName
-    modifyStudents.studentClass = studentClass
-    modifyStudents.studentSex = studentSex
-    modifyStudents.studentAge = studentAge
-    modifyStudents.isExpired = isExpired
-  }
+
 })
 </script>
 
@@ -195,124 +206,18 @@ watch(currentRow, v => {
       <el-button :icon="Download" bg text type="info" @click="exportTable">Export</el-button>
 
       <el-button v-if="currentRow" :icon="Edit" type="primary" @click="modifyStudentDialogVisible = true">Modify student
-        "{{ currentRow.studentName }}"
+        "{{ currentRow.teacherName }}"
       </el-button>
     </el-row>
-    <el-table ref="singleTableRef" v-loading="isTableDataLoading" :data="filterTableData"
-              :default-sort="{ prop: 'studentName', order: 'ascending' }" height="100%"
-              highlight-current-row
-              style="width: 100%" @current-change="handleCurrentChange">
-      <el-table-column type="expand">
-        <template #default="props">
-          <el-descriptions
-              border
-              title="Student details"
-          >
-            <el-descriptions-item>
-              <template #label>
-                <div class="cell-item">
-                  <el-icon>
-                    <Coordinate/>
-                  </el-icon>
-                  ID
-                </div>
-              </template>
-              {{ props.row.studentId }}
-            </el-descriptions-item>
-            <el-descriptions-item>
-              <template #label>
-                <div class="cell-item">
-                  <el-icon>
-                    <UserFilled/>
-                  </el-icon>
-                  Name
-                </div>
-              </template>
-              {{ props.row.studentName }}
-            </el-descriptions-item>
-            <el-descriptions-item>
-              <template #label>
-                <div class="cell-item">
-                  <el-icon>
-                    <HomeFilled/>
-                  </el-icon>
-                  Class
-                </div>
-              </template>
-              {{ props.row.studentClassLevel }}, {{ props.row.studentClass }}
-            </el-descriptions-item>
-            <el-descriptions-item>
-              <template #label>
-                <div class="cell-item">
-                  <el-icon>
-                    <Male/>
-                  </el-icon>
-                  Sex
-                </div>
-              </template>
-              {{ props.row.studentSex === "F" ? "Female" : "Male" }}
-            </el-descriptions-item>
-            <el-descriptions-item>
-              <template #label>
-                <div class="cell-item">
-                  <el-icon>
-                    <Male/>
-                  </el-icon>
-                  Age
-                </div>
-              </template>
-              {{ props.row.studentAge }}
-            </el-descriptions-item>
-            <el-descriptions-item>
-              <template #label>
-                <div class="cell-item">
-                  <el-icon>
-                    <Tickets/>
-                  </el-icon>
-                  Status
-                </div>
-              </template>
-              <el-tag v-if="props.row.isExpired === 0" type="success">Active</el-tag>
-              <el-tag v-if="props.row.isExpired === 1" type="danger">Inactive</el-tag>
-            </el-descriptions-item>
-            <el-descriptions-item>
-              <template #label>
-                <div class="cell-item">
-                  <el-icon>
-                    <Tickets/>
-                  </el-icon>
-                  DP count
-                </div>
-              </template>
-              {{ props.row.dp ? props.row.dp : 0 }}
-            </el-descriptions-item>
-            <el-descriptions-item>
-              <template #label>
-                <div class="cell-item">
-                  <el-icon>
-                    <Tickets/>
-                  </el-icon>
-                  Appealed count
-                </div>
-              </template>
-              {{ props.row.appealedCount }}
-            </el-descriptions-item>
-          </el-descriptions>
-        </template>
-      </el-table-column>
-      <el-table-column label="Class Level" prop="studentClassLevel"/>
-      <el-table-column label="Class" prop="studentClass"/>
-      <el-table-column label="Name" prop="studentName" sortable/>
-      <el-table-column align="right">
-        <template #header>
-          <el-input v-model="selectedAutocompleteItem" placeholder="Type to search in each page" size="small"/>
-        </template>
-        <template #default="scope">
-          <el-tag v-if="scope.row.isExpired === 0" type="success">Active</el-tag>
-          <el-tag v-if="scope.row.isExpired === 1" type="danger">Inactive</el-tag>
-        </template>
-      </el-table-column>
-    </el-table>
+    <el-auto-resizer>
+      <template #default="{ height, width }">
+        <el-table-v2 ref="singleTableRef" v-loading="isTableDataLoading" :data="filterTableData"
+                     :columns="tableColumns"
+                     :height="height" :width="width"
+                     style="width: 100%">
+        </el-table-v2>
+      </template>
+    </el-auto-resizer>
     <el-drawer
         ref="drawerRef"
         v-model="addStudentDialogVisible"
