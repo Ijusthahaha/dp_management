@@ -53,7 +53,7 @@ const logout = function () {
   </el-descriptions>
   <el-divider/>
 
-  <el-descriptions size="large" title="Preference" border>
+  <el-descriptions border size="large" title="Preference">
     <el-descriptions-item label="Theme">{{ store.theme }}</el-descriptions-item>
     <el-descriptions-item label="Language">{{ store.language }}</el-descriptions-item>
     <el-descriptions-item label="Font">{{ store.font ? store.font : "default" }}</el-descriptions-item>

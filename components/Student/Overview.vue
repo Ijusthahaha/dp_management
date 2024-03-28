@@ -15,7 +15,7 @@ watch(isUpdatedDP, () => {
 </script>
 
 <template>
-  <el-carousel :autoplay="false" trigger="click" v-if="!isComputedUserDPEmpty">
+  <el-carousel v-if="!isComputedUserDPEmpty" :autoplay="false" trigger="click">
     <el-carousel-item>
       <el-card shadow="hover">
         <template #header>

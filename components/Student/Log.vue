@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {type AppealStatus, type DPLog, DPType} from "~/types/DPType";
+import {AppealStatus, type DPLog, DPType} from "~/types/DPType";
 import {createPendingAppeal, createRawAppeal} from "~/utils/createAppeal";
 import {type Ref} from "@vue/reactivity";
 import {AppealConverter} from "~/utils/DPUtils";
@@ -13,9 +13,6 @@ const store = useUserStore()
 const userDPAppeal: Ref<DPLog[]> = ref([])
 
 const userDP: Ref<DPLog[]> = ref([])
-// userDP.sort((a, b) => {
-//   return +a.date - +b.date
-// }).reverse()
 
 getAppeals(store.jwt).then(data => {
   userDPAppeal.value = data.data.data
@@ -178,15 +175,16 @@ const handleCurrentChange = (val: number) => {
       </template>
     </el-table-column>
   </el-table>
-  <el-pagination background
-                 layout="prev, pager, next"
-                 :current-page="currentPage"
-                 @size-change="handleSizeChange"
-                 @current-change="handleCurrentChange"
-                 hide-on-single-page
+  <el-pagination :current-page="currentPage"
+                 :page-count="Math.ceil(userDP.length / pageSize)"
                  :teleported="false"
                  :total="userDP.length"
+                 background
                  class="page"
+                 hide-on-single-page
+                 layout="prev, pager, next"
+                 @size-change="handleSizeChange"
+                 @current-change="handleCurrentChange"
   />
 
   <el-dialog

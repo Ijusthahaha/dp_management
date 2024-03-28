@@ -1,11 +1,11 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 </script>
 
 <template>
   <div class="container">
     <div class="containerThatFloatsLeft">
-      <img id="imImgId" src="/favicon.svg" alt="favicon"/>
+      <img id="imImgId" alt="favicon" src="/favicon.svg"/>
       <div class="holyTitle" style="font-size: var(--el-font-size-extra-large)">
         School DP Management System
       </div>

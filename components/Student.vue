@@ -9,8 +9,6 @@ import {useDPDataStore} from "~/composables/DPDataStore";
 import type {DPLog} from "~/types/DPType";
 import {getCompareLogs, getLogs} from "~/utils/fetch";
 
-let isCollapse = ref(true)
-
 const store = useUserStore()
 const dpStore = useDPDataStore()
 

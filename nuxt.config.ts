@@ -23,6 +23,6 @@ export default defineNuxtConfig({
     },
     experimental: {
         treeshakeClientOnly: false,
-        writeEarlyHints: false,
-    }
+        writeEarlyHints: false
+    },
 })

@@ -1,7 +1,11 @@
 import type {StudentLogin, TeacherLogin} from "~/types/User";
 import http from "~/utils/axios";
 import type {Form} from "~/types/Status";
-import type {modifyStudentType, tinyStudentDataDisplay} from "~/types/dataDisplay";
+import type {
+    modifyStudentType,
+    numberTeacherLevelTeacherDataDisplay,
+    tinyStudentDataDisplay
+} from "~/types/dataDisplay";
 import type {MultiPartData} from "h3";
 
 export function studentLogin(student: StudentLogin) {
@@ -30,9 +34,7 @@ export function getCompareLogs(token: string) {
 
 export function createAppeals(logId: number, appealId: number, appealReason: string, token: string) {
     return http.post("/appeal/createAppeals", {
-        logId,
-        appealId,
-        appealReason
+        logId, appealId, appealReason
     }, {
         headers: {
             token
@@ -124,8 +126,7 @@ export function getPendingAppeals(token: string) {
 
 export function rejectAppeals(token: string, appealId: number, appealReason: string) {
     return http.put("/appeal/rejectAppeals", {
-        appealId,
-        appealReason
+        appealId, appealReason
     }, {
         headers: {
             token
@@ -167,13 +168,15 @@ export function insertStudent(token: string, studentDataDisplay: tinyStudentData
     })
 }
 
-const adminFirstLoadFetch: string[] = [
-    "/student/getTotalStudent",
-    "/teacher/getTotalTeacher",
-    "/class/getTotalClass",
-    "/log/getTotalDp",
-    "/log/getYesterdayDp"
-]
+export function insertTeacher(token: string, teacherDataDisplay: numberTeacherLevelTeacherDataDisplay) {
+    return http.put("/teacher/insertTeacher", teacherDataDisplay, {
+        headers: {
+            token
+        }
+    })
+}
+
+const adminFirstLoadFetch: string[] = ["/student/getTotalStudent", "/teacher/getTotalTeacher", "/class/getTotalClass", "/log/getTotalDp", "/log/getYesterdayDp"]
 
 export function getAdminDashboardData() {
     return Promise.all(adminFirstLoadFetch.map(f => http.get(f))).then(value => {
@@ -192,12 +195,30 @@ export function importStudentTable(token: string, form: MultiPartData[]) {
     })
 }
 
+export function importTeacherTable(token: string, form: MultiPartData[]) {
+    const formData = new FormData()
+    formData.append(<string>form[0].name, new Blob([form[0].data], {type: form[0].type}))
+
+    return http.post("/teacher/uploadTeacherExcel", formData, {
+        headers: {
+            token
+        }
+    })
+}
+
 export function exportStudentTable(token: string) {
     return http.get("/student/getStudentExcel", {
         headers: {
             token
-        },
-        responseType: 'blob'
+        }, responseType: 'blob'
+    })
+}
+
+export function exportTeacherTable(token: string) {
+    return http.get("/teacher/getTeacherExcel", {
+        headers: {
+            token
+        }, responseType: "blob"
     })
 }
 
@@ -205,6 +226,22 @@ export function modifyStudent(token: string, student: modifyStudentType) {
     return http.put("/student/modifyStudent", student, {
         headers: {
             token
+        }
+    })
+}
+
+export function modifyTeacher(token: string, teacher: numberTeacherLevelTeacherDataDisplay) {
+    return http.put("/teacher/modifyTeacher", teacher, {
+        headers: {
+            token
+        }
+    })
+}
+
+export function deleteTeacher(token: string, uuid: number) {
+    return http.delete("/teacher/deleteTeacher", {
+        headers: {
+            token, id: uuid
         }
     })
 }

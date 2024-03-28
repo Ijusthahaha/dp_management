@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {HomeFilled, User} from "@element-plus/icons-vue";
-import type {Student, Teacher, TeacherType} from "~/types/User"
+import type {Student, Teacher} from "~/types/User"
+import {TeacherType} from "~/types/User"
 import type {Action, FormRules, TabPaneName} from "element-plus";
 import {useStudentStore} from "~/composables/studentStore";
 import {$fetch} from "ofetch";
@@ -288,8 +289,8 @@ const handleSelectAutocomplete = (item: { value: string, id: number }) => {
                   <el-form-item label="Input student's name" required>
                     <el-autocomplete
                         v-model="forms[+item.id - 1].currentStudent.name"
-                        :trigger-on-focus="false"
                         :fetch-suggestions="querySearchStudent"
+                        :trigger-on-focus="false"
                         clearable
                         placeholder="Example: MRD Leo"
                         @select="handleSelectAutocomplete"

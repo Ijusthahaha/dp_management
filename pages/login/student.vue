@@ -3,13 +3,19 @@ import {useUserStore} from "~/composables/userStore";
 import {validateStudentJwt} from "~/utils/studentApiUtils";
 import {studentLogin} from "~/utils/fetch";
 import {jwtDecode} from "jwt-decode";
+import {storeToRefs} from "pinia";
 
 const store = useUserStore()
-try {
-  if (jwtDecode((store.jwt)).aud[0] === "teacher") {
-    navigateTo('/login/teacher')
+
+if (store.from !== "student") {
+  try {
+    if (jwtDecode(store.jwt).aud[0] === "teacher") {
+      storeToRefs(store).from.value = "student"
+      navigateTo('/login/teacher')
+    }
+  } catch (e) {
   }
-} catch(e) {}
+}
 
 const form = reactive({
   name: '',

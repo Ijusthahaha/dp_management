@@ -24,7 +24,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         } else {
             return navigateTo('/login/student')
         }
-    } catch(e) {
+    } catch (e) {
         return navigateTo('/login/student')
     }
 })

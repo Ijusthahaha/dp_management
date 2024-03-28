@@ -4,6 +4,7 @@ import {type Admin, type Student, type Teacher} from "~/types/User";
 
 export const useUserStore = defineStore('userStore', () => {
     const JWT = useLocalStorage('JWT', '')
+    const from = ref('')
     const User: Ref<Student | Teacher | Admin | undefined> = ref(undefined)
     const Theme = useLocalStorage('theme', 'dark')
     const currentItem = ref(0)
@@ -12,6 +13,7 @@ export const useUserStore = defineStore('userStore', () => {
 
     return {
         user: User,
+        from: from,
         jwt: skipHydrate(JWT),
         theme: skipHydrate(Theme),
         font: skipHydrate(font),

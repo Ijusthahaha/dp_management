@@ -1,7 +1,12 @@
 import {type Appeal, type DPLog, DPType, Location} from "~/types/DPType";
 import {createPendingAppeal, createRawAppeal, fulfillAppeal, rejectAppeal} from "~/utils/createAppeal";
-import {type StudentLevel} from "~/types/User";
-import type {studentDataDisplay, unConvertedStudentData} from "~/types/dataDisplay";
+import {type StudentLevel, TeacherType} from "~/types/User";
+import type {
+    studentDataDisplay,
+    teacherDataDisplay,
+    unConvertedStudentData,
+    unConvertedTeacherData
+} from "~/types/dataDisplay";
 
 export function createDP(type: string, location: string, dp: number, date: string, remark: string): DPLog {
     return {
@@ -43,12 +48,39 @@ export function ClassLevelConverter(level: number): StudentLevel {
     else return <StudentLevel>"UNDEFINED"
 }
 
+export function TeacherLevelConverter(level: number): TeacherType {
+    if (level == 0) return <TeacherType>"Default"
+    else if (level == 1) return <TeacherType>"CT"
+    else if (level == 2) return <TeacherType>"Director"
+    else if (level == 3) return <TeacherType>"Admin"
+    else return <TeacherType>"Default"
+}
+
+export function TeacherLevelToNumberConverter(level: TeacherType) {
+    if (level === TeacherType.Default) return 0
+    else if (level === TeacherType.CT) return 1
+    else if (level === TeacherType.Director) return 2
+    else if (level === TeacherType.Admin) return 3
+    else return 0
+}
+
 export function ClassLevelConverterForEntire(obj: unConvertedStudentData[]): studentDataDisplay[] {
     const o: studentDataDisplay[] = []
     for (let i = 0; i < obj.length; i++) {
         o.push({
             ...obj[i],
             studentClassLevel: ClassLevelConverter(obj[i].studentClassLevel)
+        })
+    }
+    return o
+}
+
+export function TeacherLevelConverterForEntire(obj: unConvertedTeacherData[]): teacherDataDisplay[] {
+    const o: teacherDataDisplay[] = []
+    for (let i = 0; i < obj.length; i++) {
+        o.push({
+            ...obj[i],
+            teacherLevel: TeacherLevelConverter(obj[i].teacherLevel)
         })
     }
     return o

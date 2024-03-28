@@ -19,7 +19,6 @@ import {ClassLevelConverterForEntire} from "~/utils/DPUtils";
 import {storeToRefs} from "pinia";
 import type {UploadRawFile} from "element-plus";
 
-const singleTableRef = ref<InstanceType<typeof ElTable>>()
 const currentRow: Ref<studentDataDisplay | undefined> = ref()
 
 const store = useUserStore()
@@ -33,23 +32,38 @@ const addStudentDialogVisible = ref(false)
 const modifyStudentDialogVisible = ref(false)
 
 onMounted(() => {
-  getAllClasses().then(d => {
-    let data = d.data.data
+  if (studentStore.allClasses && studentStore.allStudents) {
+    isTableDataLoading.value = false
+    return
+  }
 
-    // students may not have a class.
-    data.push("")
+  if (studentStore.allStudents === undefined) {
+    if (studentStore.allClasses === undefined) {
+      getAllClasses().then(d => {
+        let data = d.data.data
 
-    studentStore.$patch(state => {
-      state.allClasses = data
-    })
+        // students may not have a class.
+        data.push("")
 
-    getAllClassStudents(data[0]).then(d => {
-      classStudentData.value = ClassLevelConverterForEntire(d.data.data)
-      currentPage.value = 1
-      isTableDataLoading.value = false
-    })
-  })
+        studentStore.$patch(state => {
+          state.allClasses = data
+        })
+
+        getAllClassStudents(data[0]).then(d => {
+          classStudentData.value = ClassLevelConverterForEntire(d.data.data)
+        })
+      })
+    } else {
+      getAllClassStudents((studentStore.allClasses as string[])[0]).then(d => {
+        classStudentData.value = ClassLevelConverterForEntire(d.data.data)
+      })
+    }
+    currentPage.value = 1
+    isTableDataLoading.value = false
+  }
 })
+
+const getClassList = () => allClasses.value?.filter(data => data !== "")
 
 const handlePaginationChange = (val: number) => {
   isTableDataLoading.value = true
@@ -135,7 +149,6 @@ const beforeUploadTable = (file: UploadRawFile) => {
     ElMessage.error('File type not allowed.')
     return false
   }
-  console.log(file.size, file.size / 1024 / 1024)
   if (file.size / 1024 / 1024 > 1) {
     ElMessage.error('File size too large.')
     return false
@@ -192,15 +205,14 @@ const submitModifyStudent = () => {
 }
 
 watch(currentRow, v => {
-  if (v) {
-    let {studentUuid, studentName, studentClass, studentSex, studentAge, isExpired} = v as studentDataDisplay
-    modifyStudents.studentUuid = studentUuid
-    modifyStudents.studentName = studentName
-    modifyStudents.studentClass = studentClass
-    modifyStudents.studentSex = studentSex
-    modifyStudents.studentAge = studentAge
-    modifyStudents.isExpired = isExpired
-  }
+  if (!v) return
+  let {studentUuid, studentName, studentClass, studentSex, studentAge, isExpired} = v as studentDataDisplay
+  modifyStudents.studentUuid = studentUuid
+  modifyStudents.studentName = studentName
+  modifyStudents.studentClass = studentClass
+  modifyStudents.studentSex = studentSex
+  modifyStudents.studentAge = studentAge
+  modifyStudents.isExpired = isExpired
 })
 </script>
 
@@ -215,7 +227,7 @@ watch(currentRow, v => {
         "{{ currentRow.studentName }}"
       </el-button>
     </el-row>
-    <el-table ref="singleTableRef" v-loading="isTableDataLoading" :data="filterTableData"
+    <el-table v-loading="isTableDataLoading" :data="filterTableData"
               :default-sort="{ prop: 'studentName', order: 'ascending' }" height="100%"
               highlight-current-row
               style="width: 100%" @current-change="handleCurrentChange">
@@ -355,9 +367,9 @@ watch(currentRow, v => {
           <el-form-item label="Student Class" required>
             <el-select v-model="addStudentForm.studentClass" placeholder="Select">
               <el-option
-                  v-for="(item, i) in allClasses"
+                  v-for="(item, i) in getClassList()"
                   :key="i"
-                  :lable="item"
+                  :label="item"
                   :value="item"
               />
             </el-select>
@@ -426,9 +438,9 @@ watch(currentRow, v => {
         <el-form-item label="Student Class" required>
           <el-select v-model="modifyStudents.studentClass" placeholder="Select">
             <el-option
-                v-for="(item, i) in allClasses"
+                v-for="(item, i) in getClassList()"
                 :key="i"
-                :lable="item"
+                :label="item"
                 :value="item"
             />
           </el-select>
