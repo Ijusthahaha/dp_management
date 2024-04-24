@@ -12,8 +12,6 @@ export const useDPDataStore = defineStore('dpDataStore', () => {
     const averageDP: Ref<ComparedLog[]> = ref([])
 
     // remove the outdated DP.
-
-    // const userDP: Ref<DPLog[]> = ref([])
     const computedUserDP: Ref<DPLog[]> = ref([])
     const isUpdatedDP = ref(false)
     const shouldBeUpdate = ref(0)
@@ -44,7 +42,6 @@ export const useDPDataStore = defineStore('dpDataStore', () => {
 
     return {
         rawUserDP,
-        // userDP,
         computedUserDP,
         averageDP,
         getTotalDP,

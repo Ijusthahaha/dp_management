@@ -4,9 +4,10 @@ import type {Form} from "~/types/Status";
 import type {
     modifyStudentType,
     numberTeacherLevelTeacherDataDisplay,
+    tinyClassDataDisplay,
     tinyStudentDataDisplay
 } from "~/types/dataDisplay";
-import type {MultiPartData} from "h3";
+import type {UploadRequestOptions} from "element-plus";
 
 export function studentLogin(student: StudentLogin) {
     return http.post("/student/login", student);
@@ -156,8 +157,19 @@ export function getAllLogsByClass(token: string) {
     })
 }
 
+/**
+ * @deprecated use getAllClassesV2
+ */
 export function getAllClasses() {
     return http.get("/student/getAllClasses")
+}
+
+export function getAllClassesV2() {
+    return http.get("/class/getAllClasses")
+}
+
+export function getClassData(classId: number) {
+    return http.get("/class/getClassData?classId=" + classId)
 }
 
 export function insertStudent(token: string, studentDataDisplay: tinyStudentDataDisplay) {
@@ -184,9 +196,9 @@ export function getAdminDashboardData() {
     })
 }
 
-export function importStudentTable(token: string, form: MultiPartData[]) {
+export function importStudentTable(token: string, form: UploadRequestOptions) {
     const formData = new FormData()
-    formData.append(<string>form[0].name, new Blob([form[0].data], {type: form[0].type}))
+    formData.append(form.filename, form.file)
 
     return http.post("/student/uploadStudentExcel", formData, {
         headers: {
@@ -195,13 +207,25 @@ export function importStudentTable(token: string, form: MultiPartData[]) {
     })
 }
 
-export function importTeacherTable(token: string, form: MultiPartData[]) {
+export function importTeacherTable(token: string, form: UploadRequestOptions) {
     const formData = new FormData()
-    formData.append(<string>form[0].name, new Blob([form[0].data], {type: form[0].type}))
+    formData.append(form.filename, form.file)
 
     return http.post("/teacher/uploadTeacherExcel", formData, {
         headers: {
             token
+        }
+    })
+}
+
+export function importClassTable(token: string, form: UploadRequestOptions, className: string) {
+    const formData = new FormData()
+    formData.append(form.filename, form.file)
+
+    return http.post("/class/uploadClassExcel", formData, {
+        headers: {
+            token,
+            className
         }
     })
 }
@@ -219,6 +243,14 @@ export function exportTeacherTable(token: string) {
         headers: {
             token
         }, responseType: "blob"
+    })
+}
+
+export function exportClassTable(token: string) {
+    return http.get("/class/getClassExcel", {
+        headers: {
+            token
+        }, responseType: 'blob'
     })
 }
 
@@ -248,6 +280,38 @@ export function deleteTeacher(token: string, uuid: number) {
 
 export function getAllTeachers(token: string) {
     return http.get("/teacher/getAllTeachers", {
+        headers: {
+            token
+        }
+    })
+}
+
+export function createClass(token: string, c: tinyClassDataDisplay) {
+    return http.put("/class/createClass", c, {
+        headers: {
+            token
+        }
+    })
+}
+
+export function deleteClass(token: string, classId: number) {
+    return http.delete("/class/deleteClass", {
+        headers: {
+            token, classId
+        }
+    })
+}
+
+export function getTopDpStudents(token: string) {
+    return http.get("/student/getTopDpStudents", {
+        headers: {
+            token
+        }
+    })
+}
+
+export function getTopDpTeachers(token: string) {
+    return http.get("/teacher/getTopDpTeachers", {
         headers: {
             token
         }

@@ -3,17 +3,6 @@ import type {Ref} from "@vue/reactivity";
 
 export const useSchoolDPDataStore = defineStore('schoolDPDataStore', () => {
     const currentYear = new Date().getFullYear()
-
-    /*
-    {
-            clazz: "MRD",
-            level: StudentLevel.MD,
-            dpLog: [
-                {type: DPType.pornography, dp: 12, date: '1682946729000', name: "Leo", location: Location.academic}
-            ]
-        },
-        {...}
-     */
     const isUpdatedDP = ref(false)
 
     let schoolDP: Ref<getAllLogFetchedResult[]> = ref([])

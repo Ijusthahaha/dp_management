@@ -1,7 +1,19 @@
 <script lang="ts" setup>
-import {exportStudentTable, getAllClasses, getAllClassStudents, insertStudent, modifyStudent} from "~/utils/fetch";
+import {
+  exportStudentTable,
+  getAllClassesV2,
+  getAllClassStudents,
+  importStudentTable,
+  insertStudent,
+  modifyStudent
+} from "~/utils/fetch";
 import {ElTable} from "#components";
-import {type modifyStudentType, type studentDataDisplay, type tinyStudentDataDisplay} from "~/types/dataDisplay";
+import {
+  type classDataDisplay,
+  type modifyStudentType,
+  type studentDataDisplay,
+  type tinyStudentDataDisplay
+} from "~/types/dataDisplay";
 import {
   Coordinate,
   Download,
@@ -17,7 +29,8 @@ import {useStudentStore} from "~/composables/studentStore";
 import type {Ref} from "@vue/reactivity";
 import {ClassLevelConverterForEntire} from "~/utils/DPUtils";
 import {storeToRefs} from "pinia";
-import type {UploadRawFile} from "element-plus";
+import type {UploadRequestOptions} from "element-plus";
+import {createDownloadLink} from "~/utils/tableUtils";
 
 const currentRow: Ref<studentDataDisplay | undefined> = ref()
 
@@ -39,22 +52,22 @@ onMounted(() => {
 
   if (studentStore.allStudents === undefined) {
     if (studentStore.allClasses === undefined) {
-      getAllClasses().then(d => {
-        let data = d.data.data
+      getAllClassesV2().then(d => {
+        let data: classDataDisplay[] = d.data.data
 
         // students may not have a class.
-        data.push("")
+        data.push({classId: -1, classLevel: -1, className: ""})
 
         studentStore.$patch(state => {
           state.allClasses = data
         })
 
-        getAllClassStudents(data[0]).then(d => {
+        getAllClassStudents(data[0].className).then(d => {
           classStudentData.value = ClassLevelConverterForEntire(d.data.data)
         })
       })
     } else {
-      getAllClassStudents((studentStore.allClasses as string[])[0]).then(d => {
+      getAllClassStudents((studentStore.allClasses as classDataDisplay[])[0].className).then(d => {
         classStudentData.value = ClassLevelConverterForEntire(d.data.data)
       })
     }
@@ -63,12 +76,12 @@ onMounted(() => {
   }
 })
 
-const getClassList = () => allClasses.value?.filter(data => data !== "")
+const getClassList = () => allClasses.value?.filter(data => data.classId !== -1)
 
 const handlePaginationChange = (val: number) => {
   isTableDataLoading.value = true
-  const currentClass = ((studentStore.allClasses) as string[])[val - 1]
-  getAllClassStudents(currentClass).then(d => {
+  const currentClass = ((studentStore.allClasses) as classDataDisplay[])[val - 1]
+  getAllClassStudents(currentClass.className).then(d => {
     classStudentData.value = ClassLevelConverterForEntire(d.data.data)
     currentPage.value = val
     isTableDataLoading.value = false
@@ -128,34 +141,6 @@ const toggleAddStudentForm = () => {
   }
 }
 
-const exportTable = () => {
-  exportStudentTable(store.jwt).then(res => {
-    const url = window.URL.createObjectURL(new Blob([res.data]))
-    const link = document.createElement('a')
-    link.href = url
-    link.setAttribute('download', "Student Excel.xlsx")
-    document.body.appendChild(link)
-    link.click()
-
-    ElMessage.success('Ready.')
-  }).catch(e => {
-    ElMessage.error('Unexpected error occurred.')
-  })
-}
-
-const beforeUploadTable = (file: UploadRawFile) => {
-  if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" &&
-      file.type !== "application/vnd.ms-excel") {
-    ElMessage.error('File type not allowed.')
-    return false
-  }
-  if (file.size / 1024 / 1024 > 1) {
-    ElMessage.error('File size too large.')
-    return false
-  }
-  return true
-}
-
 const importDialogVisible = ref(false)
 const upload: Ref<{ clearFiles: Function } | null> = ref(null)
 const onUploadTableSuccess = () => {
@@ -167,6 +152,21 @@ const onUploadTableSuccess = () => {
 }
 const onUploadTableError = () => {
   ElMessage.error('Unexpected error occurred.')
+}
+
+const uploadStudentExcel = (param: UploadRequestOptions) => {
+  importStudentTable(store.jwt, param).then(() => {
+    onUploadTableSuccess()
+  })
+}
+
+const exportTable = (fileName: string) => {
+  exportStudentTable(store.jwt).then(res => {
+    createDownloadLink(res, fileName)
+    ElMessage.success('Ready.')
+  }).catch(e => {
+    ElMessage.error('Unexpected error occurred.')
+  })
 }
 
 const modifyStudents = reactive({
@@ -221,7 +221,7 @@ watch(currentRow, v => {
     <el-row style="margin: 8px 0 8px 0">
       <el-button plain type="primary" @click="addStudentDialogVisible = true">Add Students</el-button>
       <el-button :icon="Upload" bg text type="info" @click="importDialogVisible = true">Import</el-button>
-      <el-button :icon="Download" bg text type="info" @click="exportTable">Export</el-button>
+      <el-button :icon="Download" bg text type="info" @click="exportTable('Student Excel.xlsx')">Export</el-button>
 
       <el-button v-if="currentRow" :icon="Edit" type="primary" @click="modifyStudentDialogVisible = true">Modify student
         "{{ currentRow.studentName }}"
@@ -369,8 +369,8 @@ watch(currentRow, v => {
               <el-option
                   v-for="(item, i) in getClassList()"
                   :key="i"
-                  :label="item"
-                  :value="item"
+                  :label="item.className"
+                  :value="item.className"
               />
             </el-select>
           </el-form-item>
@@ -403,12 +403,13 @@ watch(currentRow, v => {
       <el-upload ref="upload"
                  :before-upload="beforeUploadTable"
                  :headers="{token: store.jwt}"
+                 :http-request="uploadStudentExcel"
                  :limit="1"
                  :on-error="onUploadTableError"
                  :on-success="onUploadTableSuccess"
                  :show-file-list="false"
                  accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                 action="/api/uploadStudentExcel"
+                 action=""
                  drag>
         <el-icon class="el-icon--upload">
           <UploadFilled/>
@@ -418,7 +419,7 @@ watch(currentRow, v => {
         </div>
         <template #tip>
           <div class="el-upload__tip">
-            <el-link href="/Student Excel Template.xlsx" type="primary">Click here</el-link>
+            <el-link href="/excels/Student Excel Template.xlsx" type="primary">Click here</el-link>
             to download template.
           </div>
         </template>
@@ -440,8 +441,8 @@ watch(currentRow, v => {
             <el-option
                 v-for="(item, i) in getClassList()"
                 :key="i"
-                :label="item"
-                :value="item"
+                :label="item.className"
+                :value="item.className"
             />
           </el-select>
         </el-form-item>

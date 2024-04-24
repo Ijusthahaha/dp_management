@@ -21,10 +21,17 @@ export interface teacherDataDisplay {
     teacherLevel: TeacherType
 }
 
+export interface classDataDisplay {
+    classId: number,
+    className: string,
+    classLevel: number
+}
+
 export type unConvertedStudentData = Omit<studentDataDisplay, "studentClassLevel"> & { studentClassLevel: number }
 export type unConvertedTeacherData = Omit<teacherDataDisplay, "teacherLevel"> & { teacherLevel: number }
 export type tinyStudentDataDisplay = Omit<studentDataDisplay, "studentUuid" | "studentId" | "appealedCount" | "isExpired" | "dp">
 export type tinyTeacherDataDisplay = Omit<teacherDataDisplay, "teacherId">
+export type tinyClassDataDisplay = Omit<classDataDisplay, "classId" | "classLevel" & { classLevel: number }>
 export type numberTeacherLevelTeacherDataDisplay = Omit<modifyTeacherType, "teacherLevel"> & { teacherLevel: number }
 
 export interface modifyStudentType {

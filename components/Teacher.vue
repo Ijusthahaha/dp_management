@@ -17,7 +17,7 @@ import type {Form} from "~/types/Status";
 
 let quote: string[];
 onMounted(async () => {
-  const data = await $fetch("/teacher_quote.txt")
+  const data = await $fetch("/quotes/teacher_quote.txt")
   quote = data.toString().split("\r\n")
 })
 

@@ -4,6 +4,7 @@ import {useAdminDataStore} from "~/composables/adminDataStore";
 import {
   AdminModulesClass,
   AdminModulesDashboard,
+  AdminModulesLeaderboard,
   AdminModulesLog,
   AdminModulesSetting,
   AdminModulesStudent,
@@ -25,6 +26,8 @@ watch(activeRouteIndex, (newValue) => {
     currentRouteIndex.value = AdminModulesClass
   } else if (newValue === "Log") {
     currentRouteIndex.value = AdminModulesLog
+  } else if (newValue === "Leaderboard") {
+    currentRouteIndex.value = AdminModulesLeaderboard
   } else if (newValue === "Setting") {
     currentRouteIndex.value = AdminModulesSetting
   }

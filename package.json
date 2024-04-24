@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
-    "@element-plus/nuxt": "^1.0.6",
+    "@element-plus/nuxt": "1.0.8",
     "@nuxt/devtools": "latest",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/composition-api": "^0.33.1",
@@ -26,11 +26,12 @@
     "@vueuse/nuxt": "^10.4.1",
     "axios": "^1.6.2",
     "chart.js": "^4.4.0",
-    "element-plus": "^2.3.14",
+    "element-plus": "2.7.0",
     "jwt-decode": "^4.0.0",
     "nprogress": "^0.2.0",
     "nuxt": "^3.10.3",
     "pinia": "^2.1.6",
+    "pixi.js": "^8.1.0",
     "vue-chartjs": "^5.2.0"
   }
 }
