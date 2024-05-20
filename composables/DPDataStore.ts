@@ -1,6 +1,7 @@
 import type {DPLog} from "~/types/DPType";
 import type {Ref} from "@vue/reactivity";
 import type {ComparedLog} from "~/types/Status";
+import {AppealStatus} from "~/types/DPType";
 
 export const useDPDataStore = defineStore('dpDataStore', () => {
     const currentYear = new Date().getFullYear()
@@ -25,7 +26,6 @@ export const useDPDataStore = defineStore('dpDataStore', () => {
                 //     computedUserDP.value.push(newValue[i])
                 // }
                 d.push(newValue[i])
-                // userDP.value.push(newValue[i])
             }
         }
         computedUserDP.value = d
@@ -35,7 +35,9 @@ export const useDPDataStore = defineStore('dpDataStore', () => {
     const getTotalDP = computed(() => {
         let total = 0
         computedUserDP.value.forEach(v => {
-            total = total + v.dp
+            if (v.appeal?.status !== AppealStatus.FULFILLED) {
+                total = total + v.dp
+            }
         })
         return total
     })

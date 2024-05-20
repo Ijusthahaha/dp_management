@@ -27,7 +27,7 @@ watch(shouldBeUpdate, () => {
     let res: DPLog[] = []
     for (let i = 0; i < d.data.data.length; i++) {
       let t = d.data.data[i]
-      res.push(createDP(t.logType, t.logLocation, t.dp, t.date, t.remark))
+      res.push(createDP(t.logType, t.logLocation, t.dp, t.date, t.remark, t.appeal))
     }
     dpStore.$patch(state => {
       state.rawUserDP = res

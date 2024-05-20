@@ -50,17 +50,17 @@ const onSubmit = () => {
   )
 }
 
-onMounted(() => {
-  validateStudentJwt(store.jwt).then(async data => {
-    if (data.status === 200) {
-      ElMessage({
-        type: 'success',
-        message: 'Login successful.'
-      })
-      await navigateTo('/')
-    }
-  })
-})
+// onMounted(() => {
+//   validateStudentJwt(store.jwt).then(async data => {
+//     if (data.status === 200) {
+//       ElMessage({
+//         type: 'success',
+//         message: 'Login successful.'
+//       })
+//       await navigateTo('/')
+//     }
+//   })
+// })
 </script>
 
 <template>

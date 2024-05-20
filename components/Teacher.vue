@@ -190,7 +190,7 @@ const checkForm = function () {
   }
   ElMessage({
     type: 'error',
-    message: 'All columns are required.'
+    message: 'All columns are required or invalid.'
   })
 }
 
@@ -345,7 +345,8 @@ const handleSelectAutocomplete = (item: { value: string, id: number }) => {
                   </el-form-item>
                   <el-form-item label="DP: " required>
                     <el-col :span="4">
-                      <el-input v-model="forms[+item.id - 1].dp" :max="12" :min="1"
+                      <el-input v-model="forms[+item.id - 1].dp" :max="12" :min="1" :step="1"
+                                oninput="value=value.replace(/[^1-9]/g)"
                                 placeholder="Dispatch DP count" type="number"></el-input>
                     </el-col>
                     <el-col :span="1"></el-col>

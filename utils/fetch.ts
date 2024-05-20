@@ -7,7 +7,7 @@ import type {
     tinyClassDataDisplay,
     tinyStudentDataDisplay
 } from "~/types/dataDisplay";
-import type {UploadRequestOptions} from "element-plus";
+import type {UploadRequestHandler, UploadRequestOptions} from "element-plus";
 
 export function studentLogin(student: StudentLogin) {
     return http.post("/student/login", student);
@@ -312,6 +312,73 @@ export function getTopDpStudents(token: string) {
 
 export function getTopDpTeachers(token: string) {
     return http.get("/teacher/getTopDpTeachers", {
+        headers: {
+            token
+        }
+    })
+}
+
+export function getOperation(token: string, query: string) {
+    return http.get(`/operation/getOperation?${query}`, {
+        headers: {
+            token
+        }
+    })
+}
+
+export function getServerInfo(token: string) {
+    return http.get("/api/info", {
+        headers: {
+            token
+        }
+    })
+}
+
+export function getTotalLogins() {
+    return http.get("/api/uv")
+}
+
+export function getStudentByUuid(token: string, query: string) {
+    return http.get("/student/getStudentByUuid?uuid="+query, {
+        headers: {
+            token
+        }
+    })
+}
+
+export function getTeacherByUuid(token: string, query: string) {
+    return http.get("/teacher/getTeacherByUuid?uuid="+query, {
+        headers: {
+            token
+        }
+    })
+}
+
+export function banUser(token: string, config: {type: string, uuid: string, duration: number}) {
+    return http.put("/api/ban", {
+        type: config.type,
+        uuid: config.uuid,
+        duration: config.duration
+    }, {
+        headers: {
+            token
+        }
+    })
+}
+
+export function isBannedUser(token: string, config: {type: string, uuid: string}) {
+    return http.get(`/api/isBanned?type=${config.type}&uuid=${config.uuid}`, {
+        headers: {
+            token
+        }
+    })
+}
+
+export function unbanUser(token: string, config: {type: string, uuid: string}) {
+    return http.put("/api/unban", {
+        type: config.type,
+        uuid: config.uuid,
+    }, {
         headers: {
             token
         }

@@ -112,7 +112,6 @@ watch(averageDP, () => {
 
   updateAverageDP.value = true
 })
-
 </script>
 
 <template>

@@ -23,13 +23,13 @@ import {
   Tickets,
   Upload,
   UploadFilled,
-  UserFilled
+  UserFilled, Warning
 } from "@element-plus/icons-vue";
 import {useStudentStore} from "~/composables/studentStore";
 import type {Ref} from "@vue/reactivity";
 import {ClassLevelConverterForEntire} from "~/utils/DPUtils";
 import {storeToRefs} from "pinia";
-import type {UploadRequestOptions} from "element-plus";
+import type {UploadRequestHandler, UploadRequestOptions} from "element-plus";
 import {createDownloadLink} from "~/utils/tableUtils";
 
 const currentRow: Ref<studentDataDisplay | undefined> = ref()
@@ -154,8 +154,8 @@ const onUploadTableError = () => {
   ElMessage.error('Unexpected error occurred.')
 }
 
-const uploadStudentExcel = (param: UploadRequestOptions) => {
-  importStudentTable(store.jwt, param).then(() => {
+const uploadStudentExcel = (param:  UploadRequestOptions) => {
+  return importStudentTable(store.jwt, param).then(() => {
     onUploadTableSuccess()
   })
 }
@@ -237,6 +237,26 @@ watch(currentRow, v => {
               border
               title="Student details"
           >
+            <el-descriptions-item>
+              <template #label>
+                <div class="cell-item">
+                  <el-icon>
+                    <UserFilled/>
+                  </el-icon>
+                  UUID
+                  <el-tooltip
+                      effect="dark"
+                      content="For Query (e.g. ban)"
+                      placement="top"
+                  >
+                    <el-icon style="margin-left: 4px" :size="12">
+                      <Warning />
+                    </el-icon>
+                  </el-tooltip>
+                </div>
+              </template>
+              {{ props.row.studentUuid }}
+            </el-descriptions-item>
             <el-descriptions-item>
               <template #label>
                 <div class="cell-item">

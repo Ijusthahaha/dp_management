@@ -23,17 +23,19 @@ const changePassword = function () {
 
 const submitChangePassword = function () {
   changeStudentPassword(store.jwt, newPassword.value)
-      .then(() => {
-        ElMessage({
-          message: "Submitted!",
-          type: 'success',
-
-        })
-        changePasswordDialog.value = false
+      .then((data) => {
+        ElMessage.success("Done. Please relog.")
+        logout(data.data.data.token)
       })
 }
 
-const logout = function () {
+const logout = function (jwt?: string) {
+  if (jwt) {
+    storeRef.jwt.value = jwt
+    localStorage.setItem("JWT", jwt)
+    location.reload()
+    return
+  }
   storeRef.jwt.value = ''
   localStorage.setItem("JWT", '')
 

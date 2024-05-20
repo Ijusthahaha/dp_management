@@ -1,4 +1,4 @@
-import {type Appeal, type DPLog, DPType, Location} from "~/types/DPType";
+import {type Appeal, AppealStatus, type DPLog, DPType, Location} from "~/types/DPType";
 import {createPendingAppeal, createRawAppeal, fulfillAppeal, rejectAppeal} from "~/utils/createAppeal";
 import {type StudentLevel, TeacherType} from "~/types/User";
 import type {
@@ -8,14 +8,29 @@ import type {
     unConvertedTeacherData
 } from "~/types/dataDisplay";
 
-export function createDP(type: string, location: string, dp: number, date: string, remark: string): DPLog {
+export function createDP(type: string, location: string, dp: number, date: string, remark: string, appeal?: number): DPLog {
     return {
         type: DPConverter(type),
         location: LocationConverter(location),
         dp,
         date,
-        appeal: undefined,
+        appeal: appeal ? {
+            status: appealStatusConverter(appeal),
+            reason: ''
+        } : undefined,
         remark: remark
+    }
+}
+
+export function appealStatusConverter(status: number): AppealStatus {
+    if (status === 0) {
+        return AppealStatus.NOT_APPEAL
+    } else if (status === 1) {
+        return AppealStatus.PENDING
+    } else if (status === 2) {
+        return AppealStatus.FULFILLED
+    } else {
+        return AppealStatus.REJECTED
     }
 }
 

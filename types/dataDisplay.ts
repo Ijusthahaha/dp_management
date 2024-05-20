@@ -53,3 +53,16 @@ export interface modifyTeacherType {
 
     modifyTeacherPassword: boolean
 }
+
+export interface operationType {
+    createTime: string,
+    description: string,
+    id: string,
+    method: string,
+    module: string,
+    requestParam: string,
+    responseParam: string,
+    type: string,
+    uri: string,
+    userId: string
+}
