@@ -15,7 +15,8 @@
     "status": {
       "successful": "Login successful.",
       "expired": "Account expired.",
-      "incorrect": "Username or password is incorrect."
+      "incorrect": "Username or password is incorrect.",
+      "blocked": "Access limit reached! Please wait."
     }
   },
   "student": {

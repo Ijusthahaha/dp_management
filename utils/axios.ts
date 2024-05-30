@@ -30,9 +30,22 @@ http.interceptors.response.use(res => {
         NProgress.done();
         return res;
     }, error => {
+        if (error.response.status === 403) {
+            ElMessage({
+                type: 'error',
+                message: getLoginStatusBlocked()
+            })
+        }
         NProgress.done();
         return Promise.reject(error)
     }
 )
+
+const getLoginStatusBlocked = (): string => {
+    const { $i18n } = useNuxtApp();
+    const t = $i18n.t;
+
+    return t('login.status.blocked');
+};
 
 export default http

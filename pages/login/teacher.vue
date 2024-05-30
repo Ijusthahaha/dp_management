@@ -34,18 +34,6 @@ const onSubmit = () => {
       }
   )
 }
-
-// onMounted(() => {
-//   validateTeacherJwt(store.jwt).then(async data => {
-//     if (data.status === 200) {
-//       ElMessage({
-//         type: 'success',
-//         message: 'Login successful.'
-//       })
-//       await navigateTo('/')
-//     }
-//   })
-// })
 </script>
 
 <template>
