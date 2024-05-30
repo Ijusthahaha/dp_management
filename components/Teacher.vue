@@ -24,6 +24,8 @@ onMounted(async () => {
 const store = useUserStore()
 const studentStore = useStudentStore()
 const {students} = storeToRefs(useStudentStore())
+const {t} = useI18n()
+
 const computedStudent = computed(() => {
   return students.value.map(terminal => {
     return {
@@ -39,7 +41,7 @@ const teacherLevel = () => {
 const initTabs = function () {
   giveDPTabs.value.push({
     id: '1',
-    title: 'DP Dispatcher',
+    title: t("teacher.dispatcher"),
   })
   tabIndex = 1
   editableTabsValue.value = '1'
@@ -60,7 +62,7 @@ const initTabs = function () {
 const giveDPTabs = ref([
   {
     id: '1',
-    title: 'DP Dispatcher',
+    title: t("teacher.dispatcher"),
   }
 ])
 
@@ -75,7 +77,7 @@ const handleTabsEdit = (
     const newTabName = `${++tabIndex}`
     giveDPTabs.value.push({
       id: newTabName,
-      title: 'DP Dispatcher ' + newTabName,
+      title: t("teacher.dispatcher") + newTabName,
     })
     forms.value.push({
       currentStudent: {
@@ -132,33 +134,6 @@ const forms: Ref<Form[]> = ref([{
   dp: 1
 }])
 
-const rules = reactive<FormRules>({
-  currentStudent: [
-    {required: true, message: "Please input a student name", trigger: "change"}
-  ],
-  date: [
-    {required: true, message: "Please pick a date", trigger: "change"}
-  ],
-  detailDate: [
-    {required: true, message: "Please pick a date", trigger: "change"}
-  ],
-  location: [
-    {required: true, message: "Please input a location", trigger: "change"}
-  ],
-  reason: [
-    {required: true, message: "Please provide a reason", trigger: "blur"}
-  ],
-  dp: [
-    {required: true, message: "Please input the DP", trigger: "blur"}
-  ]
-})
-const createFilter = (queryString: string) => {
-  return (student: any) => {
-    return (
-        student.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-    )
-  }
-}
 const querySearchStudent = function (queryString: string, callback: Function) {
   getStudents(queryString).then(d => {
     let b: Student[] = []
@@ -190,12 +165,12 @@ const checkForm = function () {
   }
   ElMessage({
     type: 'error',
-    message: 'All columns are required or invalid.'
+    message: t("teacher.submit_error")
   })
 }
 
 const submitForm = function () {
-  ElMessageBox.alert('Dispatching!', 'Message', {
+  ElMessageBox.alert(t("teacher.submit_succeed"), 'Message', {
     confirmButtonText: 'Close',
     callback: (action: Action) => {
       // close the tab
@@ -266,15 +241,15 @@ const handleSelectAutocomplete = (item: { value: string, id: number }) => {
               @edit="handleTabsEdit"
           >
             <el-tab-pane v-if="teacherLevel() == TeacherType.Director" key="overview" :closable="false"
-                         label="DP Overview" name="-1">
+                         :label="t('teacher.menu.overview')" name="-1">
               <SchoolOverview></SchoolOverview>
             </el-tab-pane>
             <el-tab-pane v-if="teacherLevel() == TeacherType.Director" key="messagebox" :closable="false"
-                         label="MessageBox" name="0">
+                         :label="t('teacher.menu.messagebox')" name="0">
               <MessageBox></MessageBox>
             </el-tab-pane>
             <el-tab-pane v-if="teacherLevel() == TeacherType.CT" key="class" :closable="false"
-                         label="Class DP Overview" name="0">
+                         :label="t('teacher.menu.class_overview')" name="0">
               <ClassOverview></ClassOverview>
             </el-tab-pane>
             <el-tab-pane
@@ -286,21 +261,21 @@ const handleSelectAutocomplete = (item: { value: string, id: number }) => {
             >
               <el-card shadow="always">
                 <el-form v-model="forms" status-icon>
-                  <el-form-item label="Input student's name" required>
+                  <el-form-item :label="t('teacher.menu.tab.form')" required>
                     <el-autocomplete
                         v-model="forms[+item.id - 1].currentStudent.name"
                         :fetch-suggestions="querySearchStudent"
                         :trigger-on-focus="false"
                         clearable
-                        placeholder="Example: MRD Leo"
+                        :placeholder="t('teacher.menu.tab.example')"
                         @select="handleSelectAutocomplete"
                     />
                   </el-form-item>
-                  <el-form-item label="Dispatch date" required>
+                  <el-form-item :label="t('teacher.menu.tab.dispatch_date')" required>
                     <el-col :span="11">
                       <el-date-picker
                           v-model="forms[+item.id - 1].date"
-                          placeholder="Pick a date"
+                          :placeholder="t('teacher.menu.tab.pick_date')"
                           style="width: 100%"
                           type="date"
                           value-format="x"
@@ -312,20 +287,20 @@ const handleSelectAutocomplete = (item: { value: string, id: number }) => {
                     <el-col :span="11">
                       <el-time-picker
                           v-model="forms[+item.id - 1].detailDate"
-                          placeholder="Pick a time"
+                          :placeholder="t('teacher.menu.tab.pick_time')"
                           style="width: 100%"
                           value-format="hh:mm:ss"
                       />
                     </el-col>
                   </el-form-item>
-                  <el-form-item label="Dispatch location" required>
+                  <el-form-item :label="t('teacher.menu.tab.dispatch_location')" required>
                     <el-radio-group v-model="forms[+item.id- 1].location">
-                      <el-radio label="Academic"/>
-                      <el-radio label="Dorm"/>
+                      <el-radio :label="t('teacher.menu.tab.type.academic')"/>
+                      <el-radio :label="t('teacher.menu.tab.type.dorm')"/>
                     </el-radio-group>
                   </el-form-item>
-                  <el-form-item label="DP Type" required>
-                    <el-select v-model="forms[+item.id- 1].type" placeholder="Select">
+                  <el-form-item :label="t('teacher.menu.tab.dp_type')" required>
+                    <el-select v-model="forms[+item.id- 1].type" :placeholder="t('common.select')">
                       <el-option
                           v-for="(item, index) in DPTypes"
                           :key="index"
@@ -334,11 +309,11 @@ const handleSelectAutocomplete = (item: { value: string, id: number }) => {
                       />
                     </el-select>
                   </el-form-item>
-                  <el-form-item label="Reason" required>
+                  <el-form-item :label="t('teacher.menu.tab.reason')" required>
                     <el-input v-model="forms[+item.id - 1].reason"
                               :autosize="{minRows: 3}"
                               maxlength="100"
-                              placeholder="Please provide reasonable reason."
+                              :placeholder="t('teacher.menu.tab.dispatch_reason')"
                               show-word-limit
                               type="textarea"
                     />
@@ -347,40 +322,40 @@ const handleSelectAutocomplete = (item: { value: string, id: number }) => {
                     <el-col :span="4">
                       <el-input v-model="forms[+item.id - 1].dp" :max="12" :min="1" :step="1"
                                 oninput="value=value.replace(/[^1-9]/g)"
-                                placeholder="Dispatch DP count" type="number"></el-input>
+                                :placeholder="t('teacher.menu.tab.count')" type="number"></el-input>
                     </el-col>
                     <el-col :span="1"></el-col>
                     <el-col :span="18">
-                      <el-button plain type="primary" @click="checkForm">Dispatch!</el-button>
+                      <el-button plain type="primary" @click="checkForm">{{$t('teacher.menu.tab.do_it')}}</el-button>
                     </el-col>
                   </el-form-item>
                 </el-form>
               </el-card>
             </el-tab-pane>
           </el-tabs>
-          <el-empty v-else description="Click anywhere to create a DP Dispatcher." @click="initTabs">
+          <el-empty v-else :description="t('teacher.menu.tab.create')" @click="initTabs">
           </el-empty>
         </el-main>
       </el-container>
     </el-container>
   </div>
-  <el-dialog v-if="confirmDialogVisible" v-model="confirmDialogVisible" center title="Confirm" width="50%">
+  <el-dialog v-if="confirmDialogVisible" v-model="confirmDialogVisible" center :title="t('common.confirm')" width="50%">
     <el-table :data="[forms[+editableTabsValue - 1]]" style="width: 100%">
-      <el-table-column label="Name" prop="currentStudent.name"></el-table-column>
-      <el-table-column :formatter="dateFormatter" label="Date" prop="date"></el-table-column>
-      <el-table-column label="Location" prop="location"></el-table-column>
-      <el-table-column label="Reason" prop="reason"></el-table-column>
+      <el-table-column :label="t('teacher.menu.tab.name')" prop="currentStudent.name"></el-table-column>
+      <el-table-column :formatter="dateFormatter" :label="t('teacher.menu.tab.date')" prop="date"></el-table-column>
+      <el-table-column :label="t('teacher.menu.tab.location')" prop="location"></el-table-column>
+      <el-table-column :label="t('teacher.menu.tab.reason')" prop="reason"></el-table-column>
       <el-table-column label="DP" prop="dp"></el-table-column>
     </el-table>
     <el-alert :closable="false" :title="currentQuote"
               show-icon style="margin-top: 8px; margin-bottom: 8px;" type="info"/>
     <el-alert :closable="false" show-icon
-              style="margin-top: 8px; margin-bottom: 8px;" title="You are not able to cancel the DP." type="warning"/>
+              style="margin-top: 8px; margin-bottom: 8px;" :title="t('teacher.menu.tab.warning')" type="warning"/>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="confirmDialogVisible = false">Cancel</el-button>
+        <el-button @click="confirmDialogVisible = false">{{$t("common.cancel")}}</el-button>
         <el-button plain type="danger" @click="submitForm">
-          Confirm
+          {{$t("common.confirm")}}
         </el-button>
       </span>
     </template>

@@ -7,6 +7,7 @@ import {fulfillAppeals, getPendingAppeals, rejectAppeals} from "~/utils/fetch";
 const store = useMessageStore()
 const {messages} = storeToRefs(store)
 const userStore = useUserStore()
+const {t} = useI18n()
 
 const isLoading = ref(true)
 
@@ -57,7 +58,7 @@ const submitOperation = function (type: string) {
     } else {
       ElMessage({
         type: 'error',
-        message: 'Reasons are required.'
+        message: t("teacher.messagebox.submit_error")
       })
     }
   }
@@ -87,22 +88,22 @@ getPendingAppeals(userStore.jwt).then((data) => {
 
 <template>
 
-  <el-empty v-if="messages.length === 0 && isLoading === false" description="You don't have any appeal to process."/>
+  <el-empty v-if="messages.length === 0 && isLoading === false" :description="t('teacher.messagebox.empty')"/>
   <el-table v-else v-loading="isLoading" :data="messages" :default-sort="{ prop: 'date', order: 'descending' }"
             :row-class-name="tableRowClassName">
     <el-table-column :formatter="dateFormatter" label="Date" prop="date" sortable></el-table-column>
-    <el-table-column label="Name" prop="studentName"></el-table-column>
-    <el-table-column label="Class" prop="studentClass"></el-table-column>
-    <el-table-column label="Type" prop="type"></el-table-column>
+    <el-table-column :label="t('teacher.messagebox.name')" prop="studentName"></el-table-column>
+    <el-table-column :label="t('teacher.messagebox.class')" prop="studentClass"></el-table-column>
+    <el-table-column :label="t('teacher.messagebox.type')" prop="type"></el-table-column>
     <el-table-column label="DP" prop="dp" sortable></el-table-column>
     <!--    <el-table-column label="Remark" prop="remark"></el-table-column>-->
-    <el-table-column label="Appeal Reason" prop="reason"></el-table-column>
+    <el-table-column :label="t('teacher.messagebox.reason')" prop="reason"></el-table-column>
 
     <el-table-column label="Operation">
       <template #default="scope">
         <div class="dialogTrigger">
-          <el-button plain size="small" type="primary" @click="appealFulfillOperation(scope)">Fulfill</el-button>
-          <el-button plain size="small" type="danger" @click="appealRejectOperation(scope)">Reject</el-button>
+          <el-button plain size="small" type="primary" @click="appealFulfillOperation(scope)">{{$t('teacher.messagebox.fulfill')}}</el-button>
+          <el-button plain size="small" type="danger" @click="appealRejectOperation(scope)">{{$t('teacher.messagebox.reject')}}</el-button>
         </div>
       </template>
     </el-table-column>
@@ -111,15 +112,15 @@ getPendingAppeals(userStore.jwt).then((data) => {
   <el-dialog
       v-model="fulfillDialog"
       align-center
-      title="Fulfill appeal"
+      :title="t('teacher.messagebox.fulfill_title')"
       width="70%"
   >
     <el-table :data="[appealItem]" style="width: 100%">
-      <el-table-column :formatter="dateFormatter" label="Date" prop="date"></el-table-column>
-      <el-table-column :formatter="typeFormatter" label="Type" prop="type"></el-table-column>
+      <el-table-column :formatter="dateFormatter" :label="t('teacher.messagebox.date')" prop="date"></el-table-column>
+      <el-table-column :formatter="typeFormatter" :label="t('teacher.messagebox.type')"></el-table-column>
       <el-table-column label="DP" prop="dp"></el-table-column>
-      <el-table-column label="Remark" prop="remark"></el-table-column>
-      <el-table-column label="Appeal Reason" prop="reason"></el-table-column>
+      <el-table-column :label="t('teacher.messagebox.remark')" prop="remark"></el-table-column>
+      <el-table-column :label="t('teacher.messagebox.reason')"></el-table-column>
     </el-table>
 
     <!--    we don't need a reason for fulfill the appeal.-->
@@ -130,12 +131,12 @@ getPendingAppeals(userStore.jwt).then((data) => {
     <!--        placeholder="Please input your appeal reason."-->
     <!--    />-->
 
-    <el-text type="danger">You are not able to cancel this appeal after submitted.</el-text>
+    <el-text type="danger">{{$t('teacher.messagebox.warning')}}</el-text>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="fulfillDialog = false">Cancel</el-button>
+        <el-button @click="fulfillDialog = false">{{$t('common.cancel')}}</el-button>
         <el-button type="primary" @click="submitOperation('fulfill')">
-          Fulfill!
+          {{$t('teacher.messagebox.submit_fulfill')}}
         </el-button>
       </span>
     </template>
@@ -144,30 +145,30 @@ getPendingAppeals(userStore.jwt).then((data) => {
   <el-dialog
       v-model="rejectDialog"
       align-center
-      title="Reject appeal"
+      :title="t('teacher.messagebox.reject_title')"
       width="70%"
   >
     <el-table :data="[appealItem]" style="width: 100%">
-      <el-table-column :formatter="dateFormatter" label="Date" prop="date"></el-table-column>
-      <el-table-column :formatter="typeFormatter" label="Type" prop="type"></el-table-column>
+      <el-table-column :formatter="dateFormatter" :label="t('teacher.messagebox.date')" prop="date"></el-table-column>
+      <el-table-column :formatter="typeFormatter" :label="t('teacher.messagebox.type')" prop="type"></el-table-column>
       <el-table-column label="DP" prop="dp"></el-table-column>
-      <el-table-column label="Remark" prop="remark"></el-table-column>
-      <el-table-column label="Appeal Reason" prop="reason"></el-table-column>
+      <el-table-column :label="t('teacher.messagebox.remark')" prop="remark"></el-table-column>
+      <el-table-column :label="t('teacher.messagebox.reason')" prop="reason"></el-table-column>
     </el-table>
 
     <el-input
         v-model="appealReason"
         :autosize="{ minRows: 2, maxRows: 4 }"
-        placeholder="Please input the reason."
+        :placeholder="t('teacher.messagebox.input_reason')"
         type="textarea"
     />
 
-    <el-text type="danger">You are not able to cancel this appeal after submitted.</el-text>
+    <el-text type="danger">{{$t('teacher.messagebox.warning')}}</el-text>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="rejectDialog = false">Cancel</el-button>
+        <el-button @click="rejectDialog = false">{{$t('teacher.cancel')}}</el-button>
         <el-button type="primary" @click="submitOperation('reject')">
-          Submit
+          {{$t('common.submit')}}
         </el-button>
       </span>
     </template>

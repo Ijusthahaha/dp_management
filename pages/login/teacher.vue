@@ -2,8 +2,11 @@
 import {useUserStore} from "~/composables/userStore";
 import {validateTeacherJwt} from "~/utils/teacherApiUtils";
 import {teacherLogin} from "~/utils/fetch"
+import Options from "~/components/Options.vue";
 
 const store = useUserStore()
+const {t} = useI18n()
+
 const form = reactive({
   name: '',
   password: ''
@@ -19,13 +22,13 @@ const onSubmit = () => {
           })
           ElMessage({
             type: 'success',
-            message: 'Login successful.'
+            message: t('login.status.successful')
           })
           navigateTo('/')
         } else {
           ElMessage({
             type: 'error',
-            message: 'Username or password is incorrect.'
+            message: t('login.status.incorrect')
           })
         }
       }
@@ -65,6 +68,7 @@ const onSubmit = () => {
         </el-form-item>
       </el-form>
     </el-card>
+    <Options/>
   </div>
 </template>
 

@@ -10,8 +10,9 @@ let appealItem: DPLog | null = null
 const appealReason = ref("")
 const isLoading = ref(true)
 const store = useUserStore()
-const userDPAppeal: Ref<DPLog[]> = ref([])
+const {t} = useI18n()
 
+const userDPAppeal: Ref<DPLog[]> = ref([])
 const userDP: Ref<DPLog[]> = ref([])
 
 getAppeals(store.jwt).then(data => {
@@ -76,19 +77,19 @@ const appealOperation = function (scope: any) {
   }
   if (scope.row.appeal.status == "Pending") {
     ElMessage({
-      message: 'You already submitted an appeal.',
+      message: t('student.menu.log.warning'),
       type: 'warning',
     })
   }
   if (scope.row.appeal.status == "Fulfilled") {
     ElMessage({
-      message: 'Your appeal already fulfilled.',
+      message: t('student.menu.log.success'),
       type: 'success',
     })
   }
   if (scope.row.appeal.status == "Rejected") {
     ElMessage({
-      message: 'Teacher already rejected your appeal.',
+      message: t('student.menu.log.error'),
       type: 'error',
     })
   }
@@ -98,7 +99,7 @@ const submitAppeal = function () {
   if (appealItem?.appeal) {
     if (!appealReason.value) {
       ElMessage({
-        message: "Reason is required.",
+        message: t('student.menu.log.submit_error'),
         type: 'error',
       })
     } else {
@@ -107,7 +108,7 @@ const submitAppeal = function () {
         // @ts-ignore
         appealItem!.appeal = createPendingAppeal(appealItem?.appeal, appealReason.value)
         ElMessage({
-          message: "Submitted! Please wait for teacher's process.",
+          message: t('student.menu.log.submit_successful'),
           type: 'success',
         })
         appealDialogVisible.value = false
@@ -140,27 +141,27 @@ const handleCurrentChange = (val: number) => {
 </script>
 
 <template>
-  <el-empty v-if="userDP.length === 0 && isLoading === false" description="Wow! You currently have 0 dp!"/>
+  <el-empty v-if="userDP.length === 0 && isLoading === false" :description="t('student.menu.log.fantastic')"/>
 
   <el-table v-else v-loading="isLoading" :data="userDP.slice((currentPage-1)*pageSize,currentPage*pageSize)"
             :default-sort="{ prop: 'date', order: 'descending' }" :row-class-name="tableRowClassName">
-    <el-table-column :formatter="dateFormatter" label="Date" prop="date" sortable></el-table-column>
-    <el-table-column label="Type" prop="logType"></el-table-column>
+    <el-table-column :formatter="dateFormatter" :label=" t('student.menu.log.date')" prop="date" sortable></el-table-column>
+    <el-table-column :label="t('student.menu.log.date')" prop="logType"></el-table-column>
     <el-table-column label="DP" prop="dp" sortable></el-table-column>
     <!--    <el-table-column prop="remark" label="Remark"></el-table-column>-->
-    <el-table-column label="Location" prop="logLocation"></el-table-column>
-    <el-table-column label="Appeal" prop="appeal">
+    <el-table-column :label="t('student.menu.log.location')" prop="logLocation"></el-table-column>
+    <el-table-column :label="t('student.menu.log.appeal')" prop="appeal">
       <template #default="scope">
         <el-popover trigger="hover" width="auto">
           <template #default>
             <div>Status: {{ scope.row.appeal.status }}</div>
             <div v-if="scope.row.appeal.status == AppealStatus.NOT_APPEAL"></div>
-            <div v-else-if="scope.row.appeal.status == AppealStatus.PENDING">Waiting for teacher's process</div>
+            <div v-else-if="scope.row.appeal.status == AppealStatus.PENDING">{{$t('student.menu.log.pending_appeal')}}</div>
             <div v-else-if="scope.row.appeal.status == AppealStatus.REJECTED">
               <span>Teacher rejected your appeal.</span><br>
               <span>Reason: {{ scope.row.appeal.reason }}</span>
             </div>
-            <div v-else-if="scope.row.appeal.status == AppealStatus.FULFILLED">Your appeal passed.</div>
+            <div v-else-if="scope.row.appeal.status == AppealStatus.FULFILLED">{{$t('student.menu.log.fulfilled_appeal')}}</div>
           </template>
           <template #reference>
             <el-tag :type="getStatusType(scope)">{{ scope.row.appeal.status }}</el-tag>
@@ -169,9 +170,9 @@ const handleCurrentChange = (val: number) => {
       </template>
     </el-table-column>
 
-    <el-table-column label="Operation">
+    <el-table-column :label="t('student.menu.log.operation')">
       <template #default="scope">
-        <el-button plain size="small" type="primary" @click="appealOperation(scope)">Appeal</el-button>
+        <el-button plain size="small" type="primary" @click="appealOperation(scope)">{{$t('student.menu.log.appeal')}}</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -190,29 +191,29 @@ const handleCurrentChange = (val: number) => {
   <el-dialog
       v-model="appealDialogVisible"
       align-center
-      title="Apply appeal"
+      :title="t('student.menu.log.apply_appeal')"
       width="40%"
   >
     <el-table :data="[appealItem]" style="width: 100%">
-      <el-table-column :formatter="dateFormatter" label="Date" prop="date"></el-table-column>
-      <el-table-column label="Type" prop="logType"></el-table-column>
+      <el-table-column :formatter="dateFormatter" :label="t('student.menu.log.date')" prop="date"></el-table-column>
+      <el-table-column :label="t('student.menu.log.type')" prop="logType"></el-table-column>
       <el-table-column label="DP" prop="dp"></el-table-column>
-      <el-table-column label="Remark" prop="remark"></el-table-column>
+      <el-table-column :label="t('student.menu.log.remark')" prop="remark"></el-table-column>
     </el-table>
 
     <el-input
         v-model="appealReason"
         :autosize="{ minRows: 2, maxRows: 4 }"
-        placeholder="Please input your appeal reason."
+        :placeholder="t('student.menu.log.appeal_reason_required')"
         type="textarea"
     />
 
-    <el-text type="danger">You can only apply this appeal once.</el-text>
+    <el-text type="danger">{{$t('student.menu.log.appeal_failed')}}</el-text>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="appealDialogVisible = false">Cancel</el-button>
+        <el-button @click="appealDialogVisible = false">{{$t('common.cancel')}}</el-button>
         <el-button type="primary" @click="submitAppeal">
-          Submit
+          {{$t('common.submit')}}
         </el-button>
       </span>
     </template>

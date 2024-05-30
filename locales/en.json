@@ -3,7 +3,6 @@
   "login": {
     "student": {
       "project": "Student DP Management System",
-      "project_sub": "",
       "example": "Example: ",
       "password": "Your password",
       "login_button": "Login",
@@ -12,6 +11,127 @@
     "teacher": {
       "project": "Teacher / Admin Login Page",
       "switch": "Student Login"
+    },
+    "status": {
+      "successful": "Login successful.",
+      "expired": "Account expired.",
+      "incorrect": "Username or password is incorrect."
     }
+  },
+  "student": {
+    "current_dp": "Current DP: ",
+    "total_dp": "Total DP",
+    "menu": {
+      "dp_overview": "DP Overview",
+      "dp_log": "DP Logs",
+      "dp_settings": "Settings",
+      "log": {
+        "warning": "You already submitted an appeal.",
+        "success": "Your appeal already fulfilled.",
+        "error": "Teacher already rejected your appeal.",
+        "submit_error": "Reason is required.",
+        "submit_successful": "Submitted! Please wait for teacher's process.",
+        "fantastic": "Wow! You currently have 0 dp!",
+        "date": "Date",
+        "type": "Type",
+        "location": "Location",
+        "appeal": "Appeal",
+        "remark": "Remark",
+        "operation": "Operation",
+        "pending_appeal": "Waiting for teacher's process",
+        "fulfilled_appeal": "Your appeal passed.",
+        "apply_appeal": "Apply appeal",
+        "appeal_reason_required": "Please input your appeal reason.",
+        "appeal_failed": "You can only apply this appeal once."
+      },
+      "overview": {
+        "monthly": "Monthly DP",
+        "semester": "Entire semester's DP",
+        "compare": "Compare with average DP"
+      },
+      "settings": {
+        "info": "Personal Info",
+        "preference": "Preference",
+        "relog": "Done. Please relog.",
+        "type": "Type",
+        "level": "Level",
+        "class": "Class",
+        "name": "Name",
+        "total": "Total DP",
+        "theme": "Theme",
+        "language": "Language",
+        "font": "Font",
+        "change_password": "Change password",
+        "click_here": "Click here",
+        "logout": "Logout",
+        "new_password": "New Password:"
+      }
+    }
+  },
+  "teacher": {
+    "dispatcher": "DP Dispatcher",
+    "submit_error": "All columns are required or invalid.",
+    "submit_succeed": "Dispatching!",
+    "menu": {
+      "overview": "DP Overview",
+      "messagebox": "MessageBox",
+      "class_overview": "Class DP Overview",
+      "tab": {
+        "form": "Input student's name",
+        "example": "Example: MRD Leo",
+        "dispatch_date": "Dispatch date",
+        "pick_date": "Pick a Date",
+        "pick_time": "Pick a time",
+        "dispatch_location": "Dispatch location",
+        "type": {
+          "academic": "Academic",
+          "dorm": "Dorm"
+        },
+        "dp_type": "DP Type",
+        "dispatch_reason": "Please provide a valid reason.",
+        "count": "Dispatch DP count",
+        "do_it": "Dispatch!",
+        "create": "Click anywhere to create a DP Dispatcher.",
+        "name": "Name",
+        "date": "Date",
+        "location": "Location",
+        "reason": "Reason",
+        "warning": "You are not able to cancel the DP."
+      }
+    },
+    "messagebox": {
+      "submit_error": "Reasons are required.",
+      "empty": "You don't have any appeal to process.",
+      "name": "Name",
+      "class": "Class",
+      "type": "Type",
+      "reason": "Appeal Reason",
+      "fulfill": "Fulfill",
+      "reject": "Reject",
+      "fulfill_title": "Fulfill appeal",
+      "reject_title": "Reject appeal",
+      "remark": "Remark",
+      "date": "Date",
+      "submit_fulfill": "Fulfill!",
+      "submit_reject": "Reject!",
+      "input_reason": "Please input the reason.",
+      "warning": "You are not able to cancel this appeal after submitted."
+    },
+    "school": {
+      "class_dp": "Classes' DP",
+      "dp_type": "DP Type",
+      "divisions": "Divisions"
+    },
+    "class": {
+      "student_dp": "Students' DP",
+      "average_dp": "Students' Average DP",
+      "dp_type": "DP Type"
+    }
+  },
+  "common": {
+    "select": "Select",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "submit": "Submit"
   }
 }

@@ -7,6 +7,7 @@ import {changeStudentPassword} from "~/utils/fetch";
 const store = useUserStore()
 const storeRef = storeToRefs(store)
 const dpStore = useDPDataStore()
+const {t} = useI18n()
 
 const changePasswordDialog = ref(false)
 const newPassword = ref('')
@@ -24,7 +25,7 @@ const changePassword = function () {
 const submitChangePassword = function () {
   changeStudentPassword(store.jwt, newPassword.value)
       .then((data) => {
-        ElMessage.success("Done. Please relog.")
+        ElMessage.success(t('student.menu.settings.relog'))
         logout(data.data.data.token)
       })
 }
@@ -45,33 +46,33 @@ const logout = function (jwt?: string) {
 
 <template>
   <el-divider/>
-  <el-descriptions size="large" title="Personal Info">
-    <el-descriptions-item label="Type">{{ type }}</el-descriptions-item>
+  <el-descriptions size="large" :title="t('student.menu.settings.info')">
+    <el-descriptions-item :label="t('student.menu.settings.type')">{{ type }}</el-descriptions-item>
     <el-descriptions-item label="Id">{{ id }}</el-descriptions-item>
-    <el-descriptions-item label="Level">{{ level }}</el-descriptions-item>
-    <el-descriptions-item label="Class">{{ clazz }}</el-descriptions-item>
-    <el-descriptions-item label="Name">{{ name }}</el-descriptions-item>
-    <el-descriptions-item label="Total DP">{{ dpStore.getTotalDP }}</el-descriptions-item>
+    <el-descriptions-item :label="t('student.menu.settings.level')">{{ level }}</el-descriptions-item>
+    <el-descriptions-item :label="t('student.menu.settings.class')">{{ clazz }}</el-descriptions-item>
+    <el-descriptions-item :label="t('student.menu.settings.name')">{{ name }}</el-descriptions-item>
+    <el-descriptions-item :label="t('student.menu.settings.total')">{{ dpStore.getTotalDP }}</el-descriptions-item>
   </el-descriptions>
   <el-divider/>
 
-  <el-descriptions border size="large" title="Preference">
-    <el-descriptions-item label="Theme">{{ store.theme }}</el-descriptions-item>
-    <el-descriptions-item label="Language">{{ store.language }}</el-descriptions-item>
-    <el-descriptions-item label="Font">{{ store.font ? store.font : "default" }}</el-descriptions-item>
+  <el-descriptions border size="large" :title="t('student.menu.settings.preference')">
+    <el-descriptions-item :label="t('student.menu.settings.theme')">{{ store.theme }}</el-descriptions-item>
+    <el-descriptions-item :label="t('student.menu.settings.language')">{{ store.language }}</el-descriptions-item>
+    <el-descriptions-item :label="t('student.menu.settings.font')">{{ store.font ? store.font : "default" }}</el-descriptions-item>
   </el-descriptions>
 
   <el-divider/>
 
   <div class="modifiers">
     <div class="modifiers1">
-      <span class="titleText">Change password</span>
-      <el-button plain type="primary" @click="changePassword">Click here</el-button>
+      <span class="titleText">{{$t('student.menu.settings.change_password')}}</span>
+      <el-button plain type="primary" @click="changePassword">{{$t('student.menu.settings.click_here')}}</el-button>
     </div>
 
     <div class="modifiers2">
-      <span class="titleText">Logout</span>
-      <el-button plain type="danger" @click="logout">Click here</el-button>
+      <span class="titleText">{{$t('student.menu.settings.logout')}}</span>
+      <el-button plain type="danger" @click="logout()">{{$t('student.menu.settings.click_here')}}</el-button>
     </div>
   </div>
 
@@ -98,17 +99,17 @@ const logout = function (jwt?: string) {
   <el-dialog
       v-model="changePasswordDialog"
       align-center
-      title="Change password"
+      :title="t('student.menu.settings.change_password')"
       width="30%"
   >
-    <p>New Password:
+    <p>{{$t('student.menu.settings.new_password')}}
       <el-input v-model="newPassword" show-password type="password"/>
     </p>
     <template #footer>
       <span>
-        <el-button @click="changePasswordDialog = false">Cancel</el-button>
+        <el-button @click="changePasswordDialog = false">{{$t('common.cancel')}}</el-button>
         <el-button type="primary" @click="submitChangePassword">
-          Confirm
+          {{$t('common.confirm')}}
         </el-button>
       </span>
     </template>

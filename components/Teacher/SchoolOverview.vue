@@ -10,7 +10,7 @@ import StudentLevelChart from "~/components/Teacher/Charts/School/StudentLevelCh
       <el-card shadow="hover">
         <template #header>
           <div>
-            <span>Classes' DP</span>
+            <span>{{$t('teacher.school.class_dp')}}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -22,7 +22,7 @@ import StudentLevelChart from "~/components/Teacher/Charts/School/StudentLevelCh
       <el-card shadow="hover">
         <template #header>
           <div>
-            <span>DP Type</span>
+            <span>{{$t('teacher.school.dp_type')}}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -34,7 +34,7 @@ import StudentLevelChart from "~/components/Teacher/Charts/School/StudentLevelCh
       <el-card shadow="hover">
         <template #header>
           <div>
-            <span>Divisions</span>
+            <span>{{$t('teacher.school.divisions')}}</span>
           </div>
         </template>
         <div class="mainCard">

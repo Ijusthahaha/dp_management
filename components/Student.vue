@@ -46,7 +46,7 @@ watch(shouldBeUpdate, () => {
   <div id="student">
     <el-container>
       <el-header>
-        <el-popover :content="'Current DP: ' + dpStore.getTotalDP.toString()" title="Total DP" trigger="hover">
+        <el-popover :content="$t('student.current_dp') + dpStore.getTotalDP.toString()" :title="$t('student.total_dp')" trigger="hover">
           <template #reference>
             <el-page-header icon="null">
               <template #title>
@@ -81,19 +81,19 @@ watch(shouldBeUpdate, () => {
               <el-icon>
                 <Menu/>
               </el-icon>
-              <span>DP Overview</span>
+              <span>{{$t("student.menu.dp_overview")}}</span>
             </el-menu-item>
             <el-menu-item index="1">
               <el-icon>
                 <MessageBox/>
               </el-icon>
-              <span>DP Logs</span>
+              <span>{{$t("student.menu.dp_log")}}</span>
             </el-menu-item>
             <el-menu-item index="2">
               <el-icon>
                 <setting/>
               </el-icon>
-              <span>Settings</span>
+              <span>{{$t("student.menu.dp_settings")}}</span>
             </el-menu-item>
           </el-menu>
         </el-aside>

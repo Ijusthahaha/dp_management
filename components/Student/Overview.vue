@@ -20,7 +20,7 @@ watch(isUpdatedDP, () => {
       <el-card shadow="hover">
         <template #header>
           <div>
-            <span>Monthly DP</span>
+            <span>{{$t('student.menu.overview.monthly')}}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -32,7 +32,7 @@ watch(isUpdatedDP, () => {
       <el-card shadow="hover">
         <template #header>
           <div>
-            <span>Entire semester's DP</span>
+            <span>{{$t('student.menu.overview.semester')}}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -44,7 +44,7 @@ watch(isUpdatedDP, () => {
       <el-card shadow="hover">
         <template #header>
           <div>
-            <span>Compare with average DP</span>
+            <span>{{$t('student.menu.overview.compare')}}</span>
           </div>
         </template>
         <div class="mainCard">

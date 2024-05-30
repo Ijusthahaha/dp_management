@@ -17,10 +17,7 @@ onMounted(() => {
   setLocale(store.language)
   if (store.theme == 'light') {
     // document.body.style.backgroundColor = "#F2F3F5"
-
-    // i don't care about light mode. light = dark idc
-    document.documentElement.classList.add("dark")
-    Chart.defaults.color = "#E5EAF3"
+    document.documentElement.classList.add("light")
   } else {
     document.documentElement.classList.add("dark")
     Chart.defaults.color = "#E5EAF3"
@@ -29,6 +26,17 @@ onMounted(() => {
   if (store.font == "minecraft" || store.font == "mc") {
     document.documentElement.style.setProperty('--font-family', 'Monocraft');
   }
+
+  // for debug
+  window.addEventListener("keydown", (key) => {
+    if (key.key === "F9") {
+      store.$patch(state => {
+        state.jwt = ''
+        localStorage.setItem("JWT", '')
+        location.reload()
+      })
+    }
+  })
 })
 </script>
 

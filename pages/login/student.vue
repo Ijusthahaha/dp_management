@@ -1,11 +1,12 @@
 <script setup>
 import {useUserStore} from "~/composables/userStore";
-import {validateStudentJwt} from "~/utils/studentApiUtils";
 import {studentLogin} from "~/utils/fetch";
 import {jwtDecode} from "jwt-decode";
 import {storeToRefs} from "pinia";
+import Options from "~/components/Options.vue";
 
 const store = useUserStore()
+const {t} = useI18n()
 
 if (store.from !== "student") {
   try {
@@ -32,18 +33,18 @@ const onSubmit = () => {
           })
           ElMessage({
             type: 'success',
-            message: 'Login successful.'
+            message: t('login.status.successful')
           })
           navigateTo('/')
         } else if (data.data.code === 301) {
           ElMessage({
             type: 'error',
-            message: 'Account expired.'
+            message: t('login.status.expired')
           })
         } else {
           ElMessage({
             type: 'error',
-            message: 'Username or password is incorrect.'
+            message: t('login.status.incorrect')
           })
         }
       }
@@ -67,7 +68,6 @@ const onSubmit = () => {
   <div class="loginContainer">
     <el-card class="loginForm">
       <h1>{{ $t('login.student.project') }}</h1>
-      <h2>{{ $t('login.student.project_sub') }}</h2>
       <el-form :model="form" label-position="left" label-width="120px">
         <el-form-item label="Student ID" required>
           <el-input v-model.number="form.name" :placeholder="$t('login.student.example') + '202130109'"/>
@@ -84,6 +84,7 @@ const onSubmit = () => {
         </el-form-item>
       </el-form>
     </el-card>
+    <Options/>
   </div>
 </template>
 

@@ -10,7 +10,7 @@ import TypeChart from "~/components/Teacher/Charts/Class/TypeChart.vue";
       <el-card shadow="hover">
         <template #header>
           <div>
-            <span>Students' DP</span>
+            <span>{{$t('teacher.class.student_dp')}}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -22,7 +22,7 @@ import TypeChart from "~/components/Teacher/Charts/Class/TypeChart.vue";
       <el-card shadow="hover">
         <template #header>
           <div>
-            <span>Students' Average DP</span>
+            <span>{{$t('teacher.class.average_dp')}}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -34,7 +34,7 @@ import TypeChart from "~/components/Teacher/Charts/Class/TypeChart.vue";
       <el-card shadow="hover">
         <template #header>
           <div>
-            <span>DP Type</span>
+            <span>{{$t('teacher.class.dp_type')}}</span>
           </div>
         </template>
         <div class="mainCard">

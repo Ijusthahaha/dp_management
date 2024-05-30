@@ -3,7 +3,6 @@
   "login": {
     "student": {
       "project": "学生DP管理系统",
-      "project_sub": "Student DP Management System",
       "example": "例: ",
       "password": "输入密码",
       "login_button": "登录",
@@ -12,6 +11,127 @@
     "teacher": {
       "project": "老师 / 管理员登录",
       "switch": "学生登录"
+    },
+    "status": {
+      "successful": "登录成功",
+      "expired": "账户已过期",
+      "incorrect": "用户名或密码不正确"
     }
+  },
+  "student": {
+    "current_dp": "当前DP: ",
+    "total_dp": "总DP",
+    "menu": {
+      "dp_overview": "DP总览",
+      "dp_log": "DP记录",
+      "dp_settings": "设置",
+      "log": {
+        "warning": "你已经提交过了一个申诉",
+        "success": "你的申诉已经通过了",
+        "error": "你的申诉被拒绝了",
+        "submit_error": "提交理由是必填项",
+        "submit_successful": "提交成功! 请等待老师的审核",
+        "fantastic": "Wow! 你当前没有DP!",
+        "date": "日期",
+        "type": "类型",
+        "location": "地点",
+        "appeal": "申诉",
+        "remark": "备注",
+        "operation": "操作",
+        "pending_appeal": "等待老师的审阅",
+        "fulfilled_appeal": "你的申诉已经通过了",
+        "apply_appeal": "提交一个申诉",
+        "appeal_reason_required": "请输入你的申诉理由",
+        "appeal_failed": "你只能申诉一次"
+      },
+      "overview": {
+        "monthly": "月度DP总数",
+        "semester": "学期DP总数",
+        "compare": "相较于平均DP"
+      },
+      "settings": {
+        "info": "个人信息",
+        "preference": "个人偏好",
+        "relog": "完成了。请重新登录",
+        "type": "种类",
+        "level": "等级",
+        "class": "班级",
+        "name": "姓名",
+        "total": "总DP",
+        "theme": "样式",
+        "language": "语言",
+        "font": "字体",
+        "change_password": "更改密码",
+        "click_here": "点击这里",
+        "logout": "退出登录",
+        "new_password": "新的密码: "
+      }
+    }
+  },
+  "teacher": {
+    "dispatcher": "DP记录申请",
+    "submit_error": "请填写所有必填项，或格式不正确",
+    "submit_succeed": "已提交新的记录",
+    "menu": {
+      "overview": "DP总览",
+      "messagebox": "收件箱",
+      "class_overview": "班级DP总览",
+      "tab": {
+        "form": "学生姓名",
+        "example": "例: MRD Leo",
+        "dispatch_date": "记录日期",
+        "pick_date": "选择一个日期",
+        "pick_time": "选择一个时间",
+        "dispatch_location": "记录地点",
+        "type": {
+          "academic": "教学楼",
+          "dorm": "宿舍"
+        },
+        "dp_type": "DP类型",
+        "dispatch_reason": "请提供一个有效的理由",
+        "count": "需记录DP数量",
+        "do_it": "确认记录新的DP",
+        "create": "点击任意空白区域以创建新的DP表单",
+        "name": "姓名",
+        "date": "日期",
+        "location": "地点",
+        "reason": "原因",
+        "warning": "提交后，你无法撤回这个DP"
+      }
+    },
+    "messagebox": {
+      "submit_error": "理由是必填项",
+      "empty": "你当前没有任何申诉需要审阅",
+      "name": "姓名",
+      "class": "班级",
+      "type": "种类",
+      "reason": "申诉原因",
+      "fulfill": "通过",
+      "reject": "驳回",
+      "fulfill_title": "通过申诉",
+      "reject_title": "驳回申诉",
+      "remark": "备注",
+      "date": "日期",
+      "submit_fulfill": "通过!",
+      "submit_reject": "驳回!",
+      "input_reason": "请输入你的理由",
+      "warning": "提交后，你将无法撤回这个申诉"
+    },
+    "school": {
+      "class_dp": "班级的DP",
+      "dp_type": "DP种类",
+      "divisions": "学部"
+    },
+    "class": {
+      "student_dp": "学生的DP",
+      "average_dp": "学生的平均DP",
+      "dp_type": "DP种类"
+    }
+  },
+  "common": {
+    "select": "选择",
+    "cancel": "取消",
+    "confirm": "确认",
+    "submit": "提交"
   }
 }
