@@ -33,19 +33,27 @@ http.interceptors.response.use(res => {
         if (error.response.status === 403) {
             ElMessage({
                 type: 'error',
-                message: getLoginStatusBlocked()
+                message: getI18nText('login.status.blocked')
             })
+        }
+        if (error.response.status === 401) {
+            ElMessage({
+                type: 'error',
+                message: getI18nText('login.status.token_expired')
+            })
+            localStorage.setItem("JWT", '')
+            location.reload()
         }
         NProgress.done();
         return Promise.reject(error)
     }
 )
 
-const getLoginStatusBlocked = (): string => {
+const getI18nText = (text: string): string => {
     const { $i18n } = useNuxtApp();
     const t = $i18n.t;
 
-    return t('login.status.blocked');
+    return t(text);
 };
 
 export default http
