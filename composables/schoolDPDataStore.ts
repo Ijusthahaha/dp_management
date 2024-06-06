@@ -6,7 +6,7 @@ export const useSchoolDPDataStore = defineStore('schoolDPDataStore', () => {
     const isUpdatedDP = ref(false)
 
     let schoolDP: Ref<getAllLogFetchedResult[]> = ref([])
-    watch(schoolDP, (newValue, oldValue) => {
+    watch(schoolDP, () => {
         if (isUpdatedDP.value === false) {
             const dps: getAllLogFetchedResult[] = []
             schoolDP.value.forEach((value) => {

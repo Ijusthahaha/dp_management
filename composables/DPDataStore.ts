@@ -32,6 +32,8 @@ export const useDPDataStore = defineStore('dpDataStore', () => {
         isUpdatedDP.value = !isUpdatedDP.value
     })
 
+    const availableDP = toRef(() => computedUserDP.value.filter(v => v.appeal?.status !== AppealStatus.FULFILLED))
+
     const getTotalDP = computed(() => {
         let total = 0
         computedUserDP.value.forEach(v => {
@@ -45,6 +47,7 @@ export const useDPDataStore = defineStore('dpDataStore', () => {
     return {
         rawUserDP,
         computedUserDP,
+        availableDP,
         averageDP,
         getTotalDP,
         isUpdatedDP,

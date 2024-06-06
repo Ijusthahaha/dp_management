@@ -21,7 +21,7 @@ export interface Admin {
 }
 
 export enum StudentLevel {
-    "MD" = "MD",
+    "MS" = "MS",
     "JH" = "JH",
     "SH" = "SH",
     "UNDEFINED" = "UNDEFINED"

@@ -57,7 +57,7 @@ export function AppealConverter(appeal: number, reason: string): Appeal {
 }
 
 export function ClassLevelConverter(level: number): StudentLevel {
-    if (level == 0) return <StudentLevel>"MD"
+    if (level == 0) return <StudentLevel>"MS"
     if (level == 1) return <StudentLevel>"JH"
     if (level == 2) return <StudentLevel>"SH"
     else return <StudentLevel>"UNDEFINED"

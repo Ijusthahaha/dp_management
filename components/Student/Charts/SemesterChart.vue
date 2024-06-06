@@ -8,7 +8,7 @@ import {type Ref} from "@vue/reactivity";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement)
 
-const {isUpdatedDP, computedUserDP} = storeToRefs(useDPDataStore())
+const {isUpdatedDP, availableDP} = storeToRefs(useDPDataStore())
 
 const DPTypeSet: Ref<DPType[]> = ref([])
 const DPTypeArray: Ref<string[]> = ref([])
@@ -55,8 +55,8 @@ watch(isUpdatedDP, () => {
   DPTypeArray.value.length = 0
   DPTypeData.value.length = 0
 
-  for (let i = 0; i < computedUserDP.value.length; i++) {
-    DPTypeSet.value.push(computedUserDP.value[i].type)
+  for (let i = 0; i < availableDP.value.length; i++) {
+    DPTypeSet.value.push(availableDP.value[i].type)
   }
 
   DPTypeSet.value = DPTypeSet.value.filter((item, index) => {
@@ -69,8 +69,8 @@ watch(isUpdatedDP, () => {
   }
 
   // contributor: jim
-  for (let i = 0; i < computedUserDP.value.length; i++) {
-    DPTypeData.value[DPTypeSet.value.indexOf(computedUserDP.value[i].type)] += computedUserDP.value[i].dp
+  for (let i = 0; i < availableDP.value.length; i++) {
+    DPTypeData.value[DPTypeSet.value.indexOf(availableDP.value[i].type)] += availableDP.value[i].dp
   }
 
   data.datasets[0].data = DPTypeData.value
