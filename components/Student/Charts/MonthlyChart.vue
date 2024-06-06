@@ -7,7 +7,7 @@ import {storeToRefs} from "pinia";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
-const {isUpdatedDP, computedUserDP} = storeToRefs(useDPDataStore())
+const {isUpdatedDP, availableDP} = storeToRefs(useDPDataStore())
 
 let dpData: Ref<number[]> = ref([])
 
@@ -62,11 +62,11 @@ watch(isUpdatedDP, () => {
   for (let i = 0; i < 12; i++) {
     let array: number[] = []
 
-    for (let j = 0; j < computedUserDP.value.length; j++) {
-      let date = new Date(computedUserDP.value[j].date)
+    for (let j = 0; j < availableDP.value.length; j++) {
+      let date = new Date(availableDP.value[j].date)
 
       if (date && date.getMonth() == i) {
-        array.push(computedUserDP.value[j].dp)
+        array.push(availableDP.value[j].dp)
       }
     }
     if (array.length === 0) array.push(0)

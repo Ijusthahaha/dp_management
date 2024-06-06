@@ -26,6 +26,9 @@ const isUserAlreadyBanned = ref()
 const isExpiredFormatter = (row: any) => {
   return row.isExpired === 0 ? "No" : "Yes"
 }
+const isDeletedFormatter = (row: any) => {
+  return row.isDeleted === 0 ? "No" : "Yes"
+}
 const teacherLevelFormatter = (row: any) => {
   return teacherLevelConverter(row.teacherLevel)
 }
@@ -286,7 +289,7 @@ onMounted(() => {
         <el-table-column label="Class" prop="teacherClass"></el-table-column>
         <el-table-column label="Name" prop="teacherName"></el-table-column>
         <el-table-column :formatter="teacherLevelFormatter" label="Level" prop="teacherLevel"></el-table-column>
-        <el-table-column :formatter="isExpiredFormatter" label="Deleted" prop="isDeleted"></el-table-column>
+        <el-table-column :formatter="isDeletedFormatter" label="Deleted" prop="isDeleted"></el-table-column>
       </el-table>
 
       <div style="margin-top: 16px">

@@ -7,7 +7,7 @@ import type {
     tinyClassDataDisplay,
     tinyStudentDataDisplay
 } from "~/types/dataDisplay";
-import type {UploadRequestHandler, UploadRequestOptions} from "element-plus";
+import type {UploadRequestOptions} from "element-plus";
 
 export function studentLogin(student: StudentLogin) {
     return http.post("/student/login", student);
@@ -339,7 +339,7 @@ export function getTotalLogins() {
 }
 
 export function getStudentByUuid(token: string, query: string) {
-    return http.get("/student/getStudentByUuid?uuid="+query, {
+    return http.get("/student/getStudentByUuid?uuid=" + query, {
         headers: {
             token
         }
@@ -347,14 +347,14 @@ export function getStudentByUuid(token: string, query: string) {
 }
 
 export function getTeacherByUuid(token: string, query: string) {
-    return http.get("/teacher/getTeacherByUuid?uuid="+query, {
+    return http.get("/teacher/getTeacherByUuid?uuid=" + query, {
         headers: {
             token
         }
     })
 }
 
-export function banUser(token: string, config: {type: string, uuid: string, duration: number}) {
+export function banUser(token: string, config: { type: string, uuid: string, duration: number }) {
     return http.put("/api/ban", {
         type: config.type,
         uuid: config.uuid,
@@ -366,7 +366,7 @@ export function banUser(token: string, config: {type: string, uuid: string, dura
     })
 }
 
-export function isBannedUser(token: string, config: {type: string, uuid: string}) {
+export function isBannedUser(token: string, config: { type: string, uuid: string }) {
     return http.get(`/api/isBanned?type=${config.type}&uuid=${config.uuid}`, {
         headers: {
             token
@@ -374,7 +374,7 @@ export function isBannedUser(token: string, config: {type: string, uuid: string}
     })
 }
 
-export function unbanUser(token: string, config: {type: string, uuid: string}) {
+export function unbanUser(token: string, config: { type: string, uuid: string }) {
     return http.put("/api/unban", {
         type: config.type,
         uuid: config.uuid,

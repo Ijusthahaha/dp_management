@@ -7,7 +7,6 @@ import {storeToRefs} from "pinia";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement)
 
-const store = useSchoolDPDataStore()
 const {schoolDP, isUpdatedDP} = storeToRefs(useSchoolDPDataStore())
 
 const typeMap = reactive<Map<string, number>>(new Map())

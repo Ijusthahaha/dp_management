@@ -16,7 +16,8 @@
       "successful": "登录成功",
       "expired": "账户已过期",
       "incorrect": "用户名或密码不正确",
-      "blocked": "访问过快，请稍后"
+      "blocked": "访问过快，请稍后",
+      "token_expired": "令牌已失效，请重新登录"
     }
   },
   "student": {

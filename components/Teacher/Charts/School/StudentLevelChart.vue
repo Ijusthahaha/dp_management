@@ -7,7 +7,6 @@ import {ClassLevelConverter} from "~/utils/DPUtils";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
-const store = useSchoolDPDataStore()
 const {schoolDP, isUpdatedDP} = storeToRefs(useSchoolDPDataStore())
 
 const update = ref(false)

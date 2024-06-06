@@ -2,10 +2,14 @@
 import AverageChart from "~/components/Teacher/Charts/Class/AverageChart.vue";
 import StudentChart from "~/components/Teacher/Charts/Class/StudentChart.vue";
 import TypeChart from "~/components/Teacher/Charts/Class/TypeChart.vue";
+import {useUserStore} from "~/composables/userStore";
+import type {Teacher} from "~/types/User";
+
+const store = useUserStore()
 </script>
 
 <template>
-  <el-carousel :autoplay="false" trigger="click">
+  <el-carousel :autoplay="false" trigger="click" v-if="(store.user as Teacher).clazz">
     <el-carousel-item>
       <el-card shadow="hover">
         <template #header>
@@ -43,6 +47,7 @@ import TypeChart from "~/components/Teacher/Charts/Class/TypeChart.vue";
       </el-card>
     </el-carousel-item>
   </el-carousel>
+  <el-empty v-else></el-empty>
 </template>
 
 <style scoped>

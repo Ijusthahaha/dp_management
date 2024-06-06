@@ -10,7 +10,6 @@ import type {DPLog} from "~/types/DPType";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
-const store = useSchoolDPDataStore()
 const {schoolDP, isUpdatedDP} = storeToRefs(useSchoolDPDataStore())
 
 const classMap = reactive<Map<string, number>>(new Map())
