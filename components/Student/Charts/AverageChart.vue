@@ -61,7 +61,7 @@ const data = reactive({
 
 const chartOptions = {
   responsive: true,
-  aspectRatio: 2
+  maintainAspectRatio: false
 }
 
 watch(isUpdatedDP, () => {
@@ -115,13 +115,19 @@ watch(averageDP, () => {
 </script>
 
 <template>
-  <Radar
-      v-if="updateTheDP && updateAverageDP"
-      :data="data"
-      :options="chartOptions">
-  </Radar>
+  <div class="chartContainer">
+    <Radar
+        v-if="updateTheDP && updateAverageDP"
+        :data="data"
+        :options="chartOptions">
+    </Radar>
+  </div>
 </template>
 
 <style scoped>
-
+.chartContainer {
+  position: relative;
+  /* 20px for el-card upper padding, 20px for el-card lower padding, 20px for this padding */
+  height: calc(100% - 20px - 20px - 20px);
+}
 </style>

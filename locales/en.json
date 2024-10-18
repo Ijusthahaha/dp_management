@@ -17,7 +17,8 @@
       "expired": "Account expired.",
       "incorrect": "Username or password is incorrect.",
       "blocked": "Access limit reached! Please wait.",
-      "token_expired": "Token expired. Please relog."
+      "token_expired": "Token expired. Please relog.",
+      "no_class": "No Class Available."
     }
   },
   "student": {

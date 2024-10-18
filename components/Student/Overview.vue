@@ -17,7 +17,7 @@ watch(isUpdatedDP, () => {
 <template>
   <el-carousel v-if="!isComputedUserDPEmpty" :autoplay="false" trigger="click">
     <el-carousel-item>
-      <el-card shadow="hover">
+      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
         <template #header>
           <div>
             <span>{{$t('student.menu.overview.monthly')}}</span>
@@ -29,7 +29,7 @@ watch(isUpdatedDP, () => {
       </el-card>
     </el-carousel-item>
     <el-carousel-item>
-      <el-card shadow="hover">
+      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
         <template #header>
           <div>
             <span>{{$t('student.menu.overview.semester')}}</span>
@@ -41,7 +41,7 @@ watch(isUpdatedDP, () => {
       </el-card>
     </el-carousel-item>
     <el-carousel-item>
-      <el-card shadow="hover">
+      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
         <template #header>
           <div>
             <span>{{$t('student.menu.overview.compare')}}</span>
@@ -57,7 +57,7 @@ watch(isUpdatedDP, () => {
 </template>
 
 <style scoped>
-.el-card {
+.el-card, .mainCard {
   height: 100%;
 }
 </style>

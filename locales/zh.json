@@ -17,7 +17,8 @@
       "expired": "账户已过期",
       "incorrect": "用户名或密码不正确",
       "blocked": "访问过快，请稍后",
-      "token_expired": "令牌已失效，请重新登录"
+      "token_expired": "令牌已失效，请重新登录",
+      "no_class": "当前学生没有对应的班级"
     }
   },
   "student": {

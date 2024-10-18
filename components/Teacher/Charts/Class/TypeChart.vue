@@ -66,18 +66,23 @@ const data = reactive({
 
 const chartOptions = {
   responsive: true,
-  aspectRatio: 3
+  maintainAspectRatio: false
 }
 </script>
 
 <template>
-  <Pie
-      v-if="update"
-      :data="data"
-      :options="chartOptions">
-  </Pie>
+  <div class="chartContainer">
+    <Pie
+        v-if="update"
+        :data="data"
+        :options="chartOptions">
+    </Pie>
+  </div>
 </template>
 
 <style scoped>
-
+.chartContainer {
+  position: relative;
+  height: calc(100% - 20px - 20px - 20px);
+}
 </style>

@@ -7,6 +7,7 @@ import Options from "~/components/Options.vue";
 
 const store = useUserStore()
 const {t} = useI18n()
+const route = useRoute()
 
 if (store.from !== "student") {
   try {
@@ -17,6 +18,15 @@ if (store.from !== "student") {
   } catch (e) {
   }
 }
+
+watch(route, () => {
+  if (route.query.error && route.query.error === "501") {
+    ElMessage({
+      type: 'warning',
+      message: t('login.status.no_class')
+    })
+  }
+}, {immediate: true})
 
 const form = reactive({
   name: '',
