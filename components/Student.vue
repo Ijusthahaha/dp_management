@@ -22,6 +22,12 @@ const onMenuOpen = function (index: string) {
   shouldBeUpdate.value++
 }
 
+const isCollapse = ref(false)
+const mediaQuery = window.matchMedia('(min-width: 1024px)')
+window.addEventListener("resize", () => {
+  isCollapse.value = !mediaQuery.matches
+})
+
 watch(shouldBeUpdate, () => {
   getLogs(store.jwt).then(d => {
     let res: DPLog[] = []
@@ -66,16 +72,11 @@ watch(shouldBeUpdate, () => {
         </el-popover>
       </el-header>
       <el-container>
-        <el-aside>
-          <!--          <el-menu-->
-          <!--              default-active="1"-->
-          <!--              :collapse="isCollapse"-->
-          <!--              @mouseover="isCollapse = false"-->
-          <!--              @mouseleave="isCollapse = true"-->
-          <!--          >-->
+        <el-aside :class="isCollapse ? 'closed-aside': 'opened_aside'">
           <el-menu
               default-active="0"
               @select="onMenuOpen"
+              :collapse="isCollapse"
           >
             <el-menu-item index="0">
               <el-icon>
@@ -129,16 +130,19 @@ watch(shouldBeUpdate, () => {
 i {
   margin-right: 4px;
 }
-
-.el-aside {
-  width: 300px;
-}
-
 .el-menu, .el-main {
   height: 100%;
 }
 
 .el-main {
+  width: 100%;
   overflow-y: hidden;
+}
+
+.closed-aside {
+  width: auto;
+}
+.opened-aside {
+  width: 300px;
 }
 </style>

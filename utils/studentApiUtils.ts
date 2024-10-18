@@ -12,6 +12,10 @@ export async function validateStudentJwt(jwt: string): Promise<Status> {
         if (result.data.code !== 200) {
             return createStatus(403, "Forbidden");
         }
+        if (result.data.data.studentLevel === "-1") {
+            console.log("This Student Do Not Have a Class!");
+            return createStatus(501, "No Class Available");
+        }
         store.$patch(state => {
             state.jwt = jwt
             state.user = createStudent(result.data.data.studentUuid, result.data.data.studentName, result.data.data.studentClass, result.data.data.studentLevel)

@@ -50,7 +50,7 @@ const data = {
 
 const options = {
   responsive: true,
-  aspectRatio: 3,
+  maintainAspectRatio: false,
   plugins: {
     legend: {
       display: false
@@ -257,6 +257,10 @@ onMounted(() => {
 
 .red {
   color: var(--el-color-error);
+}
+
+.chartContainer {
+  position: relative;
 }
 </style>
 

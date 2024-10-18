@@ -7,7 +7,7 @@ import StudentLevelChart from "~/components/Teacher/Charts/School/StudentLevelCh
 <template>
   <el-carousel :autoplay="false" trigger="click">
     <el-carousel-item>
-      <el-card shadow="hover">
+      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
         <template #header>
           <div>
             <span>{{$t('teacher.school.class_dp')}}</span>
@@ -19,7 +19,7 @@ import StudentLevelChart from "~/components/Teacher/Charts/School/StudentLevelCh
       </el-card>
     </el-carousel-item>
     <el-carousel-item>
-      <el-card shadow="hover">
+      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
         <template #header>
           <div>
             <span>{{$t('teacher.school.dp_type')}}</span>
@@ -31,7 +31,7 @@ import StudentLevelChart from "~/components/Teacher/Charts/School/StudentLevelCh
       </el-card>
     </el-carousel-item>
     <el-carousel-item>
-      <el-card shadow="hover">
+      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
         <template #header>
           <div>
             <span>{{$t('teacher.school.divisions')}}</span>
@@ -54,7 +54,7 @@ import StudentLevelChart from "~/components/Teacher/Charts/School/StudentLevelCh
   height: 100% !important;
 }
 
-.el-card {
+.el-card, .mainCard  {
   height: 100%;
 }
 </style>

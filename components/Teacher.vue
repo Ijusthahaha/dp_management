@@ -398,12 +398,6 @@ i {
 }
 
 .el-tabs--card {
-  height: 80vh; /* idk why (height: 100%) not working... */
-  /* overflow-y: auto; */
-}
-
-.el-tab-pane {
-  height: 80vh;
-  overflow-x: auto;
+  height: 100%;
 }
 </style>

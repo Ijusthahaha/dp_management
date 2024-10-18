@@ -53,7 +53,8 @@ let data = reactive({
   ]
 })
 const chartOptions = {
-  responsive: true
+  responsive: true,
+  maintainAspectRatio: false
 }
 
 const update = ref(false)
@@ -86,12 +87,18 @@ watch(isUpdatedDP, () => {
 </script>
 
 <template>
-  <Bar v-if="update"
-       :data="data"
-       :options="chartOptions">
-  </Bar>
+  <div class="chartContainer">
+    <Bar v-if="update"
+         :data="data"
+         :options="chartOptions">
+    </Bar>
+  </div>
 </template>
 
 <style scoped>
-
+.chartContainer {
+  position: relative;
+  /* 20px for el-card upper padding, 20px for el-card lower padding, 20px for this padding */
+  height: calc(100% - 20px - 20px - 20px);
+}
 </style>
