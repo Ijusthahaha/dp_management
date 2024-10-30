@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import {Bar} from 'vue-chartjs'
-import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js'
 import {useSchoolDPDataStore} from "~/composables/schoolDPDataStore";
 import {storeToRefs} from "pinia";
 import type {Ref} from "@vue/reactivity";
@@ -8,10 +7,7 @@ import {getAllLogs} from "~/utils/fetch";
 import {formatGetAllLogs} from "~/utils/DPUtils";
 import type {DPLog} from "~/types/DPType";
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
-
 const {schoolDP, isUpdatedDP} = storeToRefs(useSchoolDPDataStore())
-
 const classMap = reactive<Map<string, number>>(new Map())
 const update = ref(false)
 const classes: Ref<string[]> = ref([])
@@ -19,10 +15,22 @@ let d = reactive<Map<string, DPLog[]>>(new Map())
 const classMapKey = ref()
 const classMapValue = ref()
 
-// will bugs occur if fetched data in here? hmm.
+// will bugs occur if fetched data in here? (cus fetch should be called at the global)
 getAllLogs().then(data => {
-  d = formatGetAllLogs(data.data.data)
-  schoolDP.value = data.data.data
+  const logs = []
+  // must verify date
+  const currentYear = new Date().getFullYear();
+  const semesterStartDate = new Date(currentYear, 8, 1); // semester year begins with 9.1
+  const semesterEndDate = new Date(currentYear + 1, 7, 31, 23, 59, 59); // semester year ends with 8.31
+  for (let i=0; i<data.data.data.length; i++) {
+    const t = data.data.data[i]
+    const date = new Date(t.date)
+    if (date >= semesterStartDate && date <= semesterEndDate) {
+      logs.push(t)
+    }
+  }
+  d = formatGetAllLogs(logs)
+  schoolDP.value = logs
   isUpdatedDP.value = true
 })
 

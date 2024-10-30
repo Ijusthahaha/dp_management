@@ -1,21 +1,7 @@
 <script lang="ts" setup>
 import {Avatar, CaretBottom, CaretTop, ChatLineRound, HomeFilled, UserFilled,} from '@element-plus/icons-vue'
-import {
-  ArcElement,
-  BarElement,
-  CategoryScale,
-  Chart as ChartJS,
-  Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip
-} from 'chart.js'
 import {Line} from 'vue-chartjs'
 import {getAdminDashboardData} from "~/utils/fetch";
-
-ChartJS.register(CategoryScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement, LinearScale, ArcElement)
 
 const sourceOfTotalDPCount = ref(0)
 const TotalDPCount = useTransition(sourceOfTotalDPCount, {

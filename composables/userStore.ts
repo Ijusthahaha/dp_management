@@ -11,6 +11,33 @@ export const useUserStore = defineStore('userStore', () => {
     const font = useLocalStorage('font', '')
     const language = useLocalStorage('language', 'en')
 
+    const route = ref("/")
+    const getRouteDepth = () => {
+        const segments = route.value.replace(/^\/|\/$/g, '').split('/');
+        return segments[0] === '' ? 0 : segments.length;
+    }
+    const popRoutePath = () => {
+        const segments = route.value.replace(/^\/|\/$/g, '').split('/');
+        if (segments.length <= 1) {
+            route.value = '/'
+        }
+        segments.pop();
+        route.value = '/' + segments.join('/');
+    }
+    const getRoutePath = (level: number) => {
+        const segments = route.value.replace(/^\/|\/$/g, '').split('/');
+        if (level > 0 && level <= segments.length) {
+            return segments[level - 1];
+        }
+    }
+    const gotoRoute = (n: number) => {
+        let depth = getRouteDepth();
+        while (depth > n) {
+            popRoutePath();
+            depth = getRouteDepth();
+        }
+    };
+
     return {
         user: User,
         from: from,
@@ -18,6 +45,11 @@ export const useUserStore = defineStore('userStore', () => {
         theme: skipHydrate(Theme),
         font: skipHydrate(font),
         language: skipHydrate(language),
-        currentItem
+        route,
+        currentItem,
+        getRouteDepth,
+        popRoutePath,
+        getRoutePath,
+        gotoRoute
     }
 })

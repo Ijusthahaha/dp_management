@@ -21,7 +21,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
         let query = '?'
         if (result && result.status === 200) {
-            navigateTo('/', {redirectCode: 301})
+            return
         } else {
             return navigateTo('/login/student' + query)
         }

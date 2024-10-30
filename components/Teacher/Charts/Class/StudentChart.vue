@@ -1,12 +1,9 @@
 <script lang="ts" setup>
 // show each student's dp.
 import {Bar} from 'vue-chartjs'
-import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js'
 import {useClassDPDataStore} from "~/composables/classDPDataStore";
 import {storeToRefs} from "pinia";
 import {getAllLogsByClass} from "~/utils/fetch";
-
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 const store = useClassDPDataStore()
 const {classDP, isUpdatedDP} = storeToRefs(useClassDPDataStore())
@@ -17,7 +14,17 @@ const classMapKey = ref()
 const classMapValue = ref()
 
 getAllLogsByClass(useUserStore().jwt).then(data => {
-  classDP.value = data.data.data
+  // must verify date
+  const currentYear = new Date().getFullYear();
+  const semesterStartDate = new Date(currentYear, 8, 1); // semester year begins with 9.1
+  const semesterEndDate = new Date(currentYear + 1, 7, 31, 23, 59, 59); // semester year ends with 8.31
+  for (let i = 0; i < data.data.data.length; i++) {
+    let t = data.data.data[i]
+    const date = new Date(t.date)
+    if (date >= semesterStartDate && date <= semesterEndDate) {
+      classDP.value.push(t)
+    }
+  }
   isUpdatedDP.value = true
 })
 

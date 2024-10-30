@@ -31,9 +31,16 @@ window.addEventListener("resize", () => {
 watch(shouldBeUpdate, () => {
   getLogs(store.jwt).then(d => {
     let res: DPLog[] = []
+    const currentYear = new Date().getFullYear();
+    const semesterStartDate = new Date(currentYear, 8, 1); // semester year begins with 9.1
+    const semesterEndDate = new Date(currentYear + 1, 7, 31, 23, 59, 59); // semester year ends with 8.31
     for (let i = 0; i < d.data.data.length; i++) {
+      // must verify date
       let t = d.data.data[i]
-      res.push(createDP(t.logType, t.logLocation, t.dp, t.date, t.remark, t.appeal))
+      const date = new Date(t.date)
+      if (date >= semesterStartDate && date <= semesterEndDate) {
+        res.push(createDP(t.logType, t.logLocation, t.dp, t.date, t.remark, t.appeal))
+      }
     }
     dpStore.$patch(state => {
       state.rawUserDP = res

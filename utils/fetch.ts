@@ -25,6 +25,14 @@ export function getLogs(token: string) {
     })
 }
 
+export function getLogsByStudents(id: number, token: string) {
+    return http.get("/log/getLogsByStudents?studentId=" + id, {
+        headers: {
+            token: token
+        }
+    })
+}
+
 export function getCompareLogs(token: string) {
     return http.get("/log/getCompareLogs", {
         headers: {

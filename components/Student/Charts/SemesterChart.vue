@@ -6,8 +6,6 @@ import {DPType} from "~/types/DPType";
 import {storeToRefs} from "pinia";
 import {type Ref} from "@vue/reactivity";
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement)
-
 const {isUpdatedDP, availableDP} = storeToRefs(useDPDataStore())
 
 const DPTypeSet: Ref<DPType[]> = ref([])

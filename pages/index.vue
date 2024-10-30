@@ -3,6 +3,8 @@ import {useUserStore} from "~/composables/userStore";
 
 const store = useUserStore()
 const type = store.user?.type as string
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 definePageMeta({
   middleware: 'auth-intercept'

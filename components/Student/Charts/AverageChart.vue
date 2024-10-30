@@ -1,26 +1,9 @@
 <script lang="ts" setup>
 import {Radar} from 'vue-chartjs'
-import {
-  ArcElement,
-  CategoryScale,
-  Chart as ChartJS,
-  Filler,
-  Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  PolarAreaController,
-  RadialLinearScale,
-  Title,
-  Tooltip
-} from 'chart.js'
 import {useDPDataStore} from "~/composables/DPDataStore";
 import {DPType} from "~/types/DPType";
 import {type Ref} from "@vue/reactivity";
 import {storeToRefs} from "pinia";
-
-ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, PolarAreaController, RadialLinearScale, PointElement, LineElement, ArcElement, Filler)
-
 const {isUpdatedDP, averageDP, availableDP} = storeToRefs(useDPDataStore())
 
 const DPTypeSet: Ref<DPType[]> = ref([])
@@ -61,7 +44,18 @@ const data = reactive({
 
 const chartOptions = {
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
+  scales: {
+    r: {
+      ticks: {
+        backdropColor: 'transparent'
+      },
+      grid: {
+        color: 'rgba(255, 255, 255, 0.1)',
+        lineWidth: 1,
+      }
+    }
+  }
 }
 
 watch(isUpdatedDP, () => {

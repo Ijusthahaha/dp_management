@@ -22,21 +22,6 @@ onMounted(() => {
     document.documentElement.classList.add("dark")
     Chart.defaults.color = "#E5EAF3"
   }
-
-  if (store.font == "minecraft" || store.font == "mc") {
-    document.documentElement.style.setProperty('--font-family', 'Monocraft');
-  }
-
-  // for debug
-  window.addEventListener("keydown", (key) => {
-    if (key.key === "F9") {
-      store.$patch(state => {
-        state.jwt = ''
-        localStorage.setItem("JWT", '')
-        location.reload()
-      })
-    }
-  })
 })
 </script>
 

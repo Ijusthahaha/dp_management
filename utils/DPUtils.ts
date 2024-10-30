@@ -63,6 +63,13 @@ export function ClassLevelConverter(level: number): StudentLevel {
     else return <StudentLevel>"UNDEFINED"
 }
 
+export function ClassStringLevelConverter(level: string): StudentLevel {
+    if (level == "Middle School") return <StudentLevel>"MS"
+    if (level == "Junior High") return <StudentLevel>"JH"
+    if (level == "Senior High") return <StudentLevel>"SH"
+    else return <StudentLevel>"UNDEFINED"
+}
+
 export function TeacherLevelConverter(level: number): TeacherType {
     if (level == 0) return <TeacherType>"Default"
     else if (level == 1) return <TeacherType>"CT"

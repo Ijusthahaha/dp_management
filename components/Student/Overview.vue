@@ -4,11 +4,12 @@ import AverageChart from "~/components/Student/Charts/AverageChart.vue";
 import SemesterChart from "~/components/Student/Charts/SemesterChart.vue";
 import {storeToRefs} from "pinia";
 import {useDPDataStore} from "~/composables/DPDataStore";
+import LocationChart from "~/components/Student/Charts/LocationChart.vue";
 
-const {isUpdatedDP, computedUserDP} = storeToRefs(useDPDataStore())
+const {isUpdatedDP, rawUserDP} = storeToRefs(useDPDataStore())
 const isComputedUserDPEmpty = ref(false)
 watch(isUpdatedDP, () => {
-  if (computedUserDP.value.length === 0) {
+  if (rawUserDP.value.length === 0) {
     isComputedUserDPEmpty.value = true
   }
 })
@@ -49,6 +50,18 @@ watch(isUpdatedDP, () => {
         </template>
         <div class="mainCard">
           <AverageChart></AverageChart>
+        </div>
+      </el-card>
+    </el-carousel-item>
+    <el-carousel-item>
+      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+        <template #header>
+          <div>
+            <span>{{$t('student.menu.overview.location_dp')}}</span>
+          </div>
+        </template>
+        <div class="mainCard">
+          <LocationChart></LocationChart>
         </div>
       </el-card>
     </el-carousel-item>

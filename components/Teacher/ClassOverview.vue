@@ -4,6 +4,7 @@ import StudentChart from "~/components/Teacher/Charts/Class/StudentChart.vue";
 import TypeChart from "~/components/Teacher/Charts/Class/TypeChart.vue";
 import {useUserStore} from "~/composables/userStore";
 import type {Teacher} from "~/types/User";
+import LocationChart from "~/components/Teacher/Charts/Class/LocationChart.vue";
 
 const store = useUserStore()
 </script>
@@ -43,6 +44,18 @@ const store = useUserStore()
         </template>
         <div class="mainCard">
           <TypeChart></TypeChart>
+        </div>
+      </el-card>
+    </el-carousel-item>
+    <el-carousel-item>
+      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+        <template #header>
+          <div>
+            <span>{{$t('teacher.class.location_dp')}}</span>
+          </div>
+        </template>
+        <div class="mainCard">
+          <LocationChart></LocationChart>
         </div>
       </el-card>
     </el-carousel-item>

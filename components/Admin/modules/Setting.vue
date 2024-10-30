@@ -123,6 +123,14 @@ onMounted(() => {
     totalLogins.value = d.data
   })
 })
+
+const logout = () => {
+  store.$patch(state => {
+    state.jwt = ''
+    localStorage.setItem("JWT", '')
+    location.reload()
+  })
+}
 </script>
 
 <template>

@@ -50,7 +50,8 @@
       "overview": {
         "monthly": "月度DP总数",
         "semester": "学期DP总数",
-        "compare": "相较于平均DP"
+        "compare": "相较于平均DP",
+        "location_dp": "学术DP和宿舍DP"
       },
       "settings": {
         "info": "个人信息",
@@ -78,6 +79,7 @@
     "menu": {
       "overview": "DP总览",
       "messagebox": "收件箱",
+      "profile": "查询学生档案",
       "class_overview": "班级DP总览",
       "tab": {
         "form": "学生姓名",
@@ -123,12 +125,14 @@
     "school": {
       "class_dp": "班级的DP",
       "dp_type": "DP种类",
-      "divisions": "学部"
+      "divisions": "学部",
+      "location_dp": "学术DP和宿舍DP"
     },
     "class": {
       "student_dp": "学生的DP",
       "average_dp": "学生的平均DP",
-      "dp_type": "DP种类"
+      "dp_type": "DP种类",
+      "location_dp": "学术DP和宿舍DP"
     }
   },
   "common": {

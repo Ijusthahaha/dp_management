@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import {Line} from 'vue-chartjs'
-import {Chart as ChartJS, registerables} from 'chart.js'
 import {useClassDPDataStore} from "~/composables/classDPDataStore";
 import {storeToRefs} from "pinia";
-
-ChartJS.register(...registerables)
-
 const store = useClassDPDataStore()
 const {classDP, isUpdatedDP} = storeToRefs(useClassDPDataStore())
 const MONTHS = [
+  'September',
+  'October',
+  'November',
+  'December',
   'January',
   'February',
   'March',
@@ -16,12 +16,8 @@ const MONTHS = [
   'May',
   'June',
   'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-]
+  'August'
+];
 
 const dpMap: Map<string, number> = new Map()
 let update = ref(false)
@@ -35,8 +31,8 @@ watch(isUpdatedDP, () => {
   for (let i = 0; i < classDP.value.length; i++) {
     let date = new Date(classDP.value[i].date)
     let dp = classDP.value[i].dp
-
-    dpMap.set(MONTHS[date.getMonth()], dpMap.get(MONTHS[date.getMonth()]) as number + dp)
+    let monthIndex = (date.getMonth() + 4) % 12
+    dpMap.set(MONTHS[monthIndex], (dpMap.get(MONTHS[monthIndex]) as number) + dp);
   }
   classMapValue.value = Array.from(dpMap.values())
   update.value = true

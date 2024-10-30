@@ -1,11 +1,8 @@
 <script lang="ts" setup>
 import {Bar} from 'vue-chartjs'
-import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js'
 import {useDPDataStore} from "~/composables/DPDataStore";
 import {type Ref} from "@vue/reactivity";
 import {storeToRefs} from "pinia";
-
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 const {isUpdatedDP, availableDP} = storeToRefs(useDPDataStore())
 
@@ -13,6 +10,10 @@ let dpData: Ref<number[]> = ref([])
 
 let data = reactive({
   labels: [
+    'September',
+    'October',
+    'November',
+    'December',
     'January',
     'February',
     'March',
@@ -20,11 +21,7 @@ let data = reactive({
     'May',
     'June',
     'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
+    'August'
   ],
   datasets: [
     {
@@ -60,24 +57,22 @@ const chartOptions = {
 const update = ref(false)
 watch(isUpdatedDP, () => {
   let d = []
+  const semesterMonths = [8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7]; // begin with 9th, "8" represents 9th
   for (let i = 0; i < 12; i++) {
-    let array: number[] = []
+    let month = semesterMonths[i];
+    let monthlyDemeritPoints: number[] = [];
 
     for (let j = 0; j < availableDP.value.length; j++) {
       let date = new Date(availableDP.value[j].date)
 
-      if (date && date.getMonth() == i) {
-        array.push(availableDP.value[j].dp)
+      if (date && date.getMonth() == month) {
+        monthlyDemeritPoints.push(availableDP.value[j].dp)
       }
     }
-    if (array.length === 0) array.push(0)
+    if (monthlyDemeritPoints.length === 0) monthlyDemeritPoints.push(0)
 
-    let sum = 0
-    for (let j = 0; j < array.length; j++) {
-      sum = sum + array[j]
-    }
-
-    d.push(sum)
+    let sum = monthlyDemeritPoints.reduce((total, dp) => total + dp, 0);
+    d.push(sum);
   }
   dpData.value = d
   data.datasets[0].data = d

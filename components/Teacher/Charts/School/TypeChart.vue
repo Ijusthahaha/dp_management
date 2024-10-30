@@ -5,8 +5,6 @@ import {DPType} from "~/types/DPType";
 import {useSchoolDPDataStore} from "~/composables/schoolDPDataStore";
 import {storeToRefs} from "pinia";
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement)
-
 const {schoolDP, isUpdatedDP} = storeToRefs(useSchoolDPDataStore())
 
 const typeMap = reactive<Map<string, number>>(new Map())

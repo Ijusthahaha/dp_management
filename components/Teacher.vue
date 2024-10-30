@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {HomeFilled, User} from "@element-plus/icons-vue";
+import {HomeFilled, Right, User} from "@element-plus/icons-vue";
 import type {Student, Teacher} from "~/types/User"
 import {TeacherType} from "~/types/User"
 import type {Action, FormRules, TabPaneName} from "element-plus";
@@ -8,12 +8,13 @@ import {$fetch} from "ofetch";
 import SchoolOverview from "~/components/Teacher/SchoolOverview.vue";
 import MessageBox from "~/components/Teacher/MessageBox.vue";
 import ClassOverview from "~/components/Teacher/ClassOverview.vue";
-import {DPType} from "~/types/DPType";
+import {DPType, DPTypeExtraInfo, Location} from "~/types/DPType";
 import {getStudents, postLogs} from "~/utils/fetch";
 import {createStudent} from "~/utils/createUser";
 import type {Ref} from "@vue/reactivity";
 import {storeToRefs} from "pinia";
 import type {Form} from "~/types/Status";
+import ProfileChecker from "~/components/Teacher/ProfileChecker.vue";
 
 let quote: string[];
 onMounted(async () => {
@@ -203,20 +204,45 @@ const dateFormatter = function (row: any): string {
   return `${year}-${month}-${day}`
 }
 
-const DPTypes = (Object.keys(DPType) as Array<keyof DPType>).filter(v => isNaN(Number(v)))
+const DPTypes: Ref<string[]> = ref([])
 
 const handleSelectAutocomplete = (item: { value: string, id: number }) => {
   let f = forms.value.at(+editableTabsValue.value - 1)!.currentStudent
   f.name = item.value
   f.id = item.id
 }
+
+watchEffect(() => {
+  forms.value.forEach((form) => {
+    if (form.type) {
+      const suggestion = DPTypeExtraInfo[DPType[form.type as keyof typeof DPType]].suggestion
+      if (suggestion) {
+        form.dp = suggestion as number
+      }
+    }
+    const location = form.location
+    if (location.toLowerCase() == Location.academic) { // is academic
+      DPTypes.value = (Object.keys(DPType) as Array<keyof DPType>).filter(v => isNaN(Number(v)))
+    } else if (location.toLowerCase() === Location.dorm) {
+      DPTypes.value = (Object.keys(DPType) as Array<keyof DPType>).filter(v => isNaN(Number(v))).filter(v => DPTypeExtraInfo[DPType[v as keyof typeof DPType]].location == Location.dorm)
+    }
+  })
+})
+
+const logout = () => {
+  store.$patch(state => {
+    state.jwt = ''
+    localStorage.setItem("JWT", '')
+    location.reload()
+  })
+}
 </script>
 
 <template>
   <div id="teacher">
     <el-container>
-      <el-header>
-        <el-page-header icon="null">
+      <el-header style="justify-content: space-between">
+        <el-page-header icon="null" style="margin: 0 auto">
           <template #title>
             <el-icon>
               <HomeFilled/>
@@ -230,6 +256,7 @@ const handleSelectAutocomplete = (item: { value: string, id: number }) => {
             <span>{{ store.user?.name }}</span>
           </template>
         </el-page-header>
+        <el-link :underline="false" @click="logout">Logout<el-icon class="el-icon--right"><Right /></el-icon></el-link>
       </el-header>
       <el-container>
         <el-main>
@@ -240,6 +267,10 @@ const handleSelectAutocomplete = (item: { value: string, id: number }) => {
               type="card"
               @edit="handleTabsEdit"
           >
+            <el-tab-pane v-if="teacherLevel() == TeacherType.Director" key="profile" :closable="false"
+                         :label="t('teacher.menu.profile')" name="-2">
+              <ProfileChecker></ProfileChecker>
+            </el-tab-pane>
             <el-tab-pane v-if="teacherLevel() == TeacherType.Director" key="overview" :closable="false"
                          :label="t('teacher.menu.overview')" name="-1">
               <SchoolOverview></SchoolOverview>
@@ -294,13 +325,13 @@ const handleSelectAutocomplete = (item: { value: string, id: number }) => {
                     </el-col>
                   </el-form-item>
                   <el-form-item :label="t('teacher.menu.tab.dispatch_location')" required>
-                    <el-radio-group v-model="forms[+item.id- 1].location">
+                    <el-radio-group v-model="forms[+item.id - 1].location">
                       <el-radio :label="t('teacher.menu.tab.type.academic')"/>
                       <el-radio :label="t('teacher.menu.tab.type.dorm')"/>
                     </el-radio-group>
                   </el-form-item>
                   <el-form-item :label="t('teacher.menu.tab.dp_type')" required>
-                    <el-select v-model="forms[+item.id- 1].type" :placeholder="t('common.select')">
+                    <el-select v-model="forms[+item.id - 1].type" :placeholder="t('common.select')">
                       <el-option
                           v-for="(item, index) in DPTypes"
                           :key="index"
@@ -308,6 +339,9 @@ const handleSelectAutocomplete = (item: { value: string, id: number }) => {
                           :value="item"
                       />
                     </el-select>
+                    <el-alert type="success" v-if="forms[+item.id - 1].type && DPTypeExtraInfo[DPType[forms[+item.id - 1].type as keyof typeof DPType]].suggestion" style="margin-top: 18px" show-icon :closable="false">
+                      The recommend DPs for type "{{forms[+item.id - 1].type}}" is {{DPTypeExtraInfo[DPType[forms[+item.id - 1].type as keyof typeof DPType]].suggestion}}
+                    </el-alert>
                   </el-form-item>
                   <el-form-item :label="t('teacher.menu.tab.reason')" required>
                     <el-input v-model="forms[+item.id - 1].reason"
@@ -321,7 +355,7 @@ const handleSelectAutocomplete = (item: { value: string, id: number }) => {
                   <el-form-item label="DP: " required>
                     <el-col :span="4">
                       <el-input v-model="forms[+item.id - 1].dp" :max="12" :min="1" :step="1"
-                                oninput="value=value.replace(/[^1-9]/g)"
+                                oninput="if (value > 12) value=12"
                                 :placeholder="t('teacher.menu.tab.count')" type="number"></el-input>
                     </el-col>
                     <el-col :span="1"></el-col>

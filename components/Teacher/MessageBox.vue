@@ -90,8 +90,8 @@ getPendingAppeals(userStore.jwt).then((data) => {
 
   <el-empty v-if="messages.length === 0 && isLoading === false" :description="t('teacher.messagebox.empty')"/>
   <el-table v-else v-loading="isLoading" :data="messages" :default-sort="{ prop: 'date', order: 'descending' }"
-            :row-class-name="tableRowClassName">
-    <el-table-column :formatter="dateFormatter" label="Date" prop="date" sortable></el-table-column>
+            :row-class-name="tableRowClassName" style="width: 100%">
+    <el-table-column :formatter="dateFormatter" label="Date" prop="date" sortable fixed></el-table-column>
     <el-table-column :label="t('teacher.messagebox.name')" prop="studentName"></el-table-column>
     <el-table-column :label="t('teacher.messagebox.class')" prop="studentClass"></el-table-column>
     <el-table-column :label="t('teacher.messagebox.type')" prop="type"></el-table-column>
@@ -99,7 +99,7 @@ getPendingAppeals(userStore.jwt).then((data) => {
     <!--    <el-table-column label="Remark" prop="remark"></el-table-column>-->
     <el-table-column :label="t('teacher.messagebox.reason')" prop="reason"></el-table-column>
 
-    <el-table-column label="Operation">
+    <el-table-column label="Operation" fixed="right">
       <template #default="scope">
         <div class="dialogTrigger">
           <el-button plain size="small" type="primary" @click="appealFulfillOperation(scope)">{{$t('teacher.messagebox.fulfill')}}</el-button>
@@ -166,7 +166,7 @@ getPendingAppeals(userStore.jwt).then((data) => {
     <el-text type="danger">{{$t('teacher.messagebox.warning')}}</el-text>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="rejectDialog = false">{{$t('teacher.cancel')}}</el-button>
+        <el-button @click="rejectDialog = false">{{$t('common.cancel')}}</el-button>
         <el-button type="primary" @click="submitOperation('reject')">
           {{$t('common.submit')}}
         </el-button>

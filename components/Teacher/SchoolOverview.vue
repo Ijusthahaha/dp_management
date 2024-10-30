@@ -2,6 +2,7 @@
 import ClassChart from "~/components/Teacher/Charts/School/ClassChart.vue";
 import TypeChart from "~/components/Teacher/Charts/School/TypeChart.vue";
 import StudentLevelChart from "~/components/Teacher/Charts/School/StudentLevelChart.vue";
+import LocationChart from "~/components/Teacher/Charts/School/LocationChart.vue";
 </script>
 
 <template>
@@ -39,6 +40,18 @@ import StudentLevelChart from "~/components/Teacher/Charts/School/StudentLevelCh
         </template>
         <div class="mainCard">
           <StudentLevelChart></StudentLevelChart>
+        </div>
+      </el-card>
+    </el-carousel-item>
+    <el-carousel-item>
+      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+        <template #header>
+          <div>
+            <span>{{$t('teacher.school.location_dp')}}</span>
+          </div>
+        </template>
+        <div class="mainCard">
+          <LocationChart></LocationChart>
         </div>
       </el-card>
     </el-carousel-item>

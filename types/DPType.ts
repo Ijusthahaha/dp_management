@@ -1,5 +1,10 @@
 import type {Student, StudentLevel} from "~/types/User";
 
+export enum Location {
+    academic = "academic",
+    dorm = "dorm"
+}
+
 export enum DPType {
     'punctuality',
     'copy homework',
@@ -14,7 +19,7 @@ export enum DPType {
     'exploitation',
     'gambling',
     'bullying',
-    'rude teachers',
+    'rude to teacher',
     'theft',
     'forgery',
     'plagiarism',
@@ -27,9 +32,32 @@ export enum DPType {
     'others'
 }
 
-export enum Location {
-    academic = "academic",
-    dorm = "dorm"
+// Location.academic == academic + dorm; Location.dorm == dorm
+export const DPTypeExtraInfo: { [key in DPType]: {suggestion?: number, location: Location} } = {
+    [DPType.punctuality]: {suggestion: 1, location: Location.academic},
+    [DPType["copy homework"]]: {suggestion: 1, location: Location.academic},
+    [DPType["untidy attire"]]: {suggestion: 1, location: Location.academic},
+    [DPType["waste resources"]]: {suggestion: 1, location: Location.dorm},
+    [DPType["inconsiderate behavior"]]: {suggestion: 1, location: Location.dorm},
+    [DPType.littering]: {suggestion: 1, location: Location.dorm},
+    [DPType["sleeping in class"]]: {suggestion: 1, location: Location.academic},
+    [DPType["abuse of e-gadgets"]]: {suggestion: 2, location: Location.dorm},
+    [DPType["rude to peers"]]: {suggestion: 3, location: Location.dorm},
+    [DPType["violent behavior"]]: {suggestion: 4, location: Location.dorm},
+    [DPType.exploitation]: {suggestion: 4, location: Location.dorm},
+    [DPType.gambling]: {suggestion: 3, location: Location.dorm},
+    [DPType.bullying]: {suggestion: 6, location: Location.dorm},
+    [DPType["rude to teacher"]]: {suggestion: 6, location: Location.dorm},
+    [DPType.theft]: {suggestion: 6, location: Location.dorm},
+    [DPType.forgery]: {suggestion: 6, location: Location.dorm},
+    [DPType.plagiarism]: {suggestion: 6, location: Location.dorm},
+    [DPType["cheating in exam"]]: {suggestion: 6, location: Location.academic},
+    [DPType.vandalism]: {suggestion: 6, location: Location.dorm},
+    [DPType.pornography]: {suggestion: 6, location: Location.dorm},
+    [DPType.smoking]: {suggestion: 6, location: Location.dorm},
+    [DPType["alcohol abuse"]]: {suggestion: 6, location: Location.dorm},
+    [DPType.truancy]: {suggestion: 6, location: Location.dorm},
+    [DPType.others]: {location: Location.dorm}
 }
 
 export enum AppealStatus {

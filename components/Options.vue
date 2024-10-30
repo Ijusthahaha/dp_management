@@ -46,11 +46,12 @@ const updateFont = (font: string) => {
       <button @click="updateLanguage('zh')"></button>
       <button @click="updateLanguage('en')"></button>
     </div>
-    <div class="child">
-      <button></button>
-      <button @click="updateFont('')"></button>
-      <button @click="updateFont('mc')"></button>
-    </div>
+    <!--MR.CLARENCE THINK THIS IS USELESS SO I HAVE TO REMOVED IT :(-->
+<!--    <div class="child">-->
+<!--      <button></button>-->
+<!--      <button @click="updateFont('')"></button>-->
+<!--      <button @click="updateFont('mc')"></button>-->
+<!--    </div>-->
   </div>
 </template>
 

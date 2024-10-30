@@ -39,6 +39,7 @@ const tableColumns = ref([
   {key: "id", dataKey: "teacherUuid", title: "UUID", width: 100},
   {key: "name", dataKey: "teacherName", title: "Teacher Name", width: 300},
   {key: "level", dataKey: "teacherLevel", title: "Teacher Level", width: 200},
+  {key: "teacherId", dataKey: "teacherId", title: "ID", width: 300},
   {key: "class", dataKey: "teacherClass", title: "Associated Class", width: 300},
   {key: "search", dataKey: "search", title: "Search"}
 ])

@@ -29,7 +29,7 @@
     "element-plus": "^2.7.0",
     "jwt-decode": "^4.0.0",
     "nprogress": "^0.2.0",
-    "nuxt": "^3.11.2",
+    "nuxt": "^3.13.2",
     "pinia": "^2.1.6",
     "pixi.js": "^8.1.0",
     "vue-chartjs": "^5.3.1"

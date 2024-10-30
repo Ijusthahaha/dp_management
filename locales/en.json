@@ -50,7 +50,8 @@
       "overview": {
         "monthly": "Monthly DP",
         "semester": "Entire semester's DP",
-        "compare": "Compare with average DP"
+        "compare": "Compare with average DP",
+        "location_dp": "Academic DP vs. Dorm DP"
       },
       "settings": {
         "info": "Personal Info",
@@ -78,6 +79,7 @@
     "menu": {
       "overview": "DP Overview",
       "messagebox": "MessageBox",
+      "profile":  "Profile Checker",
       "class_overview": "Class DP Overview",
       "tab": {
         "form": "Input student's name",
@@ -123,12 +125,14 @@
     "school": {
       "class_dp": "Classes' DP",
       "dp_type": "DP Type",
-      "divisions": "Divisions"
+      "divisions": "Divisions",
+      "location_dp": "Academic vs. Dorm"
     },
     "class": {
       "student_dp": "Students' DP",
       "average_dp": "Students' Average DP",
-      "dp_type": "DP Type"
+      "dp_type": "DP Type",
+      "location_dp": "Academic vs. Dorm"
     }
   },
   "common": {
