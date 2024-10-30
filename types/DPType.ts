@@ -33,7 +33,7 @@ export enum DPType {
 }
 
 // Location.academic == academic + dorm; Location.dorm == dorm
-export const DPTypeExtraInfo: { [key in DPType]: {suggestion?: number, location: Location} } = {
+export const DPTypeExtraInfo: { [key in DPType]: { suggestion?: number, location: Location } } = {
     [DPType.punctuality]: {suggestion: 1, location: Location.academic},
     [DPType["copy homework"]]: {suggestion: 1, location: Location.academic},
     [DPType["untidy attire"]]: {suggestion: 1, location: Location.academic},

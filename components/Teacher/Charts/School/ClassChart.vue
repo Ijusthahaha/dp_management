@@ -22,7 +22,7 @@ getAllLogs().then(data => {
   const currentYear = new Date().getFullYear();
   const semesterStartDate = new Date(currentYear, 8, 1); // semester year begins with 9.1
   const semesterEndDate = new Date(currentYear + 1, 7, 31, 23, 59, 59); // semester year ends with 8.31
-  for (let i=0; i<data.data.data.length; i++) {
+  for (let i = 0; i < data.data.data.length; i++) {
     const t = data.data.data[i]
     const date = new Date(t.date)
     if (date >= semesterStartDate && date <= semesterEndDate) {

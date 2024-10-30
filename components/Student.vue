@@ -59,7 +59,8 @@ watch(shouldBeUpdate, () => {
   <div id="student">
     <el-container>
       <el-header>
-        <el-popover :content="$t('student.current_dp') + dpStore.getTotalDP.toString()" :title="$t('student.total_dp')" trigger="hover">
+        <el-popover :content="$t('student.current_dp') + dpStore.getTotalDP.toString()" :title="$t('student.total_dp')"
+                    trigger="hover">
           <template #reference>
             <el-page-header icon="null">
               <template #title>
@@ -81,27 +82,27 @@ watch(shouldBeUpdate, () => {
       <el-container>
         <el-aside :class="isCollapse ? 'closed-aside': 'opened_aside'">
           <el-menu
+              :collapse="isCollapse"
               default-active="0"
               @select="onMenuOpen"
-              :collapse="isCollapse"
           >
             <el-menu-item index="0">
               <el-icon>
                 <Menu/>
               </el-icon>
-              <span>{{$t("student.menu.dp_overview")}}</span>
+              <span>{{ $t("student.menu.dp_overview") }}</span>
             </el-menu-item>
             <el-menu-item index="1">
               <el-icon>
                 <MessageBox/>
               </el-icon>
-              <span>{{$t("student.menu.dp_log")}}</span>
+              <span>{{ $t("student.menu.dp_log") }}</span>
             </el-menu-item>
             <el-menu-item index="2">
               <el-icon>
                 <setting/>
               </el-icon>
-              <span>{{$t("student.menu.dp_settings")}}</span>
+              <span>{{ $t("student.menu.dp_settings") }}</span>
             </el-menu-item>
           </el-menu>
         </el-aside>
@@ -137,6 +138,7 @@ watch(shouldBeUpdate, () => {
 i {
   margin-right: 4px;
 }
+
 .el-menu, .el-main {
   height: 100%;
 }
@@ -149,6 +151,7 @@ i {
 .closed-aside {
   width: auto;
 }
+
 .opened-aside {
   width: 300px;
 }

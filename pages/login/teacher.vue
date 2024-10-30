@@ -1,6 +1,5 @@
 <script setup>
 import {useUserStore} from "~/composables/userStore";
-import {validateTeacherJwt} from "~/utils/teacherApiUtils";
 import {teacherLogin} from "~/utils/fetch"
 import Options from "~/components/Options.vue";
 

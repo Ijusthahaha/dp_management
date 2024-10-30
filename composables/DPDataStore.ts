@@ -1,7 +1,7 @@
 import type {DPLog} from "~/types/DPType";
+import {AppealStatus} from "~/types/DPType";
 import type {Ref} from "@vue/reactivity";
 import type {ComparedLog} from "~/types/Status";
-import {AppealStatus} from "~/types/DPType";
 
 export const useDPDataStore = defineStore('dpDataStore', () => {
     // single student's dp.

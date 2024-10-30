@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {useUserStore} from "~/composables/userStore";
 import {Chart} from "chart.js";
 
@@ -47,11 +47,11 @@ const updateFont = (font: string) => {
       <button @click="updateLanguage('en')"></button>
     </div>
     <!--MR.CLARENCE THINK THIS IS USELESS SO I HAVE TO REMOVED IT :(-->
-<!--    <div class="child">-->
-<!--      <button></button>-->
-<!--      <button @click="updateFont('')"></button>-->
-<!--      <button @click="updateFont('mc')"></button>-->
-<!--    </div>-->
+    <!--    <div class="child">-->
+    <!--      <button></button>-->
+    <!--      <button @click="updateFont('')"></button>-->
+    <!--      <button @click="updateFont('mc')"></button>-->
+    <!--    </div>-->
   </div>
 </template>
 
@@ -60,6 +60,7 @@ const updateFont = (font: string) => {
   display: flex;
   flex-direction: row;
 }
+
 .container .child {
   position: fixed;
   transition: 0.5s;
@@ -75,24 +76,29 @@ const updateFont = (font: string) => {
   background-color: #6b6d71;
   border-radius: 32px;
 }
+
 .container .child:nth-child(1) {
   right: 16px;
 }
+
 .container .child:nth-child(2) {
   right: calc(32px + 50px);
 }
+
 .container .child:nth-child(3) {
   right: calc(48px + 100px);
 }
+
 .container .child button {
   margin-top: 4px;
   margin-bottom: 4px;
   border-radius: 50%;
   cursor: pointer;
 }
+
 .container .child:nth-child(1) button:nth-child(1),
 .container .child:nth-child(2) button:nth-child(1),
-.container .child:nth-child(3) button:nth-child(1){
+.container .child:nth-child(3) button:nth-child(1) {
   width: 50px;
   height: 50px;
   background-color: #6b6d71;
@@ -101,28 +107,34 @@ const updateFont = (font: string) => {
   background-position: center;
   border: none;
 }
+
 .container .child:nth-child(1) button:nth-child(1) {
   background-image: url("/icons/colorpad.svg");
 }
+
 .container .child:nth-child(2) button:nth-child(1) {
   background-image: url("/icons/language.svg");
 }
+
 .container .child:nth-child(3) button:nth-child(1) {
   background-image: url("/icons/font.svg");
 }
+
 .container .child:nth-child(1) button:not(:nth-child(1)),
 .container .child:nth-child(2) button:not(:nth-child(1)),
-.container .child:nth-child(3) button:not(:nth-child(1)){
+.container .child:nth-child(3) button:not(:nth-child(1)) {
   width: 36px;
   height: 36px;
   border: 2px solid white;
   overflow: hidden;
   display: none;
 }
+
 .container .child:nth-child(1) button:nth-child(2) {
   border: 2px solid #303030;
   background-color: #e5eaf3;
 }
+
 .container .child:nth-child(1) button:nth-child(3) {
   border: 2px solid #e5eaf3;
   background-color: #303030;
@@ -130,28 +142,34 @@ const updateFont = (font: string) => {
 
 .container .child:nth-child(1):hover,
 .container .child:nth-child(2):hover,
-.container .child:nth-child(3):hover{
+.container .child:nth-child(3):hover {
   height: 180px;
 }
+
 .container .child:nth-child(1):hover button,
 .container .child:nth-child(2):hover button,
-.container .child:nth-child(3):hover button{
+.container .child:nth-child(3):hover button {
   display: block;
 }
+
 .container .child:nth-child(2) button,
-.container .child:nth-child(3) button{
+.container .child:nth-child(3) button {
   font-size: 0.9rem;
   font-weight: bold;
 }
+
 .container .child:nth-child(2) button:nth-child(2)::before {
   content: '中';
 }
+
 .container .child:nth-child(2) button:nth-child(3)::before {
   content: 'Eng';
 }
+
 .container .child:nth-child(3) button:nth-child(2)::before {
   content: '宋';
 }
+
 .container .child:nth-child(3) button:nth-child(3)::before {
   content: 'MC';
 }

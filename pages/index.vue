@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import {useUserStore} from "~/composables/userStore";
+import {Chart, registerables} from 'chart.js';
 
 const store = useUserStore()
 const type = store.user?.type as string
-import { Chart, registerables } from 'chart.js';
+
 Chart.register(...registerables);
 
 definePageMeta({

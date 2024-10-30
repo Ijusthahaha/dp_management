@@ -8,10 +8,10 @@ import LocationChart from "~/components/Teacher/Charts/School/LocationChart.vue"
 <template>
   <el-carousel :autoplay="false" trigger="click">
     <el-carousel-item>
-      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+      <el-card :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}" shadow="hover">
         <template #header>
           <div>
-            <span>{{$t('teacher.school.class_dp')}}</span>
+            <span>{{ $t('teacher.school.class_dp') }}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -20,10 +20,10 @@ import LocationChart from "~/components/Teacher/Charts/School/LocationChart.vue"
       </el-card>
     </el-carousel-item>
     <el-carousel-item>
-      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+      <el-card :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}" shadow="hover">
         <template #header>
           <div>
-            <span>{{$t('teacher.school.dp_type')}}</span>
+            <span>{{ $t('teacher.school.dp_type') }}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -32,10 +32,10 @@ import LocationChart from "~/components/Teacher/Charts/School/LocationChart.vue"
       </el-card>
     </el-carousel-item>
     <el-carousel-item>
-      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+      <el-card :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}" shadow="hover">
         <template #header>
           <div>
-            <span>{{$t('teacher.school.divisions')}}</span>
+            <span>{{ $t('teacher.school.divisions') }}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -44,10 +44,10 @@ import LocationChart from "~/components/Teacher/Charts/School/LocationChart.vue"
       </el-card>
     </el-carousel-item>
     <el-carousel-item>
-      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+      <el-card :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}" shadow="hover">
         <template #header>
           <div>
-            <span>{{$t('teacher.school.location_dp')}}</span>
+            <span>{{ $t('teacher.school.location_dp') }}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -67,7 +67,7 @@ import LocationChart from "~/components/Teacher/Charts/School/LocationChart.vue"
   height: 100% !important;
 }
 
-.el-card, .mainCard  {
+.el-card, .mainCard {
   height: 100%;
 }
 </style>

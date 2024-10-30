@@ -1,35 +1,35 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: {enabled: false},
-  modules: ['@element-plus/nuxt', '@pinia/nuxt', '@vueuse/nuxt', '@nuxtjs/i18n', 'nuxt-particles'],
+    devtools: {enabled: false},
+    modules: ['@element-plus/nuxt', '@pinia/nuxt', '@vueuse/nuxt', '@nuxtjs/i18n', 'nuxt-particles'],
 
-  pinia: {
-      autoImports: [
-          'defineStore',
-      ],
-  },
+    pinia: {
+        autoImports: [
+            'defineStore',
+        ],
+    },
 
-  css: ['element-plus/theme-chalk/dark/css-vars.css', '@/assets/base.css', '@/assets/monocraft.css', "nprogress/nprogress.css"],
+    css: ['element-plus/theme-chalk/dark/css-vars.css', '@/assets/base.css', '@/assets/monocraft.css', "nprogress/nprogress.css"],
 
-  app: {
-      head: {
-          title: 'Student DP Management System',
-          charset: 'utf-8',
-          meta: [
-              {name: 'description', content: 'Student DP Management System'}
-          ],
-          link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.svg'}]
-      },
-  },
+    app: {
+        head: {
+            title: 'Student DP Management System',
+            charset: 'utf-8',
+            meta: [
+                {name: 'description', content: 'Student DP Management System'}
+            ],
+            link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.svg'}]
+        },
+    },
 
-  i18n: {
-      vueI18n: '@/config/i18n.config.ts'
-  },
+    i18n: {
+        vueI18n: '@/config/i18n.config.ts'
+    },
 
-  experimental: {
-      treeshakeClientOnly: false,
-      writeEarlyHints: false
-  },
+    experimental: {
+        treeshakeClientOnly: false,
+        writeEarlyHints: false
+    },
 
-  compatibilityDate: '2024-10-17',
+    compatibilityDate: '2024-10-17',
 })

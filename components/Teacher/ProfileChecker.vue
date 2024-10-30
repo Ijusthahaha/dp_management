@@ -1,7 +1,8 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {ArrowRight} from "@element-plus/icons-vue";
 import type {classDataDisplay, studentDataDisplay} from "~/types/dataDisplay";
-import type {Appeal, AppealStatus} from "~/types/DPType";
+import type {AppealStatus} from "~/types/DPType";
+
 const store = useUserStore()
 
 interface TableContent {
@@ -10,6 +11,7 @@ interface TableContent {
   studentAge?: number,
   studentId?: number
 }
+
 interface DpContent {
   appeal: AppealStatus,
   date: string,
@@ -47,22 +49,22 @@ watch(() => store.route, (newRoute) => {
   switch (depth) {
     case 0:
       // divisions
-      tableData.value = [{"studentName": "Middle School"},{"studentName": "Junior High"},{"studentName": "Senior High"}]
+      tableData.value = [{"studentName": "Middle School"}, {"studentName": "Junior High"}, {"studentName": "Senior High"}]
       break
     case 1:
       // fetch for classes
       getAllClassesV2().then(d => {
         let data: classDataDisplay[] = d.data.data
         data = data.filter(value => ClassLevelConverter(value.classLevel) === ClassStringLevelConverter(store.getRoutePath(1) as string))
-        for (let i=0; i<data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
           tableData.value.push({"studentName": data[i].className})
         }
       })
-       break
+      break
     case 2:
       getAllClassStudents(store.getRoutePath(2) as string).then(d => {
         let data: studentDataDisplay[] = d.data.data
-        for (let i=0; i<data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
           tableData.value.push({
             "studentName": data[i].studentName,
             "studentSex": data[i].studentSex,
@@ -79,7 +81,7 @@ watch(() => store.route, (newRoute) => {
       getLogsByStudents(currentStudentId.value, store.jwt).then(d => {
         dpData.value = []
         const data = d.data.data
-        for (let i=0; i<data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
           dpData.value.push({
             appeal: AppealConverter(data[i].appeal, '').status,
             date: new Date(data[i].date).toLocaleDateString(),
@@ -114,39 +116,43 @@ onBeforeUnmount(() => {
 <template>
   <div>
     <el-breadcrumb :separator-icon="ArrowRight">
-      <el-breadcrumb-item @click="store.$state.route = '/'"><span class="breadcrumb breadcrumb-home">Home</span></el-breadcrumb-item>
-      <el-breadcrumb-item v-show="store.getRouteDepth() >= 1" @click="store.gotoRoute(1)"><span class="breadcrumb">{{store.getRoutePath(1)}}</span></el-breadcrumb-item>
-      <el-breadcrumb-item v-show="store.getRouteDepth() >= 2" @click="store.gotoRoute(2)"><span class="breadcrumb">{{store.getRoutePath(2)}}</span></el-breadcrumb-item>
-      <el-breadcrumb-item v-show="store.getRouteDepth() >= 3" @click="store.gotoRoute(3)"><span class="breadcrumb">{{store.getRoutePath(3)}}</span></el-breadcrumb-item>
+      <el-breadcrumb-item @click="store.$state.route = '/'"><span class="breadcrumb breadcrumb-home">Home</span>
+      </el-breadcrumb-item>
+      <el-breadcrumb-item v-show="store.getRouteDepth() >= 1" @click="store.gotoRoute(1)"><span
+          class="breadcrumb">{{ store.getRoutePath(1) }}</span></el-breadcrumb-item>
+      <el-breadcrumb-item v-show="store.getRouteDepth() >= 2" @click="store.gotoRoute(2)"><span
+          class="breadcrumb">{{ store.getRoutePath(2) }}</span></el-breadcrumb-item>
+      <el-breadcrumb-item v-show="store.getRouteDepth() >= 3" @click="store.gotoRoute(3)"><span
+          class="breadcrumb">{{ store.getRoutePath(3) }}</span></el-breadcrumb-item>
     </el-breadcrumb>
     <el-table
+        v-if="store.getRouteDepth() != 3"
         :data="filteredTableData"
+        :show-header="isShowHeader"
         highlight-current-row
         style="width: 100%"
         @row-dblclick="handleCurrentChange"
-        :show-header="isShowHeader"
-        v-if="store.getRouteDepth() != 3"
     >
-      <el-table-column property="studentName" label="Name"/>
-      <el-table-column property="studentSex" label="Sex"/>
-      <el-table-column property="studentAge" label="Age"/>
-      <el-table-column property="studentId" label="Student ID"/>
+      <el-table-column label="Name" property="studentName"/>
+      <el-table-column label="Sex" property="studentSex"/>
+      <el-table-column label="Age" property="studentAge"/>
+      <el-table-column label="Student ID" property="studentId"/>
       <el-table-column align="right">
         <template #header>
-          <el-input v-model="searchInput" size="small" placeholder="Type to search" />
+          <el-input v-model="searchInput" placeholder="Type to search" size="small"/>
         </template>
       </el-table-column>
     </el-table>
     <el-table
+        v-else
         :data="dpData"
         style="width: 100%"
-        v-else
     >
-      <el-table-column property="date" label="Date"/>
-      <el-table-column property="logType" label="Type"/>
-      <el-table-column property="logLocation" label="Location"/>
-      <el-table-column property="dp" label="DP"/>
-      <el-table-column property="appeal" label="Appeal"/>
+      <el-table-column label="Date" property="date"/>
+      <el-table-column label="Type" property="logType"/>
+      <el-table-column label="Location" property="logLocation"/>
+      <el-table-column label="DP" property="dp"/>
+      <el-table-column label="Appeal" property="appeal"/>
     </el-table>
   </div>
 </template>
@@ -156,12 +162,15 @@ onBeforeUnmount(() => {
   margin-top: 4px;
   margin-bottom: calc(4px + 15px); /* 15px is the tab header's margin */
 }
+
 .breadcrumb-home {
   font-weight: bold;
 }
+
 .breadcrumb {
   color: #ffffff;
 }
+
 .breadcrumb:hover {
   color: #409EFF;
   cursor: pointer;

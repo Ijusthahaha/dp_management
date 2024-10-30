@@ -3,6 +3,7 @@ import {Bar} from 'vue-chartjs'
 import {useSchoolDPDataStore} from "~/composables/schoolDPDataStore";
 import {storeToRefs} from "pinia";
 import {ClassLevelConverter} from "~/utils/DPUtils";
+
 const {schoolDP, isUpdatedDP} = storeToRefs(useSchoolDPDataStore())
 
 const update = ref(false)

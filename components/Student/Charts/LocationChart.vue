@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import {PolarArea} from 'vue-chartjs'
 import {storeToRefs} from "pinia"
-import {useClassDPDataStore} from "~/composables/classDPDataStore";
 import {useDPDataStore} from "~/composables/DPDataStore";
 
 const {isUpdatedDP, availableDP} = storeToRefs(useDPDataStore())
@@ -9,7 +8,7 @@ const update = ref(false)
 const academicDP = ref(0)
 const dormDP = ref(0)
 watch(isUpdatedDP, () => {
-  for (let i=0; i<availableDP.value.length; i++) {
+  for (let i = 0; i < availableDP.value.length; i++) {
     const location = availableDP.value[i].location
     if (location === "academic") {
       academicDP.value += availableDP.value[i].dp

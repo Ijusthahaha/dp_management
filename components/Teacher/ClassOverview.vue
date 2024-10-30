@@ -10,12 +10,12 @@ const store = useUserStore()
 </script>
 
 <template>
-  <el-carousel :autoplay="false" trigger="click" v-if="(store.user as Teacher).clazz">
+  <el-carousel v-if="(store.user as Teacher).clazz" :autoplay="false" trigger="click">
     <el-carousel-item>
-      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+      <el-card :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}" shadow="hover">
         <template #header>
           <div>
-            <span>{{$t('teacher.class.student_dp')}}</span>
+            <span>{{ $t('teacher.class.student_dp') }}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -24,10 +24,10 @@ const store = useUserStore()
       </el-card>
     </el-carousel-item>
     <el-carousel-item>
-      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+      <el-card :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}" shadow="hover">
         <template #header>
           <div>
-            <span>{{$t('teacher.class.average_dp')}}</span>
+            <span>{{ $t('teacher.class.average_dp') }}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -36,10 +36,10 @@ const store = useUserStore()
       </el-card>
     </el-carousel-item>
     <el-carousel-item>
-      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+      <el-card :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}" shadow="hover">
         <template #header>
           <div>
-            <span>{{$t('teacher.class.dp_type')}}</span>
+            <span>{{ $t('teacher.class.dp_type') }}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -48,10 +48,10 @@ const store = useUserStore()
       </el-card>
     </el-carousel-item>
     <el-carousel-item>
-      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+      <el-card :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}" shadow="hover">
         <template #header>
           <div>
-            <span>{{$t('teacher.class.location_dp')}}</span>
+            <span>{{ $t('teacher.class.location_dp') }}</span>
           </div>
         </template>
         <div class="mainCard">

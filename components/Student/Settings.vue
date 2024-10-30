@@ -46,7 +46,7 @@ const logout = function (jwt?: string) {
 
 <template>
   <el-divider/>
-  <el-descriptions size="large" :title="t('student.menu.settings.info')">
+  <el-descriptions :title="t('student.menu.settings.info')" size="large">
     <el-descriptions-item :label="t('student.menu.settings.type')">{{ type }}</el-descriptions-item>
     <el-descriptions-item label="Id">{{ id }}</el-descriptions-item>
     <el-descriptions-item :label="t('student.menu.settings.level')">{{ level }}</el-descriptions-item>
@@ -56,23 +56,26 @@ const logout = function (jwt?: string) {
   </el-descriptions>
   <el-divider/>
 
-  <el-descriptions border size="large" :title="t('student.menu.settings.preference')">
+  <el-descriptions :title="t('student.menu.settings.preference')" border size="large">
     <el-descriptions-item :label="t('student.menu.settings.theme')">{{ store.theme }}</el-descriptions-item>
     <el-descriptions-item :label="t('student.menu.settings.language')">{{ store.language }}</el-descriptions-item>
-    <el-descriptions-item :label="t('student.menu.settings.font')">{{ store.font ? store.font : "default" }}</el-descriptions-item>
+    <el-descriptions-item :label="t('student.menu.settings.font')">{{
+        store.font ? store.font : "default"
+      }}
+    </el-descriptions-item>
   </el-descriptions>
 
   <el-divider/>
 
   <div class="modifiers">
     <div class="modifiers1">
-      <span class="titleText">{{$t('student.menu.settings.change_password')}}</span>
-      <el-button plain type="primary" @click="changePassword">{{$t('student.menu.settings.click_here')}}</el-button>
+      <span class="titleText">{{ $t('student.menu.settings.change_password') }}</span>
+      <el-button plain type="primary" @click="changePassword">{{ $t('student.menu.settings.click_here') }}</el-button>
     </div>
 
     <div class="modifiers2">
-      <span class="titleText">{{$t('student.menu.settings.logout')}}</span>
-      <el-button plain type="danger" @click="logout()">{{$t('student.menu.settings.click_here')}}</el-button>
+      <span class="titleText">{{ $t('student.menu.settings.logout') }}</span>
+      <el-button plain type="danger" @click="logout()">{{ $t('student.menu.settings.click_here') }}</el-button>
     </div>
   </div>
 
@@ -98,18 +101,18 @@ const logout = function (jwt?: string) {
 
   <el-dialog
       v-model="changePasswordDialog"
-      align-center
       :title="t('student.menu.settings.change_password')"
+      align-center
       width="30%"
   >
-    <p>{{$t('student.menu.settings.new_password')}}
+    <p>{{ $t('student.menu.settings.new_password') }}
       <el-input v-model="newPassword" show-password type="password"/>
     </p>
     <template #footer>
       <span>
-        <el-button @click="changePasswordDialog = false">{{$t('common.cancel')}}</el-button>
+        <el-button @click="changePasswordDialog = false">{{ $t('common.cancel') }}</el-button>
         <el-button type="primary" @click="submitChangePassword">
-          {{$t('common.confirm')}}
+          {{ $t('common.confirm') }}
         </el-button>
       </span>
     </template>

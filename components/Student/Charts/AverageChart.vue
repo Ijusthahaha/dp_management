@@ -4,6 +4,7 @@ import {useDPDataStore} from "~/composables/DPDataStore";
 import {DPType} from "~/types/DPType";
 import {type Ref} from "@vue/reactivity";
 import {storeToRefs} from "pinia";
+
 const {isUpdatedDP, averageDP, availableDP} = storeToRefs(useDPDataStore())
 
 const DPTypeSet: Ref<DPType[]> = ref([])

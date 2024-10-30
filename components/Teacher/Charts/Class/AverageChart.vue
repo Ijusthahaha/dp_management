@@ -2,6 +2,7 @@
 import {Line} from 'vue-chartjs'
 import {useClassDPDataStore} from "~/composables/classDPDataStore";
 import {storeToRefs} from "pinia";
+
 const store = useClassDPDataStore()
 const {classDP, isUpdatedDP} = storeToRefs(useClassDPDataStore())
 const MONTHS = [

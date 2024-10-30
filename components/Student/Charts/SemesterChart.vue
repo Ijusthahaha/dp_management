@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import {Pie} from 'vue-chartjs'
-import {ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js'
 import {useDPDataStore} from "~/composables/DPDataStore";
 import {DPType} from "~/types/DPType";
 import {storeToRefs} from "pinia";

@@ -18,10 +18,10 @@ watch(isUpdatedDP, () => {
 <template>
   <el-carousel v-if="!isComputedUserDPEmpty" :autoplay="false" trigger="click">
     <el-carousel-item>
-      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+      <el-card :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}" shadow="hover">
         <template #header>
           <div>
-            <span>{{$t('student.menu.overview.monthly')}}</span>
+            <span>{{ $t('student.menu.overview.monthly') }}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -30,10 +30,10 @@ watch(isUpdatedDP, () => {
       </el-card>
     </el-carousel-item>
     <el-carousel-item>
-      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+      <el-card :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}" shadow="hover">
         <template #header>
           <div>
-            <span>{{$t('student.menu.overview.semester')}}</span>
+            <span>{{ $t('student.menu.overview.semester') }}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -42,10 +42,10 @@ watch(isUpdatedDP, () => {
       </el-card>
     </el-carousel-item>
     <el-carousel-item>
-      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+      <el-card :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}" shadow="hover">
         <template #header>
           <div>
-            <span>{{$t('student.menu.overview.compare')}}</span>
+            <span>{{ $t('student.menu.overview.compare') }}</span>
           </div>
         </template>
         <div class="mainCard">
@@ -54,10 +54,10 @@ watch(isUpdatedDP, () => {
       </el-card>
     </el-carousel-item>
     <el-carousel-item>
-      <el-card shadow="hover" :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}">
+      <el-card :body-style="{height:'100%', width:'100%', boxSizing:'border-box'}" shadow="hover">
         <template #header>
           <div>
-            <span>{{$t('student.menu.overview.location_dp')}}</span>
+            <span>{{ $t('student.menu.overview.location_dp') }}</span>
           </div>
         </template>
         <div class="mainCard">

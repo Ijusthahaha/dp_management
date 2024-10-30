@@ -145,7 +145,8 @@ const handleCurrentChange = (val: number) => {
 
   <el-table v-else v-loading="isLoading" :data="userDP.slice((currentPage-1)*pageSize,currentPage*pageSize)"
             :default-sort="{ prop: 'date', order: 'descending' }" :row-class-name="tableRowClassName">
-    <el-table-column :formatter="dateFormatter" :label=" t('student.menu.log.date')" prop="date" sortable></el-table-column>
+    <el-table-column :formatter="dateFormatter" :label=" t('student.menu.log.date')" prop="date"
+                     sortable></el-table-column>
     <el-table-column :label="t('student.menu.log.date')" prop="logType"></el-table-column>
     <el-table-column label="DP" prop="dp" sortable></el-table-column>
     <!--    <el-table-column prop="remark" label="Remark"></el-table-column>-->
@@ -156,12 +157,16 @@ const handleCurrentChange = (val: number) => {
           <template #default>
             <div>Status: {{ scope.row.appeal.status }}</div>
             <div v-if="scope.row.appeal.status == AppealStatus.NOT_APPEAL"></div>
-            <div v-else-if="scope.row.appeal.status == AppealStatus.PENDING">{{$t('student.menu.log.pending_appeal')}}</div>
+            <div v-else-if="scope.row.appeal.status == AppealStatus.PENDING">
+              {{ $t('student.menu.log.pending_appeal') }}
+            </div>
             <div v-else-if="scope.row.appeal.status == AppealStatus.REJECTED">
               <span>Teacher rejected your appeal.</span><br>
               <span>Reason: {{ scope.row.appeal.reason }}</span>
             </div>
-            <div v-else-if="scope.row.appeal.status == AppealStatus.FULFILLED">{{$t('student.menu.log.fulfilled_appeal')}}</div>
+            <div v-else-if="scope.row.appeal.status == AppealStatus.FULFILLED">
+              {{ $t('student.menu.log.fulfilled_appeal') }}
+            </div>
           </template>
           <template #reference>
             <el-tag :type="getStatusType(scope)">{{ scope.row.appeal.status }}</el-tag>
@@ -172,7 +177,9 @@ const handleCurrentChange = (val: number) => {
 
     <el-table-column :label="t('student.menu.log.operation')">
       <template #default="scope">
-        <el-button plain size="small" type="primary" @click="appealOperation(scope)">{{$t('student.menu.log.appeal')}}</el-button>
+        <el-button plain size="small" type="primary" @click="appealOperation(scope)">
+          {{ $t('student.menu.log.appeal') }}
+        </el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -190,8 +197,8 @@ const handleCurrentChange = (val: number) => {
 
   <el-dialog
       v-model="appealDialogVisible"
-      align-center
       :title="t('student.menu.log.apply_appeal')"
+      align-center
       width="40%"
   >
     <el-table :data="[appealItem]" style="width: 100%">
@@ -208,12 +215,12 @@ const handleCurrentChange = (val: number) => {
         type="textarea"
     />
 
-    <el-text type="danger">{{$t('student.menu.log.appeal_failed')}}</el-text>
+    <el-text type="danger">{{ $t('student.menu.log.appeal_failed') }}</el-text>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="appealDialogVisible = false">{{$t('common.cancel')}}</el-button>
+        <el-button @click="appealDialogVisible = false">{{ $t('common.cancel') }}</el-button>
         <el-button type="primary" @click="submitAppeal">
-          {{$t('common.submit')}}
+          {{ $t('common.submit') }}
         </el-button>
       </span>
     </template>

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import {Right} from "@element-plus/icons-vue";
+
 const store = useUserStore()
 const logout = () => {
   store.$patch(state => {
@@ -18,7 +19,11 @@ const logout = () => {
         School DP Management System
       </div>
     </div>
-    <el-link :underline="false" @click="logout" style="margin-left: auto">Logout<el-icon class="el-icon--right"><Right /></el-icon></el-link>
+    <el-link :underline="false" style="margin-left: auto" @click="logout">Logout
+      <el-icon class="el-icon--right">
+        <Right/>
+      </el-icon>
+    </el-link>
   </div>
 </template>
 

@@ -50,7 +50,7 @@ http.interceptors.response.use(res => {
 )
 
 const getI18nText = (text: string): string => {
-    const { $i18n } = useNuxtApp();
+    const {$i18n} = useNuxtApp();
     const t = $i18n.t;
 
     return t(text);

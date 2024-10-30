@@ -8,7 +8,7 @@ const update = ref(false)
 const academicDP = ref(0)
 const dormDP = ref(0)
 watch(isUpdatedDP, () => {
-  for (let i=0; i<classDP.value.length; i++) {
+  for (let i = 0; i < classDP.value.length; i++) {
     // @ts-ignore (blame backend!)
     const location = classDP.value[i].log_location
     if (location === "academic") {

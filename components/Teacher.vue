@@ -2,7 +2,7 @@
 import {HomeFilled, Right, User} from "@element-plus/icons-vue";
 import type {Student, Teacher} from "~/types/User"
 import {TeacherType} from "~/types/User"
-import type {Action, FormRules, TabPaneName} from "element-plus";
+import type {Action, TabPaneName} from "element-plus";
 import {useStudentStore} from "~/composables/studentStore";
 import {$fetch} from "ofetch";
 import SchoolOverview from "~/components/Teacher/SchoolOverview.vue";
@@ -256,7 +256,11 @@ const logout = () => {
             <span>{{ store.user?.name }}</span>
           </template>
         </el-page-header>
-        <el-link :underline="false" @click="logout">Logout<el-icon class="el-icon--right"><Right /></el-icon></el-link>
+        <el-link :underline="false" @click="logout">Logout
+          <el-icon class="el-icon--right">
+            <Right/>
+          </el-icon>
+        </el-link>
       </el-header>
       <el-container>
         <el-main>
@@ -296,9 +300,9 @@ const logout = () => {
                     <el-autocomplete
                         v-model="forms[+item.id - 1].currentStudent.name"
                         :fetch-suggestions="querySearchStudent"
+                        :placeholder="t('teacher.menu.tab.example')"
                         :trigger-on-focus="false"
                         clearable
-                        :placeholder="t('teacher.menu.tab.example')"
                         @select="handleSelectAutocomplete"
                     />
                   </el-form-item>
@@ -339,28 +343,31 @@ const logout = () => {
                           :value="item"
                       />
                     </el-select>
-                    <el-alert type="success" v-if="forms[+item.id - 1].type && DPTypeExtraInfo[DPType[forms[+item.id - 1].type as keyof typeof DPType]].suggestion" style="margin-top: 18px" show-icon :closable="false">
-                      The recommend DPs for type "{{forms[+item.id - 1].type}}" is {{DPTypeExtraInfo[DPType[forms[+item.id - 1].type as keyof typeof DPType]].suggestion}}
+                    <el-alert v-if="forms[+item.id - 1].type && DPTypeExtraInfo[DPType[forms[+item.id - 1].type as keyof typeof DPType]].suggestion"
+                              :closable="false"
+                              show-icon style="margin-top: 18px" type="success">
+                      The recommend DPs for type "{{ forms[+item.id - 1].type }}" is
+                      {{ DPTypeExtraInfo[DPType[forms[+item.id - 1].type as keyof typeof DPType]].suggestion }}
                     </el-alert>
                   </el-form-item>
                   <el-form-item :label="t('teacher.menu.tab.reason')" required>
                     <el-input v-model="forms[+item.id - 1].reason"
                               :autosize="{minRows: 3}"
-                              maxlength="100"
                               :placeholder="t('teacher.menu.tab.dispatch_reason')"
+                              maxlength="100"
                               show-word-limit
                               type="textarea"
                     />
                   </el-form-item>
                   <el-form-item label="DP: " required>
                     <el-col :span="4">
-                      <el-input v-model="forms[+item.id - 1].dp" :max="12" :min="1" :step="1"
-                                oninput="if (value > 12) value=12"
-                                :placeholder="t('teacher.menu.tab.count')" type="number"></el-input>
+                      <el-input v-model="forms[+item.id - 1].dp" :max="12" :min="1" :placeholder="t('teacher.menu.tab.count')"
+                                :step="1"
+                                oninput="if (value > 12) value=12" type="number"></el-input>
                     </el-col>
                     <el-col :span="1"></el-col>
                     <el-col :span="18">
-                      <el-button plain type="primary" @click="checkForm">{{$t('teacher.menu.tab.do_it')}}</el-button>
+                      <el-button plain type="primary" @click="checkForm">{{ $t('teacher.menu.tab.do_it') }}</el-button>
                     </el-col>
                   </el-form-item>
                 </el-form>
@@ -373,7 +380,7 @@ const logout = () => {
       </el-container>
     </el-container>
   </div>
-  <el-dialog v-if="confirmDialogVisible" v-model="confirmDialogVisible" center :title="t('common.confirm')" width="50%">
+  <el-dialog v-if="confirmDialogVisible" v-model="confirmDialogVisible" :title="t('common.confirm')" center width="50%">
     <el-table :data="[forms[+editableTabsValue - 1]]" style="width: 100%">
       <el-table-column :label="t('teacher.menu.tab.name')" prop="currentStudent.name"></el-table-column>
       <el-table-column :formatter="dateFormatter" :label="t('teacher.menu.tab.date')" prop="date"></el-table-column>
@@ -383,13 +390,13 @@ const logout = () => {
     </el-table>
     <el-alert :closable="false" :title="currentQuote"
               show-icon style="margin-top: 8px; margin-bottom: 8px;" type="info"/>
-    <el-alert :closable="false" show-icon
-              style="margin-top: 8px; margin-bottom: 8px;" :title="t('teacher.menu.tab.warning')" type="warning"/>
+    <el-alert :closable="false" :title="t('teacher.menu.tab.warning')"
+              show-icon style="margin-top: 8px; margin-bottom: 8px;" type="warning"/>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="confirmDialogVisible = false">{{$t("common.cancel")}}</el-button>
+        <el-button @click="confirmDialogVisible = false">{{ $t("common.cancel") }}</el-button>
         <el-button plain type="danger" @click="submitForm">
-          {{$t("common.confirm")}}
+          {{ $t("common.confirm") }}
         </el-button>
       </span>
     </template>
